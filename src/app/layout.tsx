@@ -22,9 +22,6 @@ const plusJakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Ecommerce — Ghana's Secure Marketplace",
   description: 'Buy and sell safely across Ghana with escrow-protected transactions.',
-  icons: {
-    icon: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1774057903/ai-removebg-preview_ikywpe.png',
-  },
 };
 
 function Footer() {
@@ -66,6 +63,12 @@ function Footer() {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={plusJakarta.variable}>
+      <head>
+        <link
+          rel="icon"
+          href="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1774057903/ai-removebg-preview_ikywpe.png"
+        />
+      </head>
       <body
         className={`antialiased bg-background min-h-screen flex flex-col text-secondary m-0 p-0 ${plusJakarta.className}`}
         suppressHydrationWarning
