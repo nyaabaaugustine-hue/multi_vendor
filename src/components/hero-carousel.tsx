@@ -107,13 +107,13 @@ export function HeroCarousel() {
                 {/* MIDDLE PANE: ASSET IMAGE */}
                 <div className="hidden md:flex flex-1 relative bg-white overflow-hidden items-center justify-center">
                   <div className="absolute inset-0 z-0">
-                    <Image 
-                      src={slide.mainImage} 
-                      alt="Hero Asset" 
-                      fill 
-                      className="object-cover"
-                      priority
-                      data-ai-hint="marketplace hero"
+                    <Image
+                      src={slide.mainImage}
+                      alt={slide.title}
+                      fill
+                      priority={slide.id === 1}
+                      className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                      sizes="(max-width: 768px) 100vw, 60vw"
                     />
                   </div>
                   {/* FLOATING CTA */}

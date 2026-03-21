@@ -1,15 +1,21 @@
 "use client";
 
+import dynamic from 'next/dynamic';
+
+const HeroCarousel = dynamic(() => import('@/components/hero-carousel').then(mod => mod.HeroCarousel), {
+  ssr: true,
+  loading: () => <div className="max-w-7xl mx-auto w-full px-4 mb-8 md:mb-12 mt-4 md:mt-8 h-[260px] md:h-[320px] bg-muted animate-pulse rounded-xl" />
+});
+const SpotlightCategories = dynamic(() => import('@/components/spotlight-categories').then(mod => mod.SpotlightCategories), { ssr: true });
+const TipsSection = dynamic(() => import('@/components/tips-section').then(mod => mod.TipsSection), { ssr: true });
+const BenefitsSection = dynamic(() => import('@/components/benefits-section').then(mod => mod.BenefitsSection), { ssr: true });
+
 import { useMemo } from 'react';
 import Link from 'next/link';
 import { ListingCard } from '@/components/listing-card';
 import { HighFidelityListingCard } from '@/components/high-fidelity-listing-card';
 import { CategoryBar } from '@/components/category-bar';
-import { HeroCarousel } from '@/components/hero-carousel';
-import { BenefitsSection } from '@/components/benefits-section';
 import { PrivacyPopup } from '@/components/privacy-popup';
-import { SpotlightCategories } from '@/components/spotlight-categories';
-import { TipsSection } from '@/components/tips-section';
 import { FooterTabs } from '@/components/footer-tabs';
 import { NewsletterPopup } from '@/components/newsletter-popup';
 import { LISTINGS, VENDORS } from '@/lib/mock-data';
