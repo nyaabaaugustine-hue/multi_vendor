@@ -10,7 +10,7 @@ const SpotlightCategories = dynamic(() => import('@/components/spotlight-categor
 const TipsSection = dynamic(() => import('@/components/tips-section').then(mod => mod.TipsSection), { ssr: true });
 const BenefitsSection = dynamic(() => import('@/components/benefits-section').then(mod => mod.BenefitsSection), { ssr: true });
 
-import { useMemo } from 'react';
+import { useMemo, Suspense } from 'react';
 import Link from 'next/link';
 import { ListingCard } from '@/components/listing-card';
 import { HighFidelityListingCard } from '@/components/high-fidelity-listing-card';
@@ -323,5 +323,9 @@ export function HomePage() {
 }
 
 export default function Page() {
-  return <HomePage />;
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background" />}>
+      <HomePage />
+    </Suspense>
+  );
 }

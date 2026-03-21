@@ -40,8 +40,17 @@ export default function ListingDetails() {
   const [showAuthDialog, setShowAuthDialog] = useState(false);
   const [showContactInfo, setShowContactInfo] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const listing = LISTINGS.find(l => l.id === id) || LISTINGS[0];
+
+  if (!mounted) {
+    return <div className="min-h-screen bg-background" />;
+  }
 
   // ── The real escrow trigger ──────────────────────────────────────────────────
   // Adds the item to cart then fires startCheckoutSim which the

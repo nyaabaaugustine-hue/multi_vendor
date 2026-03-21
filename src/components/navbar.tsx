@@ -121,7 +121,7 @@ export function Navbar() {
           <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
             <div className="relative h-7 w-7 md:h-9 md:w-9 overflow-hidden rounded-none border border-primary/20 p-1 bg-white shadow-sm group-hover:border-primary transition-colors duration-500">
               <Image 
-                src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1774057903/ai-removebg-preview_ikywpe.png" 
+                src={content.settings.logoUrl} 
                 alt="Logo" 
                 fill 
                 sizes="40px" 

@@ -22,6 +22,9 @@ const plusJakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Ecommerce — Ghana's Secure Marketplace",
   description: 'Buy and sell safely across Ghana with escrow-protected transactions.',
+  icons: {
+    icon: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1774057903/ai-removebg-preview_ikywpe.png',
+  },
 };
 
 function Footer() {
