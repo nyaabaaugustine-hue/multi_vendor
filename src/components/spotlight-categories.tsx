@@ -14,7 +14,7 @@ const SPOTLIGHTS = [
   {
     title: "Video games",
     href: "/listings?category=Electronics",
-    imageUrl: "https://picsum.photos/seed/gh-spot-games/800/600",
+    imageUrl: "https://images.pexels.com/photos/1637438/pexels-photo-1637438.jpeg?auto=compress&cs=tinysrgb&h=600&w=800",
     imageHint: "gaming console"
   },
   {
@@ -26,7 +26,7 @@ const SPOTLIGHTS = [
   {
     title: "Cameras and Drones",
     href: "/listings?category=Electronics",
-    imageUrl: "https://picsum.photos/seed/gh-spot-cam/800/600",
+    imageUrl: "https://images.pexels.com/photos/1205033/pexels-photo-1205033.jpeg?auto=compress&cs=tinysrgb&h=600&w=800",
     imageHint: "digital camera"
   },
 ];
@@ -61,7 +61,6 @@ export function SpotlightCategories() {
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
                 sizes="(max-width: 768px) 100vw, 300px"
                 data-ai-hint={item.imageHint}
-                unoptimized
               />
             </div>
             <div className="p-4 bg-muted/5 group-hover:bg-primary/5 transition-colors border-t border-dashed">

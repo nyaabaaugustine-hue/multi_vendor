@@ -22,7 +22,7 @@ const SLIDES = [
     title: "Ghana's largest vehicle inventory. ",
     highlight: "Over 800 thousand options to choose from.",
     cta: "View offers",
-    mainImage: "https://picsum.photos/seed/hero1/1600/800",
+    mainImage: "https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&h=800&w=1600",
     sideTitle: "Toyota Corolla GLI",
     sideDesc: "Year 2024, 22,300 km and 2.0 Flex engine",
     accentColor: "text-[#6e0ad6]"
@@ -34,7 +34,7 @@ const SLIDES = [
     title: "Sovereign Electronics Center. ",
     highlight: "The best smartphones in GHS-Accra.",
     cta: "Shop now",
-    mainImage: "https://picsum.photos/seed/hero2/1600/800",
+    mainImage: "https://images.pexels.com/photos/1466609/pexels-photo-1466609.jpeg?auto=compress&cs=tinysrgb&h=800&w=1600",
     sideTitle: "iPhone 15 Pro",
     sideDesc: "Titanium Blue, 256GB. Vault condition.",
     accentColor: "text-[#d60a91]"

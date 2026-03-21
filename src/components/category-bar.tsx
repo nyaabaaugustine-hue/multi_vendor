@@ -22,7 +22,7 @@ const CATEGORIES = [
   { 
     name: 'Categories', 
     icon: Shapes, 
-    imageUrl: 'https://picsum.photos/seed/camera1/100/100',
+    imageUrl: 'https://images.pexels.com/photos/1036936/pexels-photo-1036936.jpeg?auto=compress&cs=tinysrgb&h=100&w=100',
     href: '/listings',
     color: 'text-blue-600',
     param: null,
@@ -60,11 +60,11 @@ export function CategoryBar() {
                 aria-current={isActive ? 'page' : undefined}
                 className={cn(
                   "flex items-center gap-2 border px-3 py-1.5 rounded-none transition-all shrink-0 group/chip animate-in fade-in slide-in-from-right-2",
-                  `delay-${idx * 20}`,
                   isActive
                     ? "bg-primary/10 border-primary text-primary shadow-sm"
                     : "bg-muted/20 border-transparent hover:border-primary/30 hover:bg-muted/40"
                 )}
+                style={{ animationDelay: `${idx * 40}ms`, animationFillMode: 'both' }}
               >
                 {cat.imageUrl ? (
                   <div className="relative h-3.5 w-3.5 md:h-4 md:w-4 overflow-hidden rounded-none border border-secondary/10">
