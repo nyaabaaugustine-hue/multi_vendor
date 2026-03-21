@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 221 83% 53%;
+    /* Silver-milky white on all blue (primary) buttons — cool-toned silver gray */
+    --primary-foreground: 214 38% 88%;
+    --secondary: 215 25% 27%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 221 83% 53%;
+    --accent-foreground: 214 38% 88%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221 83% 53%;
+    --radius: 0px;
+    --burgundy: 350 100% 20%;
+    --gold: 45 93% 47%;
+    scroll-behavior: smooth;
+  }
+
+  [data-theme='sovereign'] {
+    --background: 222 47% 4%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 6%;
+    --card-foreground: 210 40% 98%;
+    --primary: 190 90% 50%;
+    --primary-foreground: 214 38% 88%;
+    --secondary: 222 47% 12%;
+    --border: 222 47% 15%;
+    --muted: 222 47% 10%;
+    --accent: 262 83% 58%;
+  }
+
+  [data-theme='midnight'] {
+    --background: 0 0% 0%;
+    --foreground: 210 40% 98%;
+    --card: 0 0% 2%;
+    --card-foreground: 210 40% 98%;
+    --primary: 210 100% 50%;
+    --primary-foreground: 214 38% 88%;
+    --secondary: 0 0% 10%;
+    --border: 0 0% 15%;
+    --muted: 0 0% 5%;
+    --accent: 0 0% 100%;
+  }
+
+  [data-theme='cobalt'] {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 13%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 214 38% 88%;
+    --secondary: 222 47% 20%;
+    --border: 222 47% 25%;
+    --accent: 199 89% 48%;
+  }
+
+  [data-theme='royal'] {
+    --background: 273 67% 4%;
+    --foreground: 210 40% 98%;
+    --card: 273 67% 7%;
+    --primary: 273 67% 60%;
+    --primary-foreground: 214 38% 88%;
+    --secondary: 273 67% 15%;
+    --border: 273 67% 20%;
+    --accent: 45 93% 47%;
+  }
+
+  [data-theme='crimson'] {
+    --background: 0 72% 4%;
+    --foreground: 210 40% 98%;
+    --card: 0 72% 7%;
+    --primary: 0 72% 51%;
+    --primary-foreground: 214 38% 88%;
+    --secondary: 0 72% 15%;
+    --border: 0 72% 20%;
+    --accent: 0 0% 100%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-primary/30 selection:text-foreground;
+    font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+    letter-spacing: -0.02em;
+    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer components {
+  .section-standard { @apply py-16; }
+  .section-hero     { @apply py-20; }
+  .section-compact  { @apply py-14; }
+}
+
+/* ── Marquee animations ── */
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+.animate-marquee-slow {
+  display: flex;
+  width: max-content;
+  animation: marquee 80s linear infinite;
+}
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── Scrollbar hide ── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Heading gradient ── */
+.heading-gradient {
+  background: linear-gradient(to right, hsl(var(--foreground)), hsl(var(--primary)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Skip-to-content ── */
+.skip-to-content {
+  @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200]
+         focus:bg-primary focus:text-primary-foreground focus:px-6 focus:py-3
+         focus:font-black focus:uppercase focus:tracking-widest focus:text-[11px] focus:shadow-2xl;
+}

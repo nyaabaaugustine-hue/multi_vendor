@@ -1,0 +1,23 @@
+
+{
+  "name": "VaultCommerce",
+  "short_name": "Vault",
+  "description": "The Gold Standard for secure cross-category trade in Ghana.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a1a2f",
+  "theme_color": "#453110",
+  "icons": [
+    {
+      "src": "https://res.cloudinary.com/dwsl2ktt2/image/upload/v1773999402/file_eognv9.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://res.cloudinary.com/dwsl2ktt2/image/upload/v1773999402/file_eognv9.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

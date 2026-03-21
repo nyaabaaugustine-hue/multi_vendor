@@ -1,0 +1,52 @@
+{
+  "placeholderImages": [
+    {
+      "id": "electronics",
+      "description": "Quantum Precision MacBook Pro",
+      "imageUrl": "https://res.cloudinary.com/dwsl2ktt2/image/upload/v1773999233/177984_n39gml.png",
+      "imageHint": "laptop computer"
+    },
+    {
+      "id": "appliances",
+      "description": "Sovereign Series Refrigerator",
+      "imageUrl": "https://res.cloudinary.com/dwsl2ktt2/image/upload/v1773999233/166105_nesnhj.png",
+      "imageHint": "modern fridge"
+    },
+    {
+      "id": "supermarket",
+      "description": "Makola Select Supermarket Registry",
+      "imageUrl": "https://res.cloudinary.com/dwsl2ktt2/image/upload/v1773999008/161113d_wcatfr.png",
+      "imageHint": "grocery bundle"
+    },
+    {
+      "id": "furniture",
+      "description": "Elite Heritage Sofa",
+      "imageUrl": "https://res.cloudinary.com/dwsl2ktt2/image/upload/v1773999005/132066.b_efva72.jpg",
+      "imageHint": "luxury sofa"
+    },
+    {
+      "id": "beauty",
+      "description": "Royal Orchid Beauty Protocol",
+      "imageUrl": "https://res.cloudinary.com/dwsl2ktt2/image/upload/v1773999005/97743a_n2dnv3.jpg",
+      "imageHint": "beauty set"
+    },
+    {
+      "id": "audio-visual",
+      "description": "Sovereign 4K OLED Hub",
+      "imageUrl": "https://res.cloudinary.com/dwsl2ktt2/image/upload/v1773999008/167240_prgdit.png",
+      "imageHint": "smart tv"
+    },
+    {
+      "id": "mobile",
+      "description": "Titanium iPhone 15 Pro",
+      "imageUrl": "https://res.cloudinary.com/dwsl2ktt2/image/upload/v1773999233/177985_njyykl.png",
+      "imageHint": "iphone titanium"
+    },
+    {
+      "id": "home-living",
+      "description": "Elite Heritage Living Suite",
+      "imageUrl": "https://res.cloudinary.com/dwsl2ktt2/image/upload/v1773999005/132075.b_coq5nl.jpg",
+      "imageHint": "interior decor"
+    }
+  ]
+}

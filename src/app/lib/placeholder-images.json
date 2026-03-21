@@ -1,0 +1,53 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "electronics",
+      "description": "Quantum Precision MacBook Pro",
+      "imageUrl": "https://picsum.photos/seed/gh-lp1/800/600",
+      "imageHint": "ghanaian laptop"
+    },
+    {
+      "id": "mobile",
+      "description": "Titanium iPhone 15 Pro",
+      "imageUrl": "https://picsum.photos/seed/gh-ph1/800/600",
+      "imageHint": "ghanaian smartphone"
+    },
+    {
+      "id": "vehicles",
+      "description": "Luxury SUV Accra",
+      "imageUrl": "https://picsum.photos/seed/gh-v1/800/600",
+      "imageHint": "luxury suv"
+    },
+    {
+      "id": "property",
+      "description": "Elite Residential Villa",
+      "imageUrl": "https://picsum.photos/seed/gh-pr1/800/600",
+      "imageHint": "luxury villa"
+    },
+    {
+      "id": "agriculture",
+      "description": "Industrial Agro Hub",
+      "imageUrl": "https://picsum.photos/seed/gh-ag1/800/600",
+      "imageHint": "farm tractor"
+    },
+    {
+      "id": "fashion",
+      "description": "Royal Kente Weave",
+      "imageUrl": "https://picsum.photos/seed/gh-fa1/800/600",
+      "imageHint": "kente fabric"
+    },
+    {
+      "id": "services",
+      "description": "Corporate Audit Node",
+      "imageUrl": "https://picsum.photos/seed/gh-se1/800/600",
+      "imageHint": "legal document"
+    },
+    {
+      "id": "sports",
+      "description": "Performance Gym Node",
+      "imageUrl": "https://picsum.photos/seed/gh-sp1/800/600",
+      "imageHint": "treadmill gym"
+    }
+  ]
+}
