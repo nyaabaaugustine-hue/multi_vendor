@@ -80,27 +80,34 @@ let notifIdCounter = 0;
 
 function PaystackNotifBanner({ notifs, dismiss }: { notifs: PSKNotif[]; dismiss: (id: number) => void }) {
   return (
-    <div className="fixed top-4 right-4 z-[300] flex flex-col gap-2 w-80 pointer-events-none">
+    <div className="fixed top-6 right-6 z-[300] flex flex-col gap-3 w-[340px] pointer-events-none">
       {notifs.map(n => (
         <div
           key={n.id}
-          className="pointer-events-auto animate-in slide-in-from-right-4 fade-in duration-500 bg-white border-l-4 shadow-2xl flex items-start gap-3 p-4 rounded-none"
-          style={{ borderLeftColor: n.color }}
+          className="pointer-events-auto animate-in slide-in-from-right-8 fade-in duration-500 bg-white/95 backdrop-blur-xl border border-white/20 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.15)] flex items-start gap-4 p-5 rounded-2xl group overflow-hidden relative"
         >
-          <div className="shrink-0 mt-0.5" style={{ color: n.color }}>{n.icon}</div>
+          {/* Animated glow background based on notification color */}
+          <div 
+            className="absolute -top-10 -right-10 w-24 h-24 blur-[40px] opacity-10 transition-colors duration-500" 
+            style={{ backgroundColor: n.color }}
+          />
+          
+          <div className="shrink-0 h-10 w-10 rounded-xl flex items-center justify-center shadow-sm" style={{ backgroundColor: `${n.color}15`, color: n.color }}>
+            {n.icon}
+          </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1.5 mb-0.5">
-              <span className="text-[8px] font-black uppercase tracking-widest text-muted-foreground">{n.event}</span>
-              <Wifi className="h-2.5 w-2.5 text-green-500" />
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-[9px] font-bold uppercase tracking-[0.15em] text-muted-foreground/60">{n.event}</span>
+              <div className="h-1 w-1 rounded-full bg-green-500 animate-pulse" />
             </div>
-            <p className="text-[11px] font-black text-foreground leading-tight">{n.title}</p>
-            <p className="text-[9px] text-muted-foreground mt-0.5 leading-relaxed">{n.body}</p>
+            <p className="text-[13px] font-bold text-foreground leading-tight tracking-tight">{n.title}</p>
+            <p className="text-[11px] text-muted-foreground mt-1.5 leading-relaxed font-medium">{n.body}</p>
           </div>
           <button
             onClick={() => dismiss(n.id)}
-            className="shrink-0 text-muted-foreground/40 hover:text-muted-foreground transition-colors mt-0.5"
+            className="shrink-0 h-6 w-6 rounded-full flex items-center justify-center text-muted-foreground/30 hover:text-muted-foreground hover:bg-muted transition-all"
           >
-            <X className="h-3 w-3" />
+            <X className="h-3.5 w-3.5" />
           </button>
         </div>
       ))}
@@ -314,189 +321,222 @@ export function EscrowCheckoutFlow() {
       />
 
       <Dialog open={isOpen} onOpenChange={(open) => { if (!open) handleClose(); }}>
-        <DialogContent className="sm:max-w-lg rounded-none p-0 overflow-hidden border-t-4 border-t-primary shadow-2xl z-[150]">
+        <DialogContent className="sm:max-w-xl rounded-2xl p-0 overflow-hidden border-none shadow-2xl z-[150] bg-background">
           <DialogHeader className="sr-only">
             <DialogTitle>Secure Escrow Checkout</DialogTitle>
             <DialogDescription>Complete your purchase securely.</DialogDescription>
           </DialogHeader>
 
           {/* ── HEADER ── */}
-          <div className="bg-secondary text-white px-6 py-5">
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-background/50 backdrop-blur-sm border-b px-8 py-6">
+            <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <Lock className="h-4 w-4 text-primary shrink-0" />
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] leading-none">
-                  {STEP_LABEL[step]}
-                </span>
+                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Lock className="h-4 w-4 text-primary shrink-0" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block leading-none mb-1">
+                    Checkout Flow
+                  </span>
+                  <span className="text-lg font-bold text-foreground leading-none">
+                    {STEP_LABEL[step]}
+                  </span>
+                </div>
               </div>
-              <button onClick={handleClose} aria-label="Close" className="text-white/40 hover:text-white transition-colors">
-                <X className="h-4 w-4" />
+              <button onClick={handleClose} aria-label="Close" className="h-8 w-8 rounded-full flex items-center justify-center hover:bg-muted transition-colors">
+                <X className="h-4 w-4 text-muted-foreground" />
               </button>
             </div>
 
             {/* Step progress */}
-            <div className="space-y-1.5">
-              <div className="flex justify-between text-[8px] font-black uppercase tracking-widest text-white/40">
+            <div className="space-y-3">
+              <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                 <span>
                   Step {Math.max(1, stepIdx + 1)} of {STEP_ORDER.length}
                 </span>
-                <span className="text-primary">{progress}%</span>
+                <span className="text-primary">{progress}% Complete</span>
               </div>
-              <div className="h-1 bg-white/10">
-                <div className="h-full bg-primary transition-all duration-700" style={{ width: `${progress}%` }} />
-              </div>
-              <div className="flex gap-1 pt-0.5">
-                {STEP_ORDER.map((s, i) => (
-                  <div
-                    key={s}
-                    className={cn(
-                      'h-1 flex-1 transition-all duration-500 rounded-none',
-                      stepIdx >= i ? 'bg-primary' : 'bg-white/15'
-                    )}
-                  />
-                ))}
+              <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-primary transition-all duration-700 ease-in-out" 
+                  style={{ width: `${progress}%` }} 
+                />
               </div>
             </div>
           </div>
 
           {/* ── STEP CONTENT ── */}
-          <div className="p-6 space-y-5 max-h-[72vh] overflow-y-auto no-scrollbar">
+          <div className="p-8 space-y-6 max-h-[75vh] overflow-y-auto no-scrollbar">
 
             {/* ── 1. BRIEFING ── */}
             {step === 'briefing' && (
-              <div className="space-y-5 animate-in fade-in slide-in-from-bottom-3 duration-300">
-                <div className="text-center">
-                  <div className="h-14 w-14 bg-primary/10 flex items-center justify-center mx-auto mb-3">
-                    <ShieldCheck className="h-7 w-7 text-primary" />
+              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="text-center max-w-sm mx-auto">
+                  <div className="h-20 w-20 bg-primary/5 rounded-full flex items-center justify-center mx-auto mb-4 border border-primary/10">
+                    <ShieldCheck className="h-10 w-10 text-primary" />
                   </div>
-                  <h2 className="text-xl font-black text-foreground uppercase tracking-tighter">How This Works</h2>
-                  <p className="text-[10px] text-muted-foreground mt-1">Your money is 100% protected at every step</p>
+                  <h2 className="text-2xl font-bold text-foreground tracking-tight">How Escrow Works</h2>
+                  <p className="text-sm text-muted-foreground mt-2">We hold your funds securely until you're happy with your purchase.</p>
                 </div>
 
-                <div className="space-y-2">
+                <div className="relative space-y-4">
+                  {/* Vertical Line for timeline */}
+                  <div className="absolute left-[22px] top-6 bottom-6 w-0.5 bg-muted hidden sm:block" />
+                  
                   {[
-                    { n: '1', icon: CreditCard, title: 'You Pay Securely',    desc: 'Via Paystack — Mobile Money, Visa, Mastercard or bank.' },
-                    { n: '2', icon: Banknote,   title: 'Admin Holds Funds',   desc: 'Money goes to our escrow vault, not the seller.' },
-                    { n: '3', icon: Truck,       title: 'Seller Dispatches',  desc: 'Seller must ship within 48h. No dispatch = full auto-refund.' },
-                    { n: '4', icon: Eye,         title: 'You Inspect',        desc: 'Received item? Check it thoroughly before releasing.' },
-                    { n: '5', icon: Zap,         title: 'Seller Gets Paid',   desc: 'One tap. Funds released instantly to the seller.' },
-                  ].map(({ n, icon: Icon, title, desc }) => (
-                    <div key={n} className="flex gap-3 p-3 border border-border/50 hover:border-primary/40 transition-colors">
-                      <div className="h-7 w-7 bg-primary/10 flex items-center justify-center shrink-0 text-primary font-black text-xs">
-                        {n}
+                    { n: '1', icon: CreditCard, title: 'Secure Payment',    desc: 'Pay via Mobile Money or Card. Funds are instantly secured in escrow.' },
+                    { n: '2', icon: Banknote,   title: 'Funds Held',   desc: 'Your money is held in our secure vault. The seller cannot access it yet.' },
+                    { n: '3', icon: Truck,       title: 'Item Dispatched',  desc: 'Seller is notified to ship. You get real-time tracking updates.' },
+                    { n: '4', icon: Eye,         title: 'Inspect & Verify',        desc: 'Receive your item and check it. Only release funds when satisfied.' },
+                    { n: '5', icon: Zap,         title: 'Instant Release',   desc: 'Once you approve, funds are released to the seller instantly.' },
+                  ].map(({ n, icon: Icon, title, desc }, idx) => (
+                    <div key={n} className="relative flex gap-4 p-4 rounded-2xl hover:bg-muted/30 transition-all duration-300 group">
+                      <div className="h-11 w-11 rounded-xl bg-background border shadow-sm flex items-center justify-center shrink-0 z-10 group-hover:border-primary/30 transition-colors">
+                        <Icon className="h-5 w-5 text-primary" />
                       </div>
-                      <div>
-                        <p className="text-[11px] font-black uppercase tracking-tight text-foreground leading-none mb-0.5">{title}</p>
-                        <p className="text-[9px] text-muted-foreground leading-relaxed">{desc}</p>
+                      <div className="flex-1">
+                        <p className="text-sm font-bold text-foreground mb-1">{title}</p>
+                        <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
                       </div>
                     </div>
                   ))}
                 </div>
 
                 {/* Order summary */}
-                <div className="bg-muted/40 border border-dashed p-4 space-y-3">
-                  <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Order Summary</p>
-                  {items.map(item => (
-                    <div key={item.id} className="flex justify-between text-[11px] font-black gap-4">
-                      <span className="text-foreground uppercase truncate">{item.title}</span>
-                      <span className="text-foreground shrink-0">{formatPrice(item.price)}</span>
-                    </div>
-                  ))}
-                  <div className="border-t border-dashed pt-3 space-y-1.5">
-                    <div className="flex justify-between text-[9px] font-black text-muted-foreground uppercase">
-                      <span>Escrow Service Fee (2.5%)</span>
+                <div className="bg-muted/30 rounded-2xl p-6 space-y-4 border border-border/50">
+                  <div className="flex items-center justify-between">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Order Summary</p>
+                    <Badge variant="outline" className="text-[9px] font-bold border-primary/20 text-primary uppercase px-2 py-0">Escrow Protected</Badge>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    {items.map(item => (
+                      <div key={item.id} className="flex justify-between text-sm">
+                        <span className="text-muted-foreground font-medium">{item.title}</span>
+                        <span className="text-foreground font-bold">{formatPrice(item.price)}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="pt-4 border-t border-dashed space-y-2">
+                    <div className="flex justify-between text-xs text-muted-foreground">
+                      <span>Service Fee (2.5%)</span>
                       <span>{formatPrice(fee)}</span>
                     </div>
-                    <div className="flex justify-between text-[15px] font-black uppercase">
-                      <span>Total</span>
-                      <span className="text-primary">{formatPrice(grandTotal)}</span>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-bold text-foreground">Total to Pay</span>
+                      <span className="text-xl font-bold text-primary tracking-tight">{formatPrice(grandTotal)}</span>
                     </div>
                   </div>
                 </div>
 
                 <Button
                   onClick={() => setStep('payment_pending')}
-                  className="w-full h-14 bg-primary text-primary-foreground font-black uppercase text-[11px] tracking-widest rounded-none gap-2 shadow-xl hover:opacity-90"
+                  className="w-full h-14 bg-primary text-primary-foreground font-bold text-sm tracking-wide rounded-xl gap-3 shadow-lg hover:shadow-primary/20 transition-all hover:scale-[1.01] active:scale-[0.99]"
                 >
-                  <CreditCard className="h-4 w-4" /> Proceed to Payment
+                  <CreditCard className="h-5 w-5" /> Proceed to Secure Payment
                 </Button>
               </div>
             )}
 
             {/* ── 2. PAYMENT PENDING ── */}
             {step === 'payment_pending' && (
-              <div className="space-y-5 animate-in fade-in slide-in-from-bottom-3 duration-300">
-                <div className="text-center">
-                  <div className="h-14 w-14 bg-primary/10 flex items-center justify-center mx-auto mb-3">
-                    <CreditCard className="h-7 w-7 text-primary" />
+              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="text-center max-w-sm mx-auto">
+                  <div className="h-20 w-20 bg-primary/5 rounded-full flex items-center justify-center mx-auto mb-4 border border-primary/10">
+                    <CreditCard className="h-10 w-10 text-primary" />
                   </div>
-                  <h2 className="text-xl font-black text-foreground uppercase tracking-tighter">Pay Securely</h2>
-                  <p className="text-[10px] text-muted-foreground mt-1">Powered by Paystack · Ghana's #1 payment gateway</p>
+                  <h2 className="text-2xl font-bold text-foreground tracking-tight">Complete Payment</h2>
+                  <p className="text-sm text-muted-foreground mt-2">Secure transaction powered by Paystack.</p>
                 </div>
 
-                {/* Paystack-style card */}
-                <div className="bg-secondary text-white p-5 space-y-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
-                    <span className="text-[9px] font-black uppercase tracking-widest text-white/60">Paystack Secure Checkout</span>
+                {/* Paystack-style card - World Class Redesign */}
+                <div className="relative overflow-hidden rounded-3xl bg-[#09090b] p-8 text-white shadow-2xl border border-white/5">
+                  <div className="absolute top-0 right-0 p-6 opacity-20">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M12 16V12M12 8H12.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    </svg>
                   </div>
-                  <div className="flex justify-between items-end">
-                    <div>
-                      <p className="text-[9px] text-white/50 uppercase font-black mb-1">Amount</p>
-                      <span className="text-3xl font-black text-primary tracking-tighter">{formatPrice(grandTotal)}</span>
+                  
+                  <div className="space-y-8">
+                    <div className="flex items-center gap-3">
+                      <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
+                      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">Paystack Secure Portal</span>
                     </div>
-                    <div className="text-right">
-                      <p className="text-[9px] text-white/50 uppercase font-black mb-1">Order Ref</p>
-                      <p className="text-[11px] font-black text-white/90">{orderId}</p>
-                      <div className="flex items-center gap-1.5 mt-1 justify-end">
-                        <span className="text-[8px] text-white/40 font-mono truncate max-w-[130px]">{paystackRef}</span>
-                        <button
-                          onClick={() => { navigator.clipboard.writeText(paystackRef).catch(() => {}); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
-                          className="text-white/40 hover:text-primary transition-colors"
-                        >
-                          <Copy className="h-3 w-3" />
-                        </button>
-                        {copied && <span className="text-[8px] text-green-400">Copied!</span>}
+
+                    <div className="grid grid-cols-2 gap-8">
+                      <div>
+                        <p className="text-[10px] text-white/30 uppercase font-bold tracking-widest mb-2">Amount Due</p>
+                        <span className="text-3xl font-bold text-primary tracking-tighter">{formatPrice(grandTotal)}</span>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-[10px] text-white/30 uppercase font-bold tracking-widest mb-2">Order Reference</p>
+                        <p className="text-sm font-mono font-bold text-white/90">{orderId}</p>
+                        <div className="flex items-center gap-2 mt-2 justify-end group">
+                          <span className="text-[10px] text-white/20 font-mono truncate max-w-[100px]">{paystackRef}</span>
+                          <button
+                            onClick={() => { navigator.clipboard.writeText(paystackRef).catch(() => {}); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+                            className="p-1 rounded-md hover:bg-white/5 text-white/20 hover:text-primary transition-all"
+                          >
+                            <Copy className="h-3 w-3" />
+                          </button>
+                        </div>
+                        {copied && <p className="text-[10px] text-green-400 font-bold mt-1">Copied to clipboard</p>}
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-blue-50 border border-blue-200 p-3 flex gap-3">
-                  <AlertCircle className="h-4 w-4 text-blue-500 shrink-0 mt-0.5" />
-                  <p className="text-[10px] text-blue-800 leading-relaxed font-medium">
-                    Your payment is held by our escrow team. The seller receives nothing until <strong>you confirm delivery</strong> and release the funds.
+                <div className="bg-primary/5 rounded-2xl p-5 border border-primary/10 flex gap-4">
+                  <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                    <ShieldCheck className="h-5 w-5 text-primary" />
+                  </div>
+                  <p className="text-xs text-foreground/80 leading-relaxed font-medium">
+                    Your payment is held in a <span className="text-primary font-bold">secure escrow vault</span>. The seller is only paid after you verify the item.
                   </p>
                 </div>
 
-                <Button
-                  onClick={handlePay}
-                  className="w-full h-14 bg-primary text-primary-foreground font-black uppercase text-[11px] tracking-widest rounded-none gap-2 shadow-xl hover:opacity-90"
-                >
-                  <Lock className="h-4 w-4" /> Pay {formatPrice(grandTotal)} via Paystack
-                </Button>
-                <p className="text-center text-[9px] text-muted-foreground uppercase tracking-widest">
-                  MTN MoMo · Vodafone Cash · Visa · Mastercard · Bank Transfer
-                </p>
+                <div className="space-y-4">
+                  <Button
+                    onClick={handlePay}
+                    className="w-full h-14 bg-primary text-primary-foreground font-bold text-sm tracking-wide rounded-xl gap-3 shadow-lg hover:shadow-primary/20 transition-all hover:scale-[1.01] active:scale-[0.99]"
+                  >
+                    <Lock className="h-5 w-5" /> Pay {formatPrice(grandTotal)} via Paystack
+                  </Button>
+                  <div className="flex items-center justify-center gap-4 opacity-40">
+                    <span className="text-[9px] font-bold uppercase tracking-widest">MTN MoMo</span>
+                    <div className="h-1 w-1 rounded-full bg-muted-foreground" />
+                    <span className="text-[9px] font-bold uppercase tracking-widest">Visa/Mastercard</span>
+                    <div className="h-1 w-1 rounded-full bg-muted-foreground" />
+                    <span className="text-[9px] font-bold uppercase tracking-widest">Bank</span>
+                  </div>
+                </div>
               </div>
             )}
 
             {/* ── 3. PAYMENT PROCESSING ── */}
             {step === 'payment_processing' && (
-              <div className="text-center py-10 space-y-6 animate-in fade-in duration-300">
-                <div className="relative mx-auto h-20 w-20">
-                  <div className="h-20 w-20 border-4 border-primary/20" />
-                  <div className="absolute inset-0 h-20 w-20 border-4 border-primary border-t-transparent animate-spin" />
-                  <Lock className="absolute inset-0 m-auto h-8 w-8 text-primary" />
+              <div className="text-center py-12 space-y-8 animate-in fade-in zoom-in-95 duration-500">
+                <div className="relative mx-auto h-24 w-24">
+                  <div className="absolute inset-0 rounded-full border-4 border-primary/10" />
+                  <div className="absolute inset-0 rounded-full border-4 border-primary border-t-transparent animate-spin" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Lock className="h-8 w-8 text-primary animate-pulse" />
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-black text-foreground uppercase tracking-tighter">Processing Payment</h3>
-                  <p className="text-[10px] font-black text-muted-foreground mt-1 uppercase tracking-widest animate-pulse">
-                    Paystack verifying transaction...
+                <div className="space-y-2">
+                  <h3 className="text-2xl font-bold text-foreground tracking-tight">Verifying Payment</h3>
+                  <p className="text-sm text-muted-foreground max-w-[240px] mx-auto leading-relaxed">
+                    Paystack is confirming your transaction. Please do not refresh.
                   </p>
                 </div>
-                <Progress value={70} className="h-1.5 rounded-none bg-muted max-w-xs mx-auto" />
-                <p className="text-[9px] text-muted-foreground uppercase tracking-widest">Do not close this window</p>
+                <div className="max-w-xs mx-auto space-y-3">
+                  <Progress value={65} className="h-2 rounded-full bg-muted" />
+                  <p className="text-[10px] font-bold text-primary uppercase tracking-[0.2em] animate-pulse">
+                    Securing funds in escrow...
+                  </p>
+                </div>
               </div>
             )}
 

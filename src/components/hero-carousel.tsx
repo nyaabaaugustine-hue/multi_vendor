@@ -1,179 +1,159 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import { 
-  Carousel, 
-  CarouselContent, 
-  CarouselItem, 
-  CarouselNext, 
-  CarouselPrevious,
-  type CarouselApi
-} from "@/components/ui/carousel";
+  Command,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+} from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { 
+  Search, 
+  ShoppingBag, 
+  Tag, 
+  UserPlus, 
+  Zap, 
+  ShieldCheck,
+  TrendingUp,
+  MapPin,
+  Car,
+  Smartphone,
+  Home as HomeIcon,
+  Briefcase
+} from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Timer } from "lucide-react";
 
-const SLIDES = [
-  {
-    id: 1,
-    leftBg: "bg-[#6e0ad6]",
-    rightBg: "bg-[#f2eafa]",
-    title: "Ghana's largest vehicle inventory. ",
-    highlight: "Over 800 thousand options to choose from.",
-    cta: "View offers",
-    mainImage: "https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&h=800&w=1600",
-    sideTitle: "Toyota Corolla GLI",
-    sideDesc: "Year 2024, 22,300 km and 2.0 Flex engine",
-    accentColor: "text-[#6e0ad6]"
-  },
-  {
-    id: 2,
-    leftBg: "bg-[#d60a91]",
-    rightBg: "bg-[#fbeaf5]",
-    title: "Sovereign Electronics Center. ",
-    highlight: "The best smartphones in GHS-Accra.",
-    cta: "Shop now",
-    mainImage: "https://images.pexels.com/photos/1466609/pexels-photo-1466609.jpeg?auto=compress&cs=tinysrgb&h=800&w=1600",
-    sideTitle: "iPhone 15 Pro",
-    sideDesc: "Titanium Blue, 256GB. Vault condition.",
-    accentColor: "text-[#d60a91]"
-  }
+const QUICK_INTENTS = [
+  { label: "Buy Products", icon: ShoppingBag, color: "text-blue-600", bg: "bg-blue-50" },
+  { label: "Sell Anything", icon: Tag, color: "text-green-600", bg: "bg-green-50" },
+  { label: "Hire Services", icon: Briefcase, color: "text-purple-600", bg: "bg-purple-50" },
+  { label: "Discover Deals", icon: Zap, color: "text-amber-600", bg: "bg-amber-50" },
+];
+
+const SUGGESTIONS = [
+  { label: "iPhone 15 Pro near me", icon: Smartphone },
+  { label: "Toyota Corolla in Accra", icon: Car },
+  { label: "Apartment for rent", icon: HomeIcon },
+  { label: "Graphic Designer", icon: Briefcase },
 ];
 
 export function HeroCarousel() {
-  const [api, setApi] = React.useState<CarouselApi>();
-  const [current, setCurrent] = React.useState(0);
-  // [FIX 2.3] Auto-play state managed manually without plugin dependency
-  const [isPaused, setIsPaused] = React.useState(false);
-  const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
-
-  React.useEffect(() => {
-    if (!api) return;
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap());
-    });
-  }, [api]);
-
-  // [FIX 2.3] Auto-advance every 5s, pauses on hover
-  React.useEffect(() => {
-    if (!api) return;
-    if (isPaused) {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-      return;
-    }
-    intervalRef.current = setInterval(() => {
-      api.scrollNext();
-    }, 5000);
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [api, isPaused]);
+  const [isFocused, setIsFocused] = React.useState(false);
 
   return (
-    <section
-      className="w-full relative group"
-      // [FIX 2.3] Pause auto-play on hover
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-      onFocus={() => setIsPaused(true)}
-      onBlur={() => setIsPaused(false)}
-    >
-      <Carousel 
-        setApi={setApi}
-        className="w-full" 
-        opts={{ loop: true }}
-      >
-        <CarouselContent>
-          {SLIDES.map((slide) => (
-            <CarouselItem key={slide.id}>
-              {/* [FIX 3.1] Height increased on mobile: h-[260px], md panel now shown at md breakpoint */}
-              <div className="relative h-[260px] md:h-[320px] w-full overflow-hidden rounded-none md:rounded-xl flex shadow-sm border border-border/50">
-                {/* LEFT PANE: BRANDING & CTA */}
-                <div className={cn("w-full md:w-[40%] flex flex-col justify-center p-6 md:p-12 z-10 text-white relative", slide.leftBg)}>
-                  <div className="space-y-3 md:space-y-4">
-                    <h1 className="text-xl md:text-4xl font-bold leading-tight tracking-tight">
-                      {slide.title}
-                      <span className="block font-black">{slide.highlight}</span>
-                    </h1>
-                    <div className="pt-2">
-                       <Button className="bg-[#90EE90] text-secondary hover:bg-white font-bold rounded-none h-9 px-6 text-xs transition-all hover:scale-105">
-                        {slide.cta}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
+    <section className="w-full pt-8 pb-16 md:pt-12 md:pb-24 bg-background relative overflow-hidden">
+      {/* Premium Background Elements */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full -z-10 opacity-[0.03] pointer-events-none">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-primary rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-600 rounded-full blur-[120px]" />
+      </div>
 
-                {/* MIDDLE PANE: ASSET IMAGE */}
-                <div className="hidden md:flex flex-1 relative bg-white overflow-hidden items-center justify-center">
-                  <div className="absolute inset-0 z-0">
-                    <Image
-                      src={slide.mainImage}
-                      alt={slide.title}
-                      fill
-                      priority={slide.id === 1}
-                      className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                      sizes="(max-width: 768px) 100vw, 60vw"
-                    />
-                  </div>
-                  {/* FLOATING CTA */}
-                  <div className="absolute bottom-12 right-12 z-20">
-                    <Button className="bg-[#90EE90] text-[#1a1a1a] hover:bg-white font-bold text-base rounded-none h-14 px-10 shadow-2xl shadow-green-500/20 transition-all scale-105 hover:scale-110">
-                      {slide.cta}
-                    </Button>
-                  </div>
-                </div>
-
-                {/* [FIX 3.1] RIGHT PANE now shown at md (was lg-only), narrower at md */}
-                <div className={cn("hidden md:flex w-[22%] flex-col justify-center p-5 lg:p-8 border-l border-white/10", slide.rightBg)}>
-                  <div className="space-y-3 lg:space-y-4">
-                    <div className={cn("h-9 w-9 flex items-center justify-center rounded-none bg-white/50", slide.accentColor)}>
-                      <Timer className="h-5 w-5" />
-                    </div>
-                    <div className="space-y-1">
-                      <h3 className={cn("font-black text-xs lg:text-sm uppercase tracking-tight", slide.accentColor)}>
-                        {slide.sideTitle}
-                      </h3>
-                      <p className="text-[10px] lg:text-xs font-medium text-foreground/60 leading-relaxed">
-                        {slide.sideDesc}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        
-        <CarouselPrevious className="hidden md:flex -left-6 h-12 w-12 bg-white border shadow-xl text-foreground rounded-none hover:bg-muted transition-all z-30" />
-        <CarouselNext className="hidden md:flex -right-6 h-12 w-12 bg-white border shadow-xl text-foreground rounded-none hover:bg-muted transition-all z-30" />
-
-        {/* DASH INDICATORS */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-30">
-          {SLIDES.map((_, idx) => (
-            <button
-              key={idx}
-              aria-label={`Go to slide ${idx + 1}`}
-              onClick={() => api?.scrollTo(idx)}
-              className={cn(
-                "h-1 rounded-none transition-all duration-500",
-                idx === current ? "bg-primary w-8 md:w-10" : "bg-white/40 w-4 md:w-6 hover:bg-white/70"
-              )} 
-            />
-          ))}
-        </div>
-
-        {/* [FIX 2.3] Auto-play pause indicator on hover */}
-        {isPaused && (
-          <div className="absolute top-3 right-3 z-30 hidden md:flex items-center gap-1.5 bg-black/40 backdrop-blur-sm px-2.5 py-1">
-            <div className="flex gap-0.5">
-              <span className="h-2.5 w-0.5 bg-white/80 rounded-none" />
-              <span className="h-2.5 w-0.5 bg-white/80 rounded-none" />
-            </div>
-            <span className="text-[8px] font-black text-white/80 uppercase tracking-widest">Paused</span>
+      <div className="container px-4 mx-auto">
+        <div className="max-w-4xl mx-auto text-center space-y-10">
+          {/* Trust Badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/5 border border-primary/10 animate-in fade-in slide-in-from-top-4 duration-700">
+            <ShieldCheck className="h-3.5 w-3.5 text-primary" />
+            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Ghana's #1 Secure Intent Engine</span>
           </div>
-        )}
-      </Carousel>
+
+          {/* Main Headline */}
+          <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground leading-[1.1]">
+              What are you <span className="text-primary italic">looking for</span> today?
+            </h1>
+            <p className="text-muted-foreground text-sm md:text-lg max-w-2xl mx-auto font-medium">
+              Connect instantly with verified vendors. Escrow-protected transactions. Zero risk.
+            </p>
+          </div>
+
+          {/* Command Center Search */}
+          <div className={cn(
+            "relative max-w-2xl mx-auto transition-all duration-500 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200",
+            isFocused ? "scale-[1.02]" : "scale-100"
+          )}>
+            <div className={cn(
+              "rounded-2xl border bg-card shadow-2xl overflow-hidden transition-all duration-300",
+              isFocused ? "ring-4 ring-primary/5 border-primary/30" : "border-border/50"
+            )}>
+              <Command className="rounded-none border-none">
+                <div className="flex items-center px-4 border-b">
+                  <Search className="h-5 w-5 text-muted-foreground shrink-0" />
+                  <CommandInput 
+                    placeholder="Search verified listings, vendors, or services..." 
+                    className="h-14 border-none focus:ring-0 text-base"
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                  />
+                  <div className="hidden md:flex items-center gap-2 ml-auto">
+                    <Badge variant="secondary" className="font-mono text-[10px] py-0 px-1.5 opacity-50">ESC</Badge>
+                  </div>
+                </div>
+                
+                {isFocused && (
+                  <CommandList className="max-h-[300px] animate-in fade-in slide-in-from-top-2 duration-300">
+                    <CommandEmpty>No results found.</CommandEmpty>
+                    <CommandGroup heading="Quick Suggestions">
+                      {SUGGESTIONS.map((item) => (
+                        <CommandItem key={item.label} className="flex items-center gap-3 py-3 px-4 cursor-pointer">
+                          <item.icon className="h-4 w-4 text-muted-foreground" />
+                          <span className="font-medium text-sm">{item.label}</span>
+                          <TrendingUp className="h-3 w-3 text-green-500 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                )}
+              </Command>
+            </div>
+
+            {/* Floating Hint */}
+            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 whitespace-nowrap opacity-60">
+              <MapPin className="h-3 w-3" />
+              <span className="text-[10px] font-bold uppercase tracking-widest">Searching in Accra, Greater Accra</span>
+            </div>
+          </div>
+
+          {/* Quick Intent Buttons */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-10 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
+            {QUICK_INTENTS.map((intent) => (
+              <Link
+                key={intent.label}
+                href={intent.label.includes('Sell') ? '/sell' : '/listings'}
+                className="group flex flex-col items-center justify-center p-6 rounded-2xl bg-card border border-border/50 hover:border-primary/30 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+              >
+                <div className={cn("h-12 w-12 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110", intent.bg, intent.color)}>
+                  <intent.icon className="h-6 w-6" />
+                </div>
+                <span className="text-xs font-bold uppercase tracking-widest text-foreground group-hover:text-primary transition-colors">
+                  {intent.label}
+                </span>
+              </Link>
+            ))}
+          </div>
+
+          {/* Real-time Stats */}
+          <div className="flex flex-wrap items-center justify-center gap-8 pt-12 opacity-40 animate-in fade-in duration-1000 delay-500">
+            <div className="flex items-center gap-2">
+              <span className="text-lg font-bold">12k+</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest">Active Listings</span>
+            </div>
+            <div className="h-1 w-1 rounded-full bg-muted-foreground" />
+            <div className="flex items-center gap-2">
+              <span className="text-lg font-bold">850+</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest">Verified Vendors</span>
+            </div>
+            <div className="h-1 w-1 rounded-full bg-muted-foreground" />
+            <div className="flex items-center gap-2">
+              <span className="text-lg font-bold">GH₵4.2M</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest">Escrow Volume</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

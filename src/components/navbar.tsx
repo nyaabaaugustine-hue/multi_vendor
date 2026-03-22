@@ -73,181 +73,97 @@ export function Navbar() {
   ];
 
   return (
-    <header className="w-full bg-background border-b sticky top-0 z-50 shadow-sm transition-colors duration-300">
+    <header className="w-full bg-background/80 backdrop-blur-md border-b sticky top-0 z-50 transition-all duration-300">
       <AuthDialog open={showAuth} onOpenChange={setShowAuth} />
       
-      {/* SOVEREIGN PROTOCOL TICKER */}
-      {/* [FIX 1.3] Upgraded ticker text to text-[10px] and text-white/90 for WCAG contrast */}
-      <div className="bg-secondary text-white overflow-hidden h-8 flex items-center border-b border-white/5">
-        <div className="flex animate-marquee whitespace-nowrap items-center gap-12 px-4">
-          <div className="flex items-center gap-2">
-            <Activity className="h-3 w-3 text-primary animate-pulse" />
-            <span className="text-[10px] font-black uppercase tracking-[0.15em] text-white/90">Network Health: 99.98%</span>
+      <div className="max-w-7xl mx-auto px-4 h-16 md:h-20 flex items-center justify-between gap-8">
+        {/* LOGO AREA */}
+        <Link href="/" className="flex items-center gap-3 shrink-0 group">
+          <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-primary/10 p-1.5 bg-white shadow-sm group-hover:border-primary/30 transition-all duration-500">
+            <Image 
+              src={content.settings.logoUrl} 
+              alt="Logo" 
+              fill 
+              sizes="40px" 
+              className="object-contain" 
+              priority 
+            />
           </div>
-          <div className="flex items-center gap-2">
-            <Zap className="h-3 w-3 text-primary" />
-            <span className="text-[10px] font-black uppercase tracking-[0.15em] text-white/90">Active Escrow: GH₵4,240,950</span>
+          <div className="flex flex-col">
+            <span className="font-bold text-xl text-foreground tracking-tighter uppercase leading-none">
+              {content.settings.siteName}
+            </span>
+            <span className="text-[8px] font-bold text-primary uppercase tracking-[0.2em] mt-1 opacity-70">Sovereign Marketplace</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Lock className="h-3 w-3 text-primary" />
-            <span className="text-[10px] font-black uppercase tracking-[0.15em] text-white/90">Settlement Speed: 1.4h Average</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="h-3 w-3 text-primary" />
-            <span className="text-[10px] font-black uppercase tracking-[0.15em] text-white/90">Registry Status: ACCRA HUB ONLINE</span>
-          </div>
-          {/* Duplicate for seamless loop */}
-          <div className="flex items-center gap-2">
-            <Activity className="h-3 w-3 text-primary animate-pulse" />
-            <span className="text-[10px] font-black uppercase tracking-[0.15em] text-white/90">Network Health: 99.98%</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Zap className="h-3 w-3 text-primary" />
-            <span className="text-[10px] font-black uppercase tracking-[0.15em] text-white/90">Active Escrow: GH₵4,240,950</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Lock className="h-3 w-3 text-primary" />
-            <span className="text-[10px] font-black uppercase tracking-[0.15em] text-white/90">Settlement Speed: 1.4h Average</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="h-3 w-3 text-primary" />
-            <span className="text-[10px] font-black uppercase tracking-[0.15em] text-white/90">Registry Status: ACCRA HUB ONLINE</span>
-          </div>
-        </div>
-      </div>
+        </Link>
 
-      <div className="max-w-7xl mx-auto px-4 h-14 md:h-16 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-4 md:gap-8 h-full">
-          <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
-            <div className="relative h-7 w-7 md:h-9 md:w-9 overflow-hidden rounded-none border border-primary/20 p-1 bg-white shadow-sm group-hover:border-primary transition-colors duration-500">
-              <Image 
-                src={content.settings.logoUrl} 
-                alt="Logo" 
-                fill 
-                sizes="40px" 
-                className="object-contain" 
-                priority 
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-headline font-black text-base md:text-lg text-foreground tracking-tighter uppercase leading-none">
-                {content.settings.siteName}
-              </span>
-              <span className="text-[6px] font-black text-primary uppercase tracking-[0.3em] mt-0.5">Marketplace</span>
-            </div>
-          </Link>
-
-          <div className="hidden lg:flex items-center h-full gap-6">
-            <div className="h-6 w-px bg-border mr-2" />
-            {NAV_LINKS.map((link) => (
-              <Link 
-                key={link.name} 
-                href={link.href}
-                className="text-[10px] font-black uppercase tracking-widest text-foreground hover:text-primary transition-all relative group/nav"
-              >
-                {link.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover/nav:w-full" />
-              </Link>
-            ))}
-            <div className="h-6 w-px bg-border mx-2" />
-            <MegaMenu />
-          </div>
-        </div>
-
-        {/* [FIX 2.1] Search bar now gives visual feedback when query is active */}
-        <div className="hidden sm:flex flex-1 max-w-md items-center h-9 md:h-10 border border-border rounded-none overflow-hidden bg-muted/10 focus-within:border-primary/40 focus-within:bg-background transition-all duration-300">
-          <div className="flex-1 flex items-center px-3 md:px-4 gap-3 border-r border-border">
+        {/* SEARCH AREA — Simplified "Uber Style" */}
+        <div className="hidden md:flex flex-1 max-w-xl items-center h-12 bg-muted/30 rounded-2xl border border-border/40 focus-within:border-primary/30 focus-within:bg-background focus-within:shadow-lg transition-all duration-500 group">
+          <div className="flex-1 flex items-center px-5 gap-4">
+            <Search className="h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
             <input 
-              placeholder='Search verified listings...' 
-              className="w-full bg-transparent outline-none text-foreground text-[11px] md:text-[12px] font-bold placeholder:text-muted-foreground/40 uppercase tracking-tight"
+              placeholder='Search verified listings, vendors...' 
+              className="w-full bg-transparent outline-none text-foreground text-sm font-medium placeholder:text-muted-foreground/40"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              aria-label="Search listings"
             />
-            {/* Clear button appears when searching */}
-            {searchQuery.length > 0 && (
-              <button
-                onClick={() => setSearchQuery('')}
-                aria-label="Clear search"
-                className="shrink-0 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <X className="h-3 w-3" />
-              </button>
-            )}
           </div>
-          <div className="hidden md:flex px-3 items-center gap-2 shrink-0 cursor-pointer hover:bg-muted h-full transition-colors group">
-            <MapPin className="h-3 w-3 text-primary/60" />
-            <span className="text-[9px] font-black text-foreground uppercase tracking-widest">Accra</span>
-            <ChevronDown className="h-2 w-2 text-muted-foreground" />
+          <div className="h-6 w-px bg-border/50" />
+          <div className="flex px-5 items-center gap-2 shrink-0 cursor-pointer hover:bg-muted/50 h-full transition-colors">
+            <MapPin className="h-3.5 w-3.5 text-primary/60" />
+            <span className="text-xs font-bold text-foreground">Accra</span>
+            <ChevronDown className="h-3 w-3 text-muted-foreground" />
           </div>
-          {/* [FIX 2.1] Search button turns fully primary when query is active */}
-          <button
-            aria-label="Submit search"
-            className={cn(
-              "h-full px-3 md:px-4 transition-all duration-200",
-              searchQuery.length > 0
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted/30 text-muted-foreground hover:bg-primary hover:text-primary-foreground"
-            )}
-          >
-            <Search className="h-3.5 w-3.5" />
-          </button>
         </div>
 
-        <div className="flex items-center gap-2 md:gap-4">
-          <div className="hidden xl:flex items-center gap-3">
+        {/* ACTIONS AREA */}
+        <div className="flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-1 mr-2">
+            <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/5 hover:text-primary transition-all">
+              <Bell className="h-5 w-5" />
+            </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <div className="flex flex-col items-center gap-0.5 text-secondary hover:text-primary transition-all cursor-pointer group px-2">
-                  <Palette className="h-3.5 w-3.5 group-hover:scale-110 transition-transform" />
-                  <span className="text-[7px] font-black uppercase tracking-widest">THEME</span>
-                </div>
+                <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/5 hover:text-primary transition-all">
+                  <Palette className="h-5 w-5" />
+                </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 rounded-none border-t-2 border-t-primary shadow-xl" align="end">
-                <DropdownMenuLabel className="text-[9px] uppercase font-black tracking-[0.2em] text-muted-foreground">Themes</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <div className="grid gap-0.5">
-                  {themes.map((t) => (
-                    <DropdownMenuItem 
-                      key={t.id} 
-                      onClick={() => setTheme(t.id)}
-                      className={cn(
-                        "flex items-center justify-between cursor-pointer py-2 px-3 transition-all hover:bg-muted rounded-none",
-                        mounted && theme === t.id && "bg-primary/10 border-l-2 border-primary"
-                      )}
-                    >
-                      <span className={cn("text-[10px] font-black uppercase tracking-widest", mounted && theme === t.id ? "text-primary" : "text-foreground")}>{t.name}</span>
-                      <div className={cn("h-3 w-3 rounded-none", t.color)} />
-                    </DropdownMenuItem>
-                  ))}
-                </div>
+              <DropdownMenuContent className="w-56 rounded-2xl border border-border/50 shadow-2xl p-2" align="end">
+                <DropdownMenuLabel className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground px-3 py-2">Select Theme</DropdownMenuLabel>
+                <DropdownMenuSeparator className="mx-2" />
+                {themes.map((t) => (
+                  <DropdownMenuItem 
+                    key={t.id} 
+                    onClick={() => setTheme(t.id)}
+                    className={cn(
+                      "flex items-center justify-between cursor-pointer py-2.5 px-3 rounded-xl transition-all",
+                      mounted && theme === t.id && "bg-primary/10 text-primary"
+                    )}
+                  >
+                    <span className="text-xs font-bold uppercase tracking-tight">{t.name}</span>
+                    <div className={cn("h-3 w-3 rounded-full border border-white/20", t.color)} />
+                  </DropdownMenuItem>
+                ))}
               </DropdownMenuContent>
             </DropdownMenu>
-
-            <div className="flex flex-col items-center gap-0.5 text-secondary hover:text-primary transition-all cursor-pointer group px-2 relative">
-              <Bell className="h-3.5 w-3.5 group-hover:scale-110 transition-transform" />
-              <span className="text-[7px] font-black uppercase tracking-widest">Alerts</span>
-              <span className="absolute top-0 right-1 h-1 w-1 bg-primary rounded-full" />
-            </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="flex items-center gap-2 px-3 h-9 border-2 border-primary/20 rounded-none group hover:border-primary transition-all">
-                    <Avatar className="h-5 w-5 rounded-none border border-primary/20">
-                      <AvatarImage src={user.avatar} />
-                      <AvatarFallback className="bg-primary text-secondary text-[8px] font-black">{user.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col items-start leading-none hidden sm:flex">
-                      <span className="text-[9px] font-black uppercase tracking-tight text-foreground">{user.name}</span>
-                      <span className="text-[7px] font-bold uppercase text-primary tracking-widest">{user.role.replace('_', ' ')}</span>
-                    </div>
-                    <ChevronDown className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-colors" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-48 rounded-none border-t-2 border-t-primary" align="end">
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="flex items-center gap-3 pl-2 pr-4 h-12 rounded-2xl hover:bg-primary/5 group transition-all">
+                  <Avatar className="h-8 w-8 rounded-xl border border-primary/10">
+                    <AvatarImage src={user.avatar} className="object-cover" />
+                    <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">{user.name.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col items-start leading-none hidden sm:flex">
+                    <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">{user.name.split(' ')[0]}</span>
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-0.5">{user.role.split('_')[0]}</span>
+                  </div>
+                  <ChevronDown className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-all" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 rounded-2xl border border-border/50 shadow-2xl p-2 mt-2" align="end">
                   <DropdownMenuLabel className="text-[9px] uppercase font-black text-muted-foreground tracking-widest">Account Node</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <Link href="/dashboard">

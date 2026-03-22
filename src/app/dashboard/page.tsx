@@ -20,8 +20,11 @@ import {
   Filter, Download, CreditCard, Banknote, MessageSquare,
   Search, UserCheck, Ban, Edit, FileText, CheckCircle,
   XCircle, Clock, MoreHorizontal, PieChart, Target, Inbox,
-  Send, Receipt, Key, Briefcase, BarChart3,
+  Send, Receipt, Key, Briefcase, BarChart3, Copy, QrCode,
 } from 'lucide-react';
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
+} from '@/components/ui/dialog';
 import {
   Area, AreaChart, Bar, BarChart, CartesianGrid, Cell,
   ResponsiveContainer, Tooltip, XAxis, YAxis, Line, LineChart,
@@ -110,6 +113,222 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
+// ─── TRANSACTION RECEIPT MODAL ──────────────────────────────────────────────────
+
+function TransactionReceipt({ transaction, isOpen, onClose }: { transaction: Transaction | null, isOpen: boolean, onClose: () => void }) {
+  if (!transaction) return null;
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-md rounded-3xl p-0 overflow-hidden border-none shadow-2xl bg-background">
+        <DialogHeader className="sr-only">
+          <DialogTitle>Transaction Receipt</DialogTitle>
+          <DialogDescription>Detailed information for transaction {transaction.reference}</DialogDescription>
+        </DialogHeader>
+
+        <div className="bg-[#09090b] p-8 text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+            <Receipt className="h-32 w-32 -rotate-12" />
+          </div>
+          
+          <div className="relative z-10 flex justify-between items-start">
+            <div>
+              <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center mb-4">
+                <ShieldCheck className="h-6 w-6 text-white" />
+              </div>
+              <h2 className="text-xl font-bold tracking-tight">VaultCommerce</h2>
+              <p className="text-[9px] text-white/40 uppercase font-bold tracking-[0.2em]">Transaction Verified</p>
+            </div>
+            <div className="text-right">
+              <p className="text-[10px] text-white/30 uppercase font-bold tracking-widest mb-1">Date Issued</p>
+              <p className="text-sm font-bold">{transaction.date}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-8 space-y-6">
+          <div className="flex justify-between items-end border-b border-dashed border-border pb-6">
+            <div>
+              <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest mb-1">Reference</p>
+              <div className="flex items-center gap-2 group">
+                <code className="text-sm font-mono font-bold text-foreground">{transaction.reference}</code>
+                <button onClick={() => navigator.clipboard.writeText(transaction.reference)} className="p-1 rounded-md hover:bg-muted text-muted-foreground transition-colors">
+                  <Copy className="h-3 w-3" />
+                </button>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest mb-1">Status</p>
+              <StatusBadge status={transaction.status === 'completed' ? 'Completed' : 'Pending Payment'} />
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">Description</p>
+            <div className="flex justify-between items-center bg-muted/30 p-4 rounded-2xl border border-border/50">
+              <div className="flex items-center gap-3">
+                <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <ShoppingBag className="h-4 w-4 text-primary" />
+                </div>
+                <span className="text-sm font-bold text-foreground">{transaction.description}</span>
+              </div>
+              <span className="text-sm font-bold text-foreground tracking-tight">{formatGHS(transaction.amount)}</span>
+            </div>
+          </div>
+
+          <div className="space-y-3 pt-2">
+            <div className="flex justify-between text-xs text-muted-foreground font-medium">
+              <span>Transaction Type</span>
+              <span className="uppercase tracking-widest text-[10px] font-bold text-foreground">{transaction.type.replace(/_/g, ' ')}</span>
+            </div>
+            <div className="flex justify-between text-xs text-muted-foreground font-medium">
+              <span>Payment Gateway</span>
+              <span className="uppercase tracking-widest text-[10px] font-bold text-foreground">Paystack Ghana</span>
+            </div>
+            <div className="pt-3 border-t border-dashed border-border flex justify-between items-center">
+              <span className="text-sm font-bold text-foreground">Total Amount</span>
+              <span className="text-2xl font-bold text-primary tracking-tighter">{formatGHS(transaction.amount)}</span>
+            </div>
+          </div>
+
+          <div className="pt-4 flex gap-3">
+            <Button className="flex-1 h-12 rounded-xl bg-primary text-primary-foreground font-bold text-xs uppercase tracking-widest gap-2 shadow-lg shadow-primary/20">
+              <Download className="h-4 w-4" /> Download PDF
+            </Button>
+            <Button variant="outline" className="h-12 w-12 rounded-xl border-border flex items-center justify-center p-0">
+              <QrCode className="h-5 w-5 text-muted-foreground" />
+            </Button>
+          </div>
+
+          <p className="text-center text-[9px] text-muted-foreground/40 uppercase font-bold tracking-[0.2em]">
+            Secured by VaultCommerce Escrow Protocol
+          </p>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+// ─── ORDER INVOICE MODAL ───────────────────────────────────────────────────────
+
+function OrderInvoice({ order, isOpen, onClose }: { order: Order | null, isOpen: boolean, onClose: () => void }) {
+  if (!order) return null;
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-xl rounded-3xl p-0 overflow-hidden border-none shadow-2xl bg-background">
+        <DialogHeader className="sr-only">
+          <DialogTitle>Order Invoice</DialogTitle>
+          <DialogDescription>Detailed invoice for order {order.id}</DialogDescription>
+        </DialogHeader>
+
+        <div className="bg-[#09090b] p-8 text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+            <FileText className="h-32 w-32 rotate-12" />
+          </div>
+          
+          <div className="relative z-10 flex justify-between items-start">
+            <div>
+              <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center mb-4">
+                <ShieldCheck className="h-6 w-6 text-white" />
+              </div>
+              <h2 className="text-xl font-bold tracking-tight">VaultCommerce</h2>
+              <p className="text-[9px] text-white/40 uppercase font-bold tracking-[0.2em]">Order Invoice</p>
+            </div>
+            <div className="text-right">
+              <p className="text-[10px] text-white/30 uppercase font-bold tracking-widest mb-1">Created At</p>
+              <p className="text-sm font-bold">{order.createdAt.split('T')[0]}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-8 space-y-6 max-h-[70vh] overflow-y-auto no-scrollbar">
+          <div className="flex justify-between items-end border-b border-dashed border-border pb-6">
+            <div>
+              <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest mb-1">Order ID</p>
+              <div className="flex items-center gap-2 group">
+                <code className="text-sm font-mono font-bold text-foreground">{order.id}</code>
+                <button onClick={() => navigator.clipboard.writeText(order.id)} className="p-1 rounded-md hover:bg-muted text-muted-foreground transition-colors">
+                  <Copy className="h-3 w-3" />
+                </button>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest mb-1">Escrow Status</p>
+              <StatusBadge status={order.status} />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-8 py-4">
+            <div>
+              <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest mb-3">Buyer Details</p>
+              <p className="text-sm font-bold text-foreground">User #{order.buyerId}</p>
+              <p className="text-[10px] text-muted-foreground mt-1">Verified Customer</p>
+            </div>
+            <div className="text-right">
+              <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest mb-3">Seller Details</p>
+              <p className="text-sm font-bold text-foreground">{order.sellerName}</p>
+              <p className="text-[10px] text-muted-foreground mt-1">Authorized Vendor</p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">Purchased Item</p>
+            <div className="bg-muted/30 p-5 rounded-2xl border border-border/50 space-y-4">
+              <div className="flex justify-between items-start gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                    <Package className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-foreground leading-tight">{order.listingTitle}</p>
+                    <p className="text-[10px] text-muted-foreground mt-1">Tracking: {order.trackingCode || 'Pending Dispatch'}</p>
+                  </div>
+                </div>
+                <span className="text-sm font-bold text-foreground whitespace-nowrap">{formatGHS(order.amount)}</span>
+              </div>
+              
+              <div className="pt-4 border-t border-dashed border-border/50 space-y-2">
+                <div className="flex justify-between text-xs text-muted-foreground font-medium">
+                  <span>Subtotal</span>
+                  <span className="text-foreground">{formatGHS(order.amount)}</span>
+                </div>
+                <div className="flex justify-between text-xs text-muted-foreground font-medium">
+                  <span>Escrow Service Fee (2.5%)</span>
+                  <span className="text-foreground">{formatGHS(order.platformFee)}</span>
+                </div>
+                <div className="flex justify-between text-sm font-bold text-foreground pt-2">
+                  <span>Grand Total</span>
+                  <span className="text-primary text-lg tracking-tighter">{formatGHS(order.amount + order.platformFee)}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-primary/5 rounded-2xl p-5 border border-primary/10 space-y-3">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="h-4 w-4 text-primary" />
+              <span className="text-[10px] font-bold text-primary uppercase tracking-widest">Escrow Protection Active</span>
+            </div>
+            <p className="text-[10px] text-foreground/70 leading-relaxed">
+              This payment is currently held in our secure vault. The seller will be paid only after you verify the item. In case of issues, you can open a dispute before releasing funds.
+            </p>
+          </div>
+
+          <div className="pt-4 flex gap-3">
+            <Button className="flex-1 h-12 rounded-xl bg-primary text-primary-foreground font-bold text-xs uppercase tracking-widest gap-2 shadow-lg shadow-primary/20">
+              <Download className="h-4 w-4" /> Download Invoice
+            </Button>
+            <Button variant="outline" className="h-12 px-6 rounded-xl border-border font-bold text-xs uppercase tracking-widest">
+              Support
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 const CHART_COLORS = ['#2563eb', '#16a34a', '#d97706', '#dc2626', '#7c3aed'];
 
 // ─── ADMIN DASHBOARD ──────────────────────────────────────────────────────────
@@ -118,6 +337,8 @@ function AdminDashboard() {
   const { formatPrice } = useCurrency();
   const [activeTab, setActiveTab] = useState('overview');
   const [vendorSearch, setVendorSearch] = useState('');
+  const [selectedTx, setSelectedTx] = useState<Transaction | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   const totalGMV = PLATFORM_MONTHLY_DATA.reduce((s, d) => s + d.gmv, 0);
   const totalCommission = PLATFORM_MONTHLY_DATA.reduce((s, d) => s + d.commission, 0);
@@ -138,6 +359,16 @@ function AdminDashboard() {
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+      <TransactionReceipt 
+        transaction={selectedTx} 
+        isOpen={!!selectedTx} 
+        onClose={() => setSelectedTx(null)} 
+      />
+      <OrderInvoice
+        order={selectedOrder}
+        isOpen={!!selectedOrder}
+        onClose={() => setSelectedOrder(null)}
+      />
       {/* Tab Nav */}
       <div className="overflow-x-auto no-scrollbar">
         <TabsList className="bg-muted/50 rounded-none h-10 gap-0 p-0 border border-border w-max min-w-full">
@@ -234,7 +465,11 @@ function AdminDashboard() {
           </CardHeader>
           <CardContent className="px-5 pb-5 space-y-2">
             {MOCK_TRANSACTIONS.slice(0, 5).map(tx => (
-              <div key={tx.id} className="flex items-center justify-between py-2.5 border-b border-dashed border-border/50 last:border-0">
+              <div 
+                key={tx.id} 
+                className="flex items-center justify-between py-2.5 border-b border-dashed border-border/50 last:border-0 cursor-pointer hover:bg-muted/30 transition-colors rounded-lg px-2 -mx-2"
+                onClick={() => setSelectedTx(tx)}
+              >
                 <div className="flex items-center gap-3">
                   <div className={cn('h-7 w-7 flex items-center justify-center rounded-none',
                     tx.type === 'escrow_hold' ? 'bg-blue-100' : tx.type === 'escrow_release' ? 'bg-green-100' : tx.type === 'fee' ? 'bg-purple-100' : 'bg-amber-100')}>
@@ -279,7 +514,11 @@ function AdminDashboard() {
               </thead>
               <tbody>
                 {MOCK_ORDERS.map(order => (
-                  <tr key={order.id} className="border-b border-dashed border-border/40 hover:bg-muted/20 transition-colors">
+                  <tr 
+                    key={order.id} 
+                    className="border-b border-dashed border-border/40 hover:bg-muted/20 transition-colors cursor-pointer"
+                    onClick={() => setSelectedOrder(order)}
+                  >
                     <td className="px-4 py-3 text-[10px] font-black text-primary">{order.id}</td>
                     <td className="px-4 py-3 text-[10px] font-black text-foreground max-w-[140px] truncate uppercase">{order.listingTitle}</td>
                     <td className="px-4 py-3 text-[10px] text-muted-foreground font-black uppercase">Buyer #{order.buyerId}</td>
@@ -290,7 +529,7 @@ function AdminDashboard() {
                       <span className={cn('text-[9px] font-black uppercase', order.slaExpired ? 'text-red-500' : 'text-green-600')}>{order.slaTimer}</span>
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex gap-1">
+                      <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
                         <Button size="sm" className="h-7 px-2 bg-green-600 text-white rounded-none text-[8px] font-black uppercase hover:bg-green-700">Release</Button>
                         <Button size="sm" variant="outline" className="h-7 px-2 rounded-none text-[8px] font-black uppercase border-red-200 text-red-600 hover:bg-red-50">Freeze</Button>
                       </div>
@@ -472,7 +711,11 @@ function AdminDashboard() {
               </thead>
               <tbody>
                 {MOCK_TRANSACTIONS.map(tx => (
-                  <tr key={tx.id} className="border-b border-dashed border-border/40 hover:bg-muted/20">
+                  <tr 
+                    key={tx.id} 
+                    className="border-b border-dashed border-border/40 hover:bg-muted/20 cursor-pointer transition-colors"
+                    onClick={() => setSelectedTx(tx)}
+                  >
                     <td className="px-4 py-3 text-[9px] font-mono text-primary">{tx.reference}</td>
                     <td className="px-4 py-3 text-[10px] font-black uppercase">{tx.orderId}</td>
                     <td className="px-4 py-3"><Badge className="rounded-none border-none font-black text-[8px] uppercase bg-muted text-muted-foreground">{tx.type.replace(/_/g, ' ')}</Badge></td>
@@ -521,6 +764,8 @@ function AdminDashboard() {
 function VendorDashboard() {
   const { formatPrice } = useCurrency();
   const [activeTab, setActiveTab] = useState('overview');
+  const [selectedTx, setSelectedTx] = useState<Transaction | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   const myListings = LISTINGS.filter(l => l.vendorId === 'v1').slice(0, 5);
   const totalRevenue = VENDOR_MONTHLY_DATA.reduce((s, d) => s + d.revenue, 0);
@@ -529,6 +774,16 @@ function VendorDashboard() {
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+      <TransactionReceipt 
+        transaction={selectedTx} 
+        isOpen={!!selectedTx} 
+        onClose={() => setSelectedTx(null)} 
+      />
+      <OrderInvoice
+        order={selectedOrder}
+        isOpen={!!selectedOrder}
+        onClose={() => setSelectedOrder(null)}
+      />
       <div className="overflow-x-auto no-scrollbar">
         <TabsList className="bg-muted/50 rounded-none h-10 gap-0 p-0 border border-border w-max min-w-full">
           {[
@@ -602,7 +857,11 @@ function VendorDashboard() {
       <TabsContent value="orders" className="space-y-4 mt-0">
         <SectionTitle icon={Package} title="Order Execution" />
         {MOCK_ORDERS.map(order => (
-          <Card key={order.id} className={cn('rounded-none border-l-4', order.slaExpired ? 'border-l-red-500' : 'border-l-primary')}>
+          <Card 
+            key={order.id} 
+            className={cn('rounded-none border-l-4 cursor-pointer hover:border-l-8 transition-all', order.slaExpired ? 'border-l-red-500' : 'border-l-primary')}
+            onClick={() => setSelectedOrder(order)}
+          >
             <CardContent className="p-5 space-y-4">
               <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div className="space-y-1">
@@ -635,7 +894,7 @@ function VendorDashboard() {
               </div>
 
               {order.status === 'Escrow Funded' && (
-                <div className="flex gap-2 pt-2 border-t border-dashed">
+                <div className="flex gap-2 pt-2 border-t border-dashed" onClick={(e) => e.stopPropagation()}>
                   <Button size="sm" className="h-9 px-4 bg-primary text-primary-foreground rounded-none font-black text-[9px] uppercase gap-1.5">
                     <Truck className="h-3.5 w-3.5" /> Mark Dispatched
                   </Button>
@@ -773,7 +1032,11 @@ function VendorDashboard() {
           </CardHeader>
           <CardContent className="px-5 pb-5 space-y-3">
             {MOCK_TRANSACTIONS.map(tx => (
-              <div key={tx.id} className="flex items-center justify-between py-2.5 border-b border-dashed border-border/50 last:border-0">
+              <div 
+                key={tx.id} 
+                className="flex items-center justify-between py-2.5 border-b border-dashed border-border/50 last:border-0 cursor-pointer hover:bg-muted/30 transition-colors rounded-lg px-2 -mx-2"
+                onClick={() => setSelectedTx(tx)}
+              >
                 <div>
                   <p className="text-[11px] font-black uppercase text-foreground">{tx.description}</p>
                   <p className="text-[9px] text-muted-foreground">{tx.date} · {tx.reference}</p>
@@ -838,6 +1101,7 @@ function CustomerDashboard() {
   const { formatPrice } = useCurrency();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
+  const [selectedTx, setSelectedTx] = useState<Transaction | null>(null);
 
   const fidelityScore = computeFidelityScore(user);
   const { label: tier, color: tierColor } = getFidelityTier(fidelityScore);
@@ -846,12 +1110,18 @@ function CustomerDashboard() {
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+      <TransactionReceipt 
+        transaction={selectedTx} 
+        isOpen={!!selectedTx} 
+        onClose={() => setSelectedTx(null)} 
+      />
       <div className="overflow-x-auto no-scrollbar">
         <TabsList className="bg-muted/50 rounded-none h-10 gap-0 p-0 border border-border w-max min-w-full">
           {[
             { id: 'overview',  label: 'Overview',    icon: Activity      },
             { id: 'orders',    label: 'My Orders',   icon: Package       },
             { id: 'escrow',    label: 'Escrow Panel',icon: Lock          },
+            { id: 'payments',  label: 'Payments',    icon: CreditCard    },
             { id: 'disputes',  label: 'Disputes',    icon: AlertTriangle },
             { id: 'saved',     label: 'Saved',       icon: Star          },
             { id: 'messages',  label: 'Messages',    icon: MessageSquare },
@@ -906,7 +1176,11 @@ function CustomerDashboard() {
         <SectionTitle icon={Package} title="Recent Orders" action={{ label: 'View All', onClick: () => setActiveTab('orders') }} />
         <div className="space-y-3">
           {MOCK_ORDERS.slice(0, 3).map(order => (
-            <Card key={order.id} className="rounded-none border-l-4 border-l-primary">
+            <Card 
+              key={order.id} 
+              className="rounded-none border-l-4 border-l-primary cursor-pointer hover:bg-muted/20 transition-colors"
+              onClick={() => setSelectedOrder(order)}
+            >
               <CardContent className="p-4 flex items-center justify-between gap-4 flex-wrap">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
@@ -918,7 +1192,11 @@ function CustomerDashboard() {
                 <div className="text-right">
                   <p className="text-[13px] font-black text-foreground">{formatGHS(order.amount)}</p>
                   {order.status === 'Inspection' && (
-                    <Button size="sm" className="h-7 px-3 bg-green-600 text-white rounded-none font-black text-[8px] uppercase mt-1" onClick={() => setActiveTab('escrow')}>
+                    <Button 
+                      size="sm" 
+                      className="h-7 px-3 bg-green-600 text-white rounded-none font-black text-[8px] uppercase mt-1" 
+                      onClick={(e) => { e.stopPropagation(); setActiveTab('escrow'); }}
+                    >
                       Release Funds
                     </Button>
                   )}
@@ -933,7 +1211,11 @@ function CustomerDashboard() {
       <TabsContent value="orders" className="space-y-4 mt-0">
         <SectionTitle icon={Package} title="My Orders" />
         {MOCK_ORDERS.map(order => (
-          <Card key={order.id} className="rounded-none border-l-4 border-l-primary">
+          <Card 
+            key={order.id} 
+            className="rounded-none border-l-4 border-l-primary cursor-pointer hover:border-l-8 transition-all"
+            onClick={() => setSelectedOrder(order)}
+          >
             <CardContent className="p-5 space-y-4">
               <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div>
@@ -970,7 +1252,7 @@ function CustomerDashboard() {
               )}
 
               {order.status === 'Inspection' && (
-                <div className="flex gap-2">
+                <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
                   <Button size="sm" className="h-9 px-4 bg-green-600 text-white rounded-none font-black text-[9px] uppercase gap-1.5" onClick={() => setActiveTab('escrow')}>
                     <CheckCircle2 className="h-3.5 w-3.5" /> Release Payment
                   </Button>
@@ -994,13 +1276,17 @@ function CustomerDashboard() {
           </Card>
         ) : (
           MOCK_ORDERS.filter(o => o.status === 'Inspection').map(order => (
-            <Card key={order.id} className="rounded-none border-l-4 border-l-blue-500">
+            <Card 
+              key={order.id} 
+              className="rounded-none border-l-4 border-l-blue-500 cursor-pointer hover:border-l-8 transition-all"
+              onClick={() => setSelectedOrder(order)}
+            >
               <CardContent className="p-5 space-y-5">
                 <div>
                   <p className="text-[13px] font-black uppercase">{order.id} — {order.listingTitle}</p>
                   <p className="text-[10px] text-muted-foreground">{formatGHS(order.amount)} held in escrow · Seller: {order.sellerName}</p>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
                   <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Guided Inspection Checklist</p>
                   {['Item matches the listing description exactly', 'No physical damage or defects', 'All accessories and parts included', 'Item powers on and works correctly'].map((check, i) => (
                     <label key={i} className="flex items-center gap-3 p-3 border border-border/50 cursor-pointer hover:border-primary/30 transition-colors">
@@ -1009,7 +1295,7 @@ function CustomerDashboard() {
                     </label>
                   ))}
                 </div>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3" onClick={(e) => e.stopPropagation()}>
                   <Button variant="outline" className="h-12 rounded-none border-destructive/40 text-destructive hover:bg-destructive hover:text-white font-black uppercase text-[9px] gap-1.5">
                     <AlertCircle className="h-3.5 w-3.5" /> Open Dispute
                   </Button>
@@ -1022,6 +1308,36 @@ function CustomerDashboard() {
             </Card>
           ))
         )}
+      </TabsContent>
+
+      {/* ── PAYMENTS ── */}
+      <TabsContent value="payments" className="space-y-6 mt-0">
+        <SectionTitle icon={CreditCard} title="Payment History" />
+        <Card className="rounded-none">
+          <CardContent className="p-5 space-y-3">
+            {MOCK_TRANSACTIONS.map(tx => (
+              <div 
+                key={tx.id} 
+                className="flex items-center justify-between py-3 border-b border-dashed border-border/50 last:border-0 cursor-pointer hover:bg-muted/30 transition-colors rounded-lg px-2 -mx-2"
+                onClick={() => setSelectedTx(tx)}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <CreditCard className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-foreground uppercase tracking-tight">{tx.description}</p>
+                    <p className="text-[10px] text-muted-foreground">{tx.date} · Ref: {tx.reference}</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-bold text-foreground">{formatGHS(tx.amount)}</p>
+                  <StatusBadge status={tx.status === 'completed' ? 'Completed' : 'Pending Payment'} />
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
       </TabsContent>
 
       {/* ── DISPUTES ── */}
