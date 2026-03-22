@@ -187,8 +187,8 @@ export function HomePage() {
                         <Image src={vendor.logoUrl} alt={vendor.name} fill className="object-contain p-1" unoptimized />
                       </div>
                       <div className="pb-1 text-left whitespace-normal">
-                        <Badge className="bg-primary text-secondary rounded-none font-black text-[8px] uppercase tracking-widest mb-2">PARTNER</Badge>
-                        <h3 className="font-black text-white text-2xl tracking-tighter uppercase leading-none">{vendor.name}</h3>
+                        <Badge className="bg-amber-500 text-secondary rounded-none font-black text-[8px] uppercase tracking-widest mb-2">PARTNER</Badge>
+                        <h3 className="font-black text-amber-500 text-2xl tracking-tighter uppercase leading-none">{vendor.name}</h3>
                       </div>
                     </div>
                     <div className="absolute top-6 right-8">
@@ -202,7 +202,7 @@ export function HomePage() {
                     <p className="text-[11px] font-medium text-white/60 uppercase tracking-widest h-12 line-clamp-2 whitespace-normal">{vendor.description}</p>
                     <div className="flex items-center justify-between pt-8 border-t border-white/10">
                       <div className="flex items-center gap-3">
-                        <Star className="h-4 w-4 fill-primary text-primary" />
+                        <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
                         <span className="text-sm font-black text-white tracking-tight">{vendor.rating} Registry Rating</span>
                       </div>
                       <Badge variant="outline" className="border-white/20 text-white/40 rounded-none font-black text-[9px] uppercase tracking-widest">Since {vendor.joinedYear}</Badge>
