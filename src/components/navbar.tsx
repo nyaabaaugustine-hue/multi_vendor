@@ -15,15 +15,13 @@ import {
   Menu,
   Home as HomeIcon,
   Phone,
-  Activity,
-  Zap,
-  Lock,
   X,
 } from 'lucide-react';
 import { useAuth, useContent, useTheme, useSearch, type PrimaryTheme } from '@/components/providers';
 import { useState, useEffect } from 'react';
 import { AuthDialog } from '@/components/auth-dialog';
 import { MegaMenu } from '@/components/mega-menu';
+import { MOCK_NOTIFICATIONS } from '@/lib/mock-data';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -51,6 +49,7 @@ export function Navbar() {
   const [mounted, setMounted] = useState(false);
   // [FIX 5.1] Mobile menu state — was completely broken, now wired up
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [location, setLocation] = useState('Accra');
 
   useEffect(() => {
     setMounted(true);
@@ -97,6 +96,11 @@ export function Navbar() {
           </div>
         </Link>
 
+        {/* MEGA MENU — Desktop */}
+        <div className="hidden md:block">
+          <MegaMenu />
+        </div>
+
         {/* SEARCH AREA — Simplified "Uber Style" */}
         <div className="hidden md:flex flex-1 max-w-xl items-center h-12 bg-muted/30 rounded-2xl border border-border/40 focus-within:border-primary/30 focus-within:bg-background focus-within:shadow-lg transition-all duration-500 group">
           <div className="flex-1 flex items-center px-5 gap-4 h-full">
@@ -109,19 +113,61 @@ export function Navbar() {
             />
           </div>
           <div className="h-6 w-px bg-border/50" />
-          <div className="flex px-5 items-center gap-2 shrink-0 cursor-pointer hover:bg-muted/50 h-full transition-colors">
-            <MapPin className="h-3.5 w-3.5 text-primary/60" />
-            <span className="text-xs font-bold text-foreground">Accra</span>
-            <ChevronDown className="h-3 w-3 text-muted-foreground" />
-          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <div className="flex px-5 items-center gap-2 shrink-0 cursor-pointer hover:bg-muted/50 h-full transition-colors">
+                <MapPin className="h-3.5 w-3.5 text-primary/60" />
+                <span className="text-xs font-bold text-foreground">{location}</span>
+                <ChevronDown className="h-3 w-3 text-muted-foreground" />
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48 bg-white/95 backdrop-blur-xl">
+              <DropdownMenuLabel className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground">Select Location</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {['Accra', 'Kumasi', 'Tamale', 'Takoradi', 'Cape Coast'].map((loc) => (
+                <DropdownMenuItem key={loc} onClick={() => setLocation(loc)} className="cursor-pointer text-xs font-bold">
+                  {loc}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         {/* ACTIONS AREA */}
         <div className="flex items-center gap-3">
           <div className="hidden lg:flex items-center gap-1 mr-2">
-            <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-slate-50 hover:bg-primary/10 text-slate-600 hover:text-primary transition-all border border-transparent hover:border-primary/20">
-              <Bell className="h-5 w-5" />
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-slate-50 hover:bg-primary/10 text-slate-600 hover:text-primary transition-all border border-transparent hover:border-primary/20">
+                  <div className="relative">
+                    <Bell className="h-5 w-5" />
+                    <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full ring-2 ring-white" />
+                  </div>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-80 rounded-2xl border border-border/50 shadow-2xl p-0 bg-white/95 backdrop-blur-xl" align="end">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-border/50">
+                  <span className="text-xs font-black uppercase tracking-widest">Notifications</span>
+                  <span className="text-[9px] font-bold text-primary cursor-pointer hover:underline">Mark all read</span>
+                </div>
+                <div className="max-h-[300px] overflow-y-auto p-2 space-y-1">
+                  {MOCK_NOTIFICATIONS.slice(0, 3).map((note) => (
+                    <div key={note.id} className="flex gap-3 p-3 hover:bg-muted/50 rounded-xl cursor-pointer transition-colors">
+                      <div className="h-2 w-2 mt-1.5 rounded-full bg-blue-50 shrink-0" />
+                      <div>
+                        <p className="text-[11px] font-bold text-foreground leading-tight">{note.title}</p>
+                        <p className="text-[10px] text-muted-foreground mt-1 line-clamp-2">{note.message}</p>
+                        <p className="text-[9px] text-muted-foreground/60 mt-1 font-mono">{new Date(note.createdAt).toLocaleDateString()}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="p-2 border-t border-border/50">
+                  <Button variant="ghost" className="w-full h-8 text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-foreground">View All Activity</Button>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-slate-50 hover:bg-primary/10 text-slate-600 hover:text-primary transition-all border border-transparent hover:border-primary/20">
@@ -309,12 +355,15 @@ export function Navbar() {
                   >
                     Login
                   </Button>
-                  <Link href="/listings/create" onClick={() => setMobileMenuOpen(false)}>
-                    <Button className="w-full h-10 bg-primary text-primary-foreground font-black text-[9px] uppercase tracking-widest rounded-none gap-2">
+                  <Button 
+                    asChild
+                    className="w-full h-10 bg-primary text-primary-foreground font-black text-[9px] uppercase tracking-widest rounded-none gap-2"
+                  >
+                    <Link href="/listings/create" onClick={() => setMobileMenuOpen(false)}>
                       <Plus className="h-3.5 w-3.5" />
                       Post Ad
-                    </Button>
-                  </Link>
+                    </Link>
+                  </Button>
                 </div>
               )}
             </div>

@@ -6,6 +6,7 @@ import { MOCK_USERS } from '@/lib/mock-data';
 import { useAuth } from '@/components/providers';
 import { ShieldCheck, User as UserIcon, Store, Shield, Key } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
 interface AuthDialogProps {
   open: boolean;
@@ -16,16 +17,14 @@ interface AuthDialogProps {
 
 export function AuthDialog({ open, onOpenChange, noRedirect = false }: AuthDialogProps) {
   const { login } = useAuth();
+  const router = useRouter();
 
   const handleLogin = (email: string) => {
     login(email);
     onOpenChange(false);
     // Only redirect to dashboard when NOT inside a checkout flow
-    if (!noRedirect && typeof window !== 'undefined') {
-      // Small delay so providers can update before navigation
-      setTimeout(() => {
-        window.location.href = '/dashboard';
-      }, 50);
+    if (!noRedirect) {
+      router.push('/dashboard');
     }
   };
 

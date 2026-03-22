@@ -32,6 +32,7 @@ import {
 } from 'recharts';
 import { cn } from '@/lib/utils';
 import { useAuth, useCurrency } from '@/components/providers';
+import { useToast } from '@/hooks/use-toast';
 import {
   MOCK_ORDERS, MOCK_TRANSACTIONS, MOCK_NOTIFICATIONS, MOCK_OFFERS,
   MOCK_DISPUTES, VENDOR_MONTHLY_DATA, PLATFORM_MONTHLY_DATA,
@@ -1102,6 +1103,7 @@ function CustomerDashboard() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedTx, setSelectedTx] = useState<Transaction | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   const fidelityScore = computeFidelityScore(user);
   const { label: tier, color: tierColor } = getFidelityTier(fidelityScore);
@@ -1114,6 +1116,11 @@ function CustomerDashboard() {
         transaction={selectedTx} 
         isOpen={!!selectedTx} 
         onClose={() => setSelectedTx(null)} 
+      />
+      <OrderInvoice
+        order={selectedOrder}
+        isOpen={!!selectedOrder}
+        onClose={() => setSelectedOrder(null)}
       />
       <div className="overflow-x-auto no-scrollbar">
         <TabsList className="bg-muted/50 rounded-none h-10 gap-0 p-0 border border-border w-max min-w-full">
@@ -1431,17 +1438,43 @@ function CustomerDashboard() {
 
 function StaffDashboard() {
   const { formatPrice } = useCurrency();
+  const { toast } = useToast();
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [orders, setOrders] = useState<Order[]>(MOCK_ORDERS);
+
+  const handleDispatch = (e: React.MouseEvent, orderId: string) => {
+    e.stopPropagation();
+    setOrders(prev => prev.map(o => 
+      o.id === orderId 
+        ? { ...o, status: 'In Transit', trackingCode: `ACC-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}` } 
+        : o
+    ));
+    toast({
+      title: "Order Dispatched",
+      description: `Order ${orderId} has been marked as In Transit.`,
+    });
+  };
+
   return (
     <div className="space-y-8">
+      <OrderInvoice
+        order={selectedOrder}
+        isOpen={!!selectedOrder}
+        onClose={() => setSelectedOrder(null)}
+      />
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-        <StatCard label="Dispatch Queue" value={String(MOCK_ORDERS.filter(o => o.status === 'Escrow Funded').length)} sub="Need dispatch today" icon={Truck} trend="down" trendValue="Action required" />
-        <StatCard label="Inspection Queue" value={String(MOCK_ORDERS.filter(o => o.status === 'Inspection').length)} sub="Awaiting buyer review" icon={Eye} />
+        <StatCard label="Dispatch Queue" value={String(orders.filter(o => o.status === 'Escrow Funded').length)} sub="Need dispatch today" icon={Truck} trend="down" trendValue="Action required" />
+        <StatCard label="Inspection Queue" value={String(orders.filter(o => o.status === 'Inspection').length)} sub="Awaiting buyer review" icon={Eye} />
         <StatCard label="Open Disputes" value={String(MOCK_DISPUTES.length)} sub="Active cases" icon={AlertCircle} />
       </div>
       <SectionTitle icon={Package} title="Dispatch Queue" />
       <div className="space-y-3">
-        {MOCK_ORDERS.filter(o => o.status === 'Escrow Funded').map(order => (
-          <Card key={order.id} className="rounded-none border-l-4 border-l-amber-500">
+        {orders.filter(o => o.status === 'Escrow Funded').map(order => (
+          <Card 
+            key={order.id} 
+            className="rounded-none border-l-4 border-l-amber-500 cursor-pointer hover:bg-muted/20 transition-colors"
+            onClick={() => setSelectedOrder(order)}
+          >
             <CardContent className="p-4 flex items-center justify-between gap-4 flex-wrap">
               <div>
                 <div className="flex items-center gap-2 mb-1"><p className="text-[11px] font-black uppercase">{order.id}</p><StatusBadge status={order.status} /></div>
@@ -1449,13 +1482,22 @@ function StaffDashboard() {
               </div>
               <div className="flex items-center gap-3">
                 <span className={cn('text-[11px] font-black uppercase', order.slaExpired ? 'text-red-500' : 'text-green-600')}>{order.slaTimer}</span>
-                <Button size="sm" className="h-8 px-4 bg-primary text-primary-foreground rounded-none font-black text-[9px] uppercase gap-1.5">
+                <Button 
+                  size="sm" 
+                  className="h-8 px-4 bg-primary text-primary-foreground rounded-none font-black text-[9px] uppercase gap-1.5"
+                  onClick={(e) => handleDispatch(e, order.id)}
+                >
                   <Truck className="h-3 w-3" /> Mark Dispatched
                 </Button>
               </div>
             </CardContent>
           </Card>
         ))}
+        {orders.filter(o => o.status === 'Escrow Funded').length === 0 && (
+          <div className="p-8 border border-dashed text-center text-muted-foreground">
+            <p className="text-[10px] font-black uppercase tracking-widest">No orders pending dispatch</p>
+          </div>
+        )}
       </div>
     </div>
   );

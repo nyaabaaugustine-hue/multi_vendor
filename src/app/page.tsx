@@ -307,8 +307,14 @@ export function HomePage() {
             href="/listings?category=Property"
             linkLabel="Full Registry"
           />
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {luxuryProperty.map((item) => <ListingCard key={item.id} {...item} />)}
+          <div className="overflow-hidden relative group/marquee cursor-pointer -mx-4 px-4 md:mx-0 md:px-0">
+            <div className="flex animate-marquee-slow gap-6 py-4 hover:[animation-play-state:paused]">
+              {[...luxuryProperty, ...luxuryProperty, ...luxuryProperty].map((item, idx) => (
+                <div key={`${item.id}-${idx}`} className="min-w-[280px] md:min-w-[320px]">
+                  <ListingCard {...item} />
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       )}
