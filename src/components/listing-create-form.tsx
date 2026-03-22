@@ -141,10 +141,10 @@ export function ListingCreateForm() {
                 name="category"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-secondary font-black uppercase text-[10px] tracking-widest">Select Marketplace Category</FormLabel>
+                    <FormLabel className="text-foreground/80 font-black uppercase text-[10px] tracking-widest">Select Marketplace Category</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger className="rounded-none h-16 border-2 focus:border-accent text-lg font-black uppercase">
+                        <SelectTrigger className="rounded-none h-16 border-2 focus:border-accent text-lg font-black uppercase bg-background text-foreground">
                           <SelectValue placeholder="What are you selling?" />
                         </SelectTrigger>
                       </FormControl>
@@ -186,9 +186,9 @@ export function ListingCreateForm() {
                   name="title"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-secondary font-black uppercase text-[10px] tracking-widest">Listing Title</FormLabel>
+                      <FormLabel className="text-foreground/80 font-black uppercase text-[10px] tracking-widest">Listing Title</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g. Toyota Corolla 2015" className="rounded-none h-14 border-2 focus:border-accent" {...field} />
+                        <Input placeholder="e.g. Toyota Corolla 2015" className="rounded-none h-14 border-2 focus:border-accent bg-background text-foreground" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -199,11 +199,11 @@ export function ListingCreateForm() {
                   name="price"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-secondary font-black uppercase text-[10px] tracking-widest">Price (GH₵)</FormLabel>
+                      <FormLabel className="text-foreground/80 font-black uppercase text-[10px] tracking-widest">Price (GH₵)</FormLabel>
                       <FormControl>
                         <div className="relative">
                           <span className="absolute left-5 top-1/2 -translate-y-1/2 font-black text-primary">GH₵</span>
-                          <Input type="number" placeholder="0.00" className="rounded-none h-14 pl-16 border-2 focus:border-accent" {...field} />
+                          <Input type="number" placeholder="0.00" className="rounded-none h-14 pl-16 border-2 focus:border-accent bg-background text-foreground" {...field} />
                         </div>
                       </FormControl>
                       <FormMessage />
@@ -215,9 +215,9 @@ export function ListingCreateForm() {
                   name="location"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-secondary font-black uppercase text-[10px] tracking-widest">Location</FormLabel>
+                      <FormLabel className="text-foreground/80 font-black uppercase text-[10px] tracking-widest">Location</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g. East Legon, Accra" className="rounded-none h-14 border-2 focus:border-accent" {...field} />
+                        <Input placeholder="e.g. East Legon, Accra" className="rounded-none h-14 border-2 focus:border-accent bg-background text-foreground" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -228,10 +228,10 @@ export function ListingCreateForm() {
                   name="condition"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-secondary font-black uppercase text-[10px] tracking-widest">Condition</FormLabel>
+                      <FormLabel className="text-foreground/80 font-black uppercase text-[10px] tracking-widest">Condition</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger className="rounded-none h-14 border-2 focus:border-accent">
+                          <SelectTrigger className="rounded-none h-14 border-2 focus:border-accent bg-background text-foreground">
                             <SelectValue placeholder="Condition" />
                           </SelectTrigger>
                         </FormControl>
@@ -253,7 +253,7 @@ export function ListingCreateForm() {
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex items-center justify-between mb-3">
-                      <FormLabel className="text-secondary font-black uppercase text-[10px] tracking-widest">Description</FormLabel>
+                      <FormLabel className="text-foreground/80 font-black uppercase text-[10px] tracking-widest">Description</FormLabel>
                       <Button 
                         type="button" 
                         size="sm" 
@@ -268,7 +268,7 @@ export function ListingCreateForm() {
                     <FormControl>
                       <Textarea 
                         placeholder="Comprehensive details about your asset..." 
-                        className="min-h-[200px] rounded-none border-2 focus:border-accent p-6 font-medium" 
+                        className="min-h-[200px] rounded-none border-2 focus:border-accent p-6 font-medium bg-background text-foreground" 
                         {...field} 
                       />
                     </FormControl>

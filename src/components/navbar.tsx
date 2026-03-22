@@ -73,13 +73,13 @@ export function Navbar() {
   ];
 
   return (
-    <header className="w-full bg-white border-b-2 border-primary/20 shadow-md sticky top-0 z-50 transition-all duration-300">
+    <header className="w-full bg-background border-b-2 border-primary/20 shadow-md sticky top-0 z-50 transition-all duration-300">
       <AuthDialog open={showAuth} onOpenChange={setShowAuth} />
       
       <div className="max-w-7xl mx-auto px-4 h-16 md:h-20 flex items-center justify-between gap-8">
         {/* LOGO AREA */}
         <Link href="/" className="flex items-center gap-3 shrink-0 group">
-          <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-primary/10 p-1.5 bg-white shadow-sm group-hover:border-primary/50 group-hover:shadow-lg group-hover:shadow-primary/20 transition-all duration-500 group-hover:scale-105">
+          <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-primary/10 p-1.5 bg-background shadow-sm group-hover:border-primary/50 group-hover:shadow-lg group-hover:shadow-primary/20 transition-all duration-500 group-hover:scale-105">
             <Image 
               src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1774057903/ai-removebg-preview_ikywpe.png"
               alt="Logo" 
@@ -122,7 +122,7 @@ export function Navbar() {
                 <ChevronDown className="h-3 w-3 text-muted-foreground" />
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48 bg-white/95 backdrop-blur-xl">
+            <DropdownMenuContent align="end" className="w-48 bg-background/95 backdrop-blur-xl border-border/50">
               <DropdownMenuLabel className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground">Select Location</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {['Accra', 'Kumasi', 'Tamale', 'Takoradi', 'Cape Coast'].map((loc) => (
@@ -146,7 +146,7 @@ export function Navbar() {
                   </div>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-80 rounded-2xl border border-border/50 shadow-2xl p-0 bg-white/95 backdrop-blur-xl" align="end">
+              <DropdownMenuContent className="w-80 rounded-2xl border border-border/50 shadow-2xl p-0 bg-background/95 backdrop-blur-xl" align="end">
                 <div className="flex items-center justify-between px-4 py-3 border-b border-border/50">
                   <span className="text-xs font-black uppercase tracking-widest">Notifications</span>
                   <span className="text-[9px] font-bold text-primary cursor-pointer hover:underline">Mark all read</span>
@@ -210,7 +210,7 @@ export function Navbar() {
                   <ChevronDown className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-all" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 rounded-2xl border border-border/50 shadow-2xl p-2 mt-2 bg-white/95 backdrop-blur-xl" align="end">
+              <DropdownMenuContent className="w-56 rounded-2xl border border-border/50 shadow-2xl p-2 mt-2 bg-background/95 backdrop-blur-xl" align="end">
                   <DropdownMenuLabel className="text-[9px] uppercase font-black text-muted-foreground tracking-widest">Account Node</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <Link href="/dashboard">

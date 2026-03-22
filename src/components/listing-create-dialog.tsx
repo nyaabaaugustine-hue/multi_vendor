@@ -8,7 +8,7 @@ export function ListingCreateDialog({ children, open, onOpenChange }: { children
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       {children && <DialogTrigger asChild>{children}</DialogTrigger>}
-      <DialogContent className="sm:max-w-4xl h-[90vh] overflow-y-auto p-8 rounded-2xl bg-white/95 backdrop-blur-xl border-2 border-primary/10">
+      <DialogContent className="sm:max-w-4xl h-[90vh] overflow-y-auto p-8 rounded-2xl bg-background/95 backdrop-blur-xl border-2 border-primary/10 text-foreground">
         <ListingCreateForm />
       </DialogContent>
     </Dialog>
