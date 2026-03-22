@@ -31,11 +31,12 @@ import { useCart, useAuth, useCurrency } from '@/components/providers';
 import { AuthDialog } from '@/components/auth-dialog';
 import {
   Lock, ShieldCheck, CreditCard, Truck, CheckCircle2,
-  AlertCircle, Copy, Timer, Package, Banknote, Eye, X,
-  Zap, Bell, Smartphone, Wifi, CheckCheck, Star,
+  AlertCircle, Copy, Timer, Package, Eye, X,
+  Zap, Bell, Smartphone, CheckCheck, Star,
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import { HowItWorksPopup } from './how-it-works-popup';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -131,7 +132,7 @@ const STEP_LABEL: Record<EscrowStep, string> = {
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export function EscrowCheckoutFlow() {
-  const { items, total, clearCart, isCheckingOut, closeSuccess } = useCart();
+  const { total, clearCart, isCheckingOut, closeSuccess } = useCart();
   const { user } = useAuth();
   const { formatPrice } = useCurrency();
   const { toast } = useToast();
@@ -321,7 +322,10 @@ export function EscrowCheckoutFlow() {
       />
 
       <Dialog open={isOpen} onOpenChange={(open) => { if (!open) handleClose(); }}>
-        <DialogContent className="sm:max-w-xl rounded-2xl p-0 overflow-hidden border-none shadow-2xl z-[150] bg-background">
+        <DialogContent className={cn(
+          "rounded-2xl p-0 overflow-hidden border-none shadow-2xl z-[150] bg-background",
+          step === 'briefing' ? "sm:max-w-4xl" : "sm:max-w-xl"
+        )}>
           <DialogHeader className="sr-only">
             <DialogTitle>Secure Escrow Checkout</DialogTitle>
             <DialogDescription>Complete your purchase securely.</DialogDescription>
@@ -370,73 +374,7 @@ export function EscrowCheckoutFlow() {
 
             {/* ── 1. BRIEFING ── */}
             {step === 'briefing' && (
-              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <div className="text-center max-w-sm mx-auto">
-                  <div className="h-20 w-20 bg-primary/5 rounded-full flex items-center justify-center mx-auto mb-4 border border-primary/10">
-                    <ShieldCheck className="h-10 w-10 text-primary" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-foreground tracking-tight">How Escrow Works</h2>
-                  <p className="text-sm text-muted-foreground mt-2">We hold your funds securely until you're happy with your purchase.</p>
-                </div>
-
-                <div className="relative space-y-4">
-                  {/* Vertical Line for timeline */}
-                  <div className="absolute left-[22px] top-6 bottom-6 w-0.5 bg-muted hidden sm:block" />
-                  
-                  {[
-                    { n: '1', icon: CreditCard, title: 'Secure Payment',    desc: 'Pay via Mobile Money or Card. Funds are instantly secured in escrow.' },
-                    { n: '2', icon: Banknote,   title: 'Funds Held',   desc: 'Your money is held in our secure vault. The seller cannot access it yet.' },
-                    { n: '3', icon: Truck,       title: 'Item Dispatched',  desc: 'Seller is notified to ship. You get real-time tracking updates.' },
-                    { n: '4', icon: Eye,         title: 'Inspect & Verify',        desc: 'Receive your item and check it. Only release funds when satisfied.' },
-                    { n: '5', icon: Zap,         title: 'Instant Release',   desc: 'Once you approve, funds are released to the seller instantly.' },
-                  ].map(({ n, icon: Icon, title, desc }, idx) => (
-                    <div key={n} className="relative flex gap-4 p-4 rounded-2xl hover:bg-muted/30 transition-all duration-300 group">
-                      <div className="h-11 w-11 rounded-xl bg-background border shadow-sm flex items-center justify-center shrink-0 z-10 group-hover:border-primary/30 transition-colors">
-                        <Icon className="h-5 w-5 text-primary" />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm font-bold text-foreground mb-1">{title}</p>
-                        <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Order summary */}
-                <div className="bg-muted/30 rounded-2xl p-6 space-y-4 border border-border/50">
-                  <div className="flex items-center justify-between">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Order Summary</p>
-                    <Badge variant="outline" className="text-[9px] font-bold border-primary/20 text-primary uppercase px-2 py-0">Escrow Protected</Badge>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    {items.map(item => (
-                      <div key={item.id} className="flex justify-between text-sm">
-                        <span className="text-muted-foreground font-medium">{item.title}</span>
-                        <span className="text-foreground font-bold">{formatPrice(item.price)}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="pt-4 border-t border-dashed space-y-2">
-                    <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>Service Fee (2.5%)</span>
-                      <span>{formatPrice(fee)}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-bold text-foreground">Total to Pay</span>
-                      <span className="text-xl font-bold text-primary tracking-tight">{formatPrice(grandTotal)}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <Button
-                  onClick={() => setStep('payment_pending')}
-                  className="w-full h-14 bg-primary text-primary-foreground font-bold text-sm tracking-wide rounded-xl gap-3 shadow-lg hover:shadow-primary/20 transition-all hover:scale-[1.01] active:scale-[0.99]"
-                >
-                  <CreditCard className="h-5 w-5" /> Proceed to Secure Payment
-                </Button>
-              </div>
+              <HowItWorksPopup onNext={() => setStep('payment_pending')} />
             )}
 
             {/* ── 2. PAYMENT PENDING ── */}

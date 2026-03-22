@@ -13,7 +13,7 @@ export function WhatsAppButton() {
       href="https://wa.me/233541988383"
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed right-4 bottom-24 md:right-10 md:bottom-48 z-40 bg-[#25D366] text-white p-3 md:p-5 rounded-none shadow-2xl flex flex-col items-center cursor-pointer hover:scale-105 transition-all group border border-white/20 active:scale-95"
+      className="fixed right-4 bottom-24 md:right-10 md:bottom-48 z-40 bg-[#25D366] text-white p-3 md:p-5 rounded-[10%] shadow-2xl flex flex-col items-center cursor-pointer hover:scale-105 transition-all group border border-white/20 active:scale-95"
       aria-label="Chat with our Support Center on WhatsApp"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 md:h-8 md:w-8">

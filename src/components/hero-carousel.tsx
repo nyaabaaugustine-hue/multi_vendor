@@ -80,10 +80,10 @@ export function HeroCarousel() {
               alt="Hero Background"
               fill
               sizes="100vw"
-              className="object-cover opacity-20"
+              className="object-cover opacity-90"
               priority={index === 0}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/30" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/40" />
           </div>
         ))}
       </div>
@@ -104,10 +104,10 @@ export function HeroCarousel() {
 
           {/* Main Headline */}
           <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground leading-[1.1]">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground leading-[1.1] drop-shadow-md">
               What are you <span className="text-primary italic">looking for</span> today?
             </h1>
-            <p className="text-muted-foreground text-sm md:text-lg max-w-2xl mx-auto font-medium">
+            <p className="text-muted-foreground text-sm md:text-lg max-w-2xl mx-auto font-medium drop-shadow-sm">
               Connect instantly with verified vendors. Escrow-protected transactions. Zero risk.
             </p>
           </div>
