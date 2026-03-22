@@ -64,7 +64,7 @@ export function HeroCarousel() {
   }, []);
 
   return (
-    <section className="w-full pt-8 pb-16 md:pt-12 md:pb-24 bg-background relative overflow-hidden">
+    <section className="w-full pt-8 pb-16 md:pt-12 md:pb-24 bg-slate-950 relative overflow-hidden">
       {/* Background Image Slider */}
       <div className="absolute inset-0">
         {HERO_IMAGES.map((src, index) => (
@@ -80,71 +80,73 @@ export function HeroCarousel() {
               alt="Hero Background"
               fill
               sizes="100vw"
-              className="object-cover opacity-90"
+              className="object-cover opacity-60"
               priority={index === 0}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/40" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-slate-950/20" />
           </div>
         ))}
       </div>
 
       {/* Premium Background Elements */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full -z-10 opacity-[0.03] pointer-events-none">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-primary rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-600 rounded-full blur-3xl" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full -z-10 opacity-30 pointer-events-none">
+        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-primary rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-blue-600 rounded-full blur-[120px]" />
       </div>
 
       <div className="container px-4 mx-auto relative z-10">
         <div className="max-w-4xl mx-auto text-center space-y-10">
           {/* Trust Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/5 border border-primary/10 animate-in fade-in slide-in-from-top-4 duration-700">
-            <ShieldCheck className="h-3.5 w-3.5 text-primary" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Ghana's #1 Secure Intent Engine</span>
+          <div className="inline-flex items-center gap-3 px-6 py-2 rounded-none bg-white/5 border-2 border-primary/30 animate-in fade-in slide-in-from-top-4 duration-700 backdrop-blur-md">
+            <ShieldCheck className="h-5 w-5 text-primary" />
+            <span className="text-[11px] font-black uppercase tracking-[0.4em] text-white">Ghana's #1 Secure Marketplace</span>
           </div>
 
           {/* Main Headline */}
-          <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground leading-[1.1] drop-shadow-md">
-              What are you <span className="text-primary italic">looking for</span> today?
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
+            <h1 className="text-5xl md:text-8xl font-black tracking-tighter text-white leading-[0.9] uppercase italic">
+              What are you <br />
+              <span className="heading-gradient not-italic">looking for</span> today?
             </h1>
-            <p className="text-muted-foreground text-sm md:text-lg max-w-2xl mx-auto font-medium drop-shadow-sm">
-              Connect instantly with verified vendors. Escrow-protected transactions. Zero risk.
+            <p className="text-white/60 text-sm md:text-xl max-w-2xl mx-auto font-black uppercase tracking-widest leading-relaxed">
+              Connect instantly with verified vendors. <br />
+              <span className="text-primary underline decoration-2 underline-offset-4">Escrow-protected transactions.</span> Zero risk.
             </p>
           </div>
 
           {/* Command Center Search */}
           <div className={cn(
-            "relative max-w-2xl mx-auto transition-all duration-500 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200",
+            "relative max-w-3xl mx-auto transition-all duration-500 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200",
             isFocused ? "scale-[1.02]" : "scale-100"
           )}>
             <div className={cn(
-              "rounded-2xl border bg-card shadow-2xl overflow-hidden transition-all duration-300",
-              isFocused ? "ring-4 ring-primary/5 border-primary/30" : "border-border/50"
+              "rounded-none border-2 bg-slate-900/90 backdrop-blur-2xl shadow-[0_50px_100px_rgba(0,0,0,0.6)] overflow-hidden transition-all duration-300",
+              isFocused ? "border-primary shadow-primary/20" : "border-white/10"
             )}>
-              <Command className="rounded-none border-none" label="Search listings">
-                <div className="flex items-center px-4 border-b">
-                  <Search className="h-5 w-5 text-muted-foreground shrink-0" />
+              <Command className="rounded-none border-none bg-transparent" label="Search listings">
+                <div className="flex items-center px-6 border-b border-white/5">
+                  <Search className="h-6 w-6 text-primary shrink-0" />
                   <CommandInput 
                     placeholder="Search verified listings, vendors, or services..." 
-                    className="h-14 border-none focus:ring-0 text-base"
+                    className="h-20 border-none focus:ring-0 text-lg font-black uppercase tracking-widest text-white placeholder:text-white/20"
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     onValueChange={(value) => setSearchQuery(value)}
                   />
-                  <div className="hidden md:flex items-center gap-2 ml-auto">
-                    <Badge variant="secondary" className="font-mono text-[10px] py-0 px-1.5 opacity-50">ESC</Badge>
+                  <div className="hidden md:flex items-center gap-3 ml-auto">
+                    <Badge variant="outline" className="font-black text-[10px] py-1 px-3 border-white/20 text-white/40 uppercase tracking-widest rounded-none">ESC</Badge>
                   </div>
                 </div>
                 
                 {isFocused && (
-                  <CommandList className="max-h-[300px] animate-in fade-in slide-in-from-top-2 duration-300">
-                    <CommandEmpty>No results found.</CommandEmpty>
-                    <CommandGroup heading="Quick Suggestions">
+                  <CommandList className="max-h-[400px] animate-in fade-in slide-in-from-top-2 duration-300 border-t border-white/5 bg-slate-900">
+                    <CommandEmpty className="py-10 text-center font-black text-white/40 uppercase text-xs tracking-widest">No results found.</CommandEmpty>
+                    <CommandGroup heading="Quick Suggestions" className="p-4">
                       {SUGGESTIONS.map((item) => (
-                        <CommandItem key={item.label} className="flex items-center gap-3 py-3 px-4 cursor-pointer">
-                          <item.icon className="h-4 w-4 text-muted-foreground" />
-                          <span className="font-medium text-sm">{item.label}</span>
-                          <TrendingUp className="h-3 w-3 text-green-500 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <CommandItem key={item.label} className="flex items-center gap-4 py-4 px-6 cursor-pointer hover:bg-primary/10 rounded-none group transition-colors">
+                          <item.icon className="h-5 w-5 text-primary group-hover:scale-110 transition-transform" />
+                          <span className="font-black text-xs uppercase tracking-widest text-white">{item.label}</span>
+                          <TrendingUp className="h-4 w-4 text-primary ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
                         </CommandItem>
                       ))}
                     </CommandGroup>
@@ -154,24 +156,24 @@ export function HeroCarousel() {
             </div>
 
             {/* Floating Hint */}
-            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 whitespace-nowrap opacity-60">
-              <MapPin className="h-3 w-3" />
-              <span className="text-[10px] font-bold uppercase tracking-widest">Searching in Accra, Greater Accra</span>
+            <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-3 whitespace-nowrap text-white/40 group">
+              <MapPin className="h-4 w-4 text-primary animate-pulse" />
+              <span className="text-[11px] font-black uppercase tracking-[0.3em]">Searching in Accra, Greater Accra</span>
             </div>
           </div>
 
           {/* Quick Intent Buttons */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-10 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-16 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
             {QUICK_INTENTS.map((intent) => (
               <Link
                 key={intent.label}
-                href={intent.label.includes('Sell') ? '/sell' : '/listings'}
-                className="group flex flex-col items-center justify-center p-6 rounded-2xl bg-card border border-border/50 hover:border-primary/30 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                href={intent.label.includes('Sell') ? '/listings/create' : '/listings'}
+                className="group flex flex-col items-center justify-center p-8 rounded-none bg-white/5 border-2 border-white/5 hover:border-primary/50 hover:bg-primary/5 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
               >
-                <div className={cn("h-12 w-12 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110", intent.bg, intent.color)}>
-                  <intent.icon className="h-6 w-6" />
+                <div className={cn("h-16 w-16 rounded-none flex items-center justify-center mb-6 transition-transform group-hover:scale-110 border-2 border-current", intent.color.replace('text-', 'border-'))}>
+                  <intent.icon className={cn("h-8 w-8", intent.color)} />
                 </div>
-                <span className="text-xs font-bold uppercase tracking-widest text-foreground group-hover:text-primary transition-colors">
+                <span className="text-[11px] font-black uppercase tracking-[0.25em] text-white/60 group-hover:text-primary transition-colors">
                   {intent.label}
                 </span>
               </Link>
@@ -179,20 +181,20 @@ export function HeroCarousel() {
           </div>
 
           {/* Real-time Stats */}
-          <div className="flex flex-wrap items-center justify-center gap-8 pt-12 opacity-40 animate-in fade-in duration-1000 delay-500">
-            <div className="flex items-center gap-2">
-              <span className="text-lg font-bold">12k+</span>
-              <span className="text-[10px] font-bold uppercase tracking-widest">Active Listings</span>
+          <div className="flex flex-wrap items-center justify-center gap-12 pt-16 text-white/30 animate-in fade-in duration-1000 delay-500">
+            <div className="flex items-center gap-4 group">
+              <span className="text-3xl font-black text-white group-hover:text-primary transition-colors">12k+</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] leading-tight text-left">Active <br />Listings</span>
             </div>
-            <div className="h-1 w-1 rounded-full bg-muted-foreground" />
-            <div className="flex items-center gap-2">
-              <span className="text-lg font-bold">850+</span>
-              <span className="text-[10px] font-bold uppercase tracking-widest">Verified Vendors</span>
+            <div className="h-12 w-px bg-white/10" />
+            <div className="flex items-center gap-4 group">
+              <span className="text-3xl font-black text-white group-hover:text-primary transition-colors">850+</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] leading-tight text-left">Verified <br />Vendors</span>
             </div>
-            <div className="h-1 w-1 rounded-full bg-muted-foreground" />
-            <div className="flex items-center gap-2">
-              <span className="text-lg font-bold">GH₵4.2M</span>
-              <span className="text-[10px] font-bold uppercase tracking-widest">Escrow Volume</span>
+            <div className="h-12 w-px bg-white/10" />
+            <div className="flex items-center gap-4 group">
+              <span className="text-3xl font-black text-white group-hover:text-primary transition-colors">GH₵4.2M</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] leading-tight text-left">Escrow <br />Volume</span>
             </div>
           </div>
         </div>

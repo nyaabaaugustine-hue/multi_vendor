@@ -279,12 +279,12 @@ export default function AdminDashboard() {
                   <span className="text-[10px] font-black uppercase tracking-widest text-foreground group-hover:text-primary transition-colors">Edit Pages</span>
                   <ChevronRight className="h-4 w-4 text-primary opacity-40 group-hover:opacity-100 transition-opacity" />
                </Link>
-               <Link href="/admin/listings" className="flex items-center justify-between p-5 bg-muted/20 hover:bg-primary/10 transition-all group">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-foreground group-hover:text-primary transition-colors">All Listings</span>
+               <Link href="/dashboard" className="flex items-center justify-between p-5 bg-muted/20 hover:bg-primary/10 transition-all group">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-foreground group-hover:text-primary transition-colors">Vendor Dashboard</span>
                   <ChevronRight className="h-4 w-4 text-primary opacity-40 group-hover:opacity-100 transition-opacity" />
                </Link>
-               <Link href="/admin/vendors" className="flex items-center justify-between p-5 bg-muted/20 hover:bg-primary/10 transition-all group">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-foreground group-hover:text-primary transition-colors">Partner Sellers</span>
+               <Link href="/listings" className="flex items-center justify-between p-5 bg-muted/20 hover:bg-primary/10 transition-all group">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-foreground group-hover:text-primary transition-colors">Marketplace Registry</span>
                   <ChevronRight className="h-4 w-4 text-primary opacity-40 group-hover:opacity-100 transition-opacity" />
                </Link>
             </CardContent>

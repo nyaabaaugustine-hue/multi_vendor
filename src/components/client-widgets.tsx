@@ -41,7 +41,7 @@ export function ClientWidgets() {
       <WhatsAppButton />
       <PostAdButton />
       <LiveActivityFeed />
-      <ShoppingAssistant />
+      {/* <ShoppingAssistant /> — Temporarily disabled for stabilization */}
       <EscrowCheckoutFlow />
       <PrivacyPopup />
     </>

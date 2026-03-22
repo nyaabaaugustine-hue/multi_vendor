@@ -13,18 +13,23 @@ import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
 import * as schema from './schema';
 
-if (!process.env.DATABASE_URL) {
-  throw new Error(
-    'DATABASE_URL is not set. ' +
+export const DB_ENABLED = !!process.env.DATABASE_URL;
+
+// Initialize with a dummy if disabled to prevent module evaluation crashes
+const connectionString = process.env.DATABASE_URL || 'postgresql://user:pass@localhost:5432/db';
+
+if (!DB_ENABLED && typeof window === 'undefined') {
+  console.warn(
+    'DATABASE_URL is not set. Database features will be disabled. ' +
     'Copy it from your Neon project dashboard and add it to .env.local'
   );
 }
 
-// Create the Neon HTTP client — stateless, no connection pooling needed
-const sql = neon(process.env.DATABASE_URL);
+// Create the Neon HTTP client
+const sql = neon(connectionString);
 
-// Create the Drizzle ORM instance with full schema awareness
+// Create the Drizzle ORM instance
 export const db = drizzle(sql, { schema });
 
-// Re-export schema for convenience so callers don't need two imports
+// Re-export schema for convenience
 export * from './schema';

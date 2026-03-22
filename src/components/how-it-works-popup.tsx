@@ -17,12 +17,12 @@ const HowItWorksStep = ({
   description: string;
 }) => (
   <div className="flex items-start gap-4">
-    <div className="flex-shrink-0 rounded-full bg-[var(--bg-secondary)] p-2">
-      <Icon className="h-5 w-5 text-[var(--primary)]" />
+    <div className="flex-shrink-0 rounded-full bg-secondary p-2">
+      <Icon className="h-5 w-5 text-primary" />
     </div>
     <div>
-      <h4 className="font-semibold text-[var(--text-primary)]">{title}</h4>
-      <p className="text-sm text-[var(--text-secondary)]">{description}</p>
+      <h4 className="font-semibold text-foreground">{title}</h4>
+      <p className="text-sm text-muted-foreground">{description}</p>
     </div>
   </div>
 );
@@ -32,24 +32,24 @@ export const HowItWorksPopup = ({ onNext }: { onNext?: () => void }) => {
 
   return (
     // This component assumes it's placed inside a modal or dialog container.
-    <div className="w-full max-w-4xl rounded-lg bg-[var(--card)] p-8 shadow-lg border border-[var(--border)]">
+    <div className="w-full max-w-4xl rounded-lg bg-card p-8 shadow-lg border border-border">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-[var(--text-primary)]">
+          <h2 className="text-2xl font-bold text-foreground">
             How It Works
           </h2>
-          <p className="text-sm text-[var(--text-muted)]">Step 1 of 7</p>
+          <p className="text-sm text-muted-foreground">Step 1 of 7</p>
         </div>
         <div className="text-right">
-          <span className="text-sm font-semibold text-[var(--primary)]">
+          <span className="text-sm font-semibold text-primary">
             {progress}% Complete
           </span>
         </div>
       </div>
 
-      <div className="w-full bg-[var(--bg-secondary)] rounded-full h-2 mb-8">
+      <div className="w-full bg-secondary rounded-full h-2 mb-8">
         <div
-          className="bg-[var(--primary)] h-2 rounded-full transition-all duration-500"
+          className="bg-primary h-2 rounded-full transition-all duration-500"
           style={{ width: `${progress}%` }}
         ></div>
       </div>
@@ -57,10 +57,10 @@ export const HowItWorksPopup = ({ onNext }: { onNext?: () => void }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Left Side: Explanation */}
         <div className="space-y-6">
-          <h3 className="text-xl font-semibold text-[var(--text-primary)]">
+          <h3 className="text-xl font-semibold text-foreground">
             How Escrow Works
           </h3>
-          <p className="text-[var(--text-secondary)]">
+          <p className="text-muted-foreground">
             We hold your funds securely until you're happy with your purchase.
             This protects both buyer and seller.
           </p>
@@ -94,31 +94,31 @@ export const HowItWorksPopup = ({ onNext }: { onNext?: () => void }) => {
         </div>
 
         {/* Right Side: Order Summary */}
-        <div className="rounded-lg bg-[var(--bg-secondary)] p-6 flex flex-col border border-[var(--border)]">
-          <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Order Summary</h3>
+        <div className="rounded-lg bg-secondary p-6 flex flex-col border border-border">
+          <h3 className="text-lg font-semibold text-foreground mb-4">Order Summary</h3>
           <div className="flex items-center gap-3 bg-green-100/50 text-green-800 text-sm font-medium px-3 py-2 rounded-md mb-4 border border-green-200/80">
             <CheckCircle className="h-5 w-5" />
             <span>Escrow Protected</span>
           </div>
           <div className="space-y-3 flex-grow">
             <div className="flex justify-between items-center">
-              <span className="text-[var(--text-secondary)]">Custom Northern Smock</span>
-              <span className="font-semibold text-[var(--text-primary)]">GH₵1,200</span>
+              <span className="text-muted-foreground">Custom Northern Smock</span>
+              <span className="font-semibold text-foreground">GH₵1,200</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-[var(--text-secondary)]">Service Fee (2.5%)</span>
-              <span className="font-semibold text-[var(--text-primary)]">GH₵60</span>
+              <span className="text-muted-foreground">Service Fee (2.5%)</span>
+              <span className="font-semibold text-foreground">GH₵60</span>
             </div>
           </div>
-          <div className="border-t border-[var(--border)] pt-4 mt-4">
+          <div className="border-t border-border pt-4 mt-4">
             <div className="flex justify-between items-center font-bold text-lg">
-              <span className="text-[var(--text-primary)]">Total to Pay</span>
-              <span className="text-[var(--primary)]">GH₵1,260</span>
+              <span className="text-foreground">Total to Pay</span>
+              <span className="text-primary">GH₵1,260</span>
             </div>
           </div>
           <button 
             onClick={onNext}
-            className="mt-6 w-full bg-[var(--primary)] text-white font-bold py-3 rounded-lg hover:bg-[var(--primary-hover)] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary)]"
+            className="mt-6 w-full bg-primary text-white font-bold py-3 rounded-lg hover:opacity-90 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
           >
             Proceed to Secure Payment
           </button>

@@ -40,17 +40,17 @@ export default function VendorRegistry() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8">
         <div className="space-y-4">
           <div className="flex items-center gap-3">
-             <Badge className="bg-primary text-secondary rounded-none font-black text-[10px] px-4 py-1.5 uppercase tracking-widest">Global Protocol v1.4</Badge>
+             <Badge className="bg-primary text-secondary rounded-none font-black text-[10px] px-4 py-1.5 uppercase tracking-widest">Marketplace v1.4</Badge>
              <div className="flex items-center gap-2">
                 <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
                 <span className="text-[10px] font-black text-secondary uppercase tracking-[0.3em]">Network Active</span>
              </div>
           </div>
           <h1 className="text-4xl md:text-6xl font-black text-secondary tracking-tighter uppercase leading-none">
-            Institutional <br /> <span className="text-primary">Vendor Registry</span>
+            Verified <br /> <span className="text-primary">Vendor Directory</span>
           </h1>
           <p className="text-muted-foreground font-medium text-xs md:text-sm uppercase tracking-[0.2em] max-w-2xl leading-relaxed">
-            Authorized directory of verified partners. Every vendor in this registry is cryptographically bound to our Sovereign Escrow Protocol.
+            Authorized directory of verified partners. Every vendor in this registry is protected by our Secure Escrow system.
           </p>
         </div>
 
@@ -58,7 +58,7 @@ export default function VendorRegistry() {
            <div className="relative flex-1 md:w-80">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input 
-                placeholder="Search Node Registry..." 
+                placeholder="Search Vendors..." 
                 className="pl-12 rounded-none h-14 border-2 focus:border-primary font-bold uppercase text-[10px] tracking-widest"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -66,7 +66,7 @@ export default function VendorRegistry() {
            </div>
            <Button className="rounded-none h-14 px-8 bg-secondary text-white font-black text-[10px] uppercase tracking-widest gap-2 shadow-xl">
               <Filter className="h-4 w-4 text-primary" />
-              Filter Sectors
+              Filter Categories
            </Button>
         </div>
       </div>
@@ -112,7 +112,7 @@ export default function VendorRegistry() {
               </div>
               <div className="absolute top-6 right-8">
                  <div className="bg-white/95 backdrop-blur-md p-3 border-2 border-primary/20 flex flex-col items-center">
-                    <span className="text-[10px] font-black text-primary leading-none mb-1 uppercase tracking-widest">FIDELITY</span>
+                    <span className="text-[10px] font-black text-primary leading-none mb-1 uppercase tracking-widest">TRUST</span>
                     <span className="text-xl font-black text-secondary leading-none">{vendor.fidelityScore}%</span>
                  </div>
               </div>
@@ -125,7 +125,7 @@ export default function VendorRegistry() {
 
               <div className="grid grid-cols-2 gap-6 pt-2">
                 <div className="space-y-1">
-                   <p className="text-[8px] font-black text-muted-foreground uppercase tracking-widest">Verified Assets</p>
+                   <p className="text-[8px] font-black text-muted-foreground uppercase tracking-widest">Active Items</p>
                    <p className="text-lg font-black text-secondary">{vendor.itemsCount.toLocaleString()}</p>
                 </div>
                 <div className="space-y-1">
@@ -142,13 +142,13 @@ export default function VendorRegistry() {
                  <div className="flex justify-between items-center text-[9px] font-black uppercase tracking-widest">
                     <span className="flex items-center gap-2 text-secondary">
                        <Activity className="h-3 w-3 text-primary" />
-                       Node Integrity
+                       Vendor Status
                     </span>
                     <span className="text-primary">OPTIMIZED</span>
                  </div>
                  <Progress value={92} className="h-1 rounded-none bg-primary/10" />
                  <div className="flex justify-between items-center text-[8px] font-bold text-muted-foreground uppercase">
-                    <span>Liquidity Release: 1.2h</span>
+                    <span>Payment Release: 1.2h</span>
                     <span>SLA: 100%</span>
                  </div>
               </div>
@@ -156,11 +156,11 @@ export default function VendorRegistry() {
               <div className="pt-8 border-t border-dashed flex items-center justify-between">
                  <div className="flex items-center gap-3">
                     <CheckCircle2 className="h-5 w-5 text-primary" />
-                    <span className="text-[9px] font-black uppercase tracking-widest text-secondary">Escrow Authorized</span>
+                    <span className="text-[9px] font-black uppercase tracking-widest text-secondary">Escrow Protected</span>
                  </div>
                  <Link href={`/listings?vendorId=${vendor.id}`} className="block">
                     <Button variant="outline" className="rounded-none font-black text-[9px] uppercase tracking-[0.2em] border-primary/20 hover:bg-primary hover:text-white transition-all gap-2">
-                      Enter Node
+                      View Items
                       <ArrowUpRight className="h-3 w-3" />
                     </Button>
                  </Link>
@@ -175,14 +175,14 @@ export default function VendorRegistry() {
         <div className="absolute top-0 right-0 h-64 w-64 bg-primary/10 -mr-32 -mt-32 rounded-none blur-3xl" />
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
           <div className="space-y-4 text-center md:text-left">
-            <h4 className="text-2xl font-black uppercase tracking-tighter">Authorize Your Node</h4>
+            <h4 className="text-2xl font-black uppercase tracking-tighter">Become a Partner</h4>
             <p className="text-white/50 text-[10px] uppercase font-bold tracking-widest max-w-lg leading-relaxed">
-              Are you an institutional partner looking to join the sovereign registry? Apply for vendor status and benefit from multisig escrow protection.
+              Are you a business looking to join our verified marketplace? Apply for vendor status and benefit from secure escrow protection.
             </p>
           </div>
           <Button className="bg-primary text-secondary hover:bg-white hover:text-secondary rounded-none px-12 h-16 font-black uppercase text-[11px] tracking-[0.3em] gap-3 shadow-2xl transition-all">
             <Zap className="h-5 w-5" />
-            Join The Registry
+            Join Marketplace
           </Button>
         </div>
       </div>

@@ -51,6 +51,14 @@ export interface Listing {
   imageHint: string;
   images?: string[];
   seller: SellerIdentity;
+  // Flat fields for DB records (Bug #6 Fix)
+  sellerId?: string;
+  sellerName?: string;
+  sellerType?: string;
+  sellerRating?: string | number;
+  sellerIsVerified?: boolean;
+  sellerPhone?: string;
+  sellerWhatsapp?: string;
   vendorId: string;
   description: string;
   status: ListingStatus;
@@ -304,7 +312,21 @@ export const LISTINGS: Listing[] = [
   { id: 'fa4', title: 'Leather Sandals — Kumasi Made', price: 850, isNegotiable: false, category: 'Fashion', location: 'Kumasi', postedAt: 'Yesterday', postedTimestamp: 1710892800000, imageUrl: 'https://images.pexels.com/photos/4637874/pexels-photo-4637874.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', imageHint: 'sandals', vendorId: 'v5', description: 'Full grain leather sandals handcrafted in Kumasi. Durable, comfortable, and great for both casual and formal wear.', status: 'Active', isEscrowProtected: true, seller: { id: 's5', name: 'Heritage', type: 'Business Vendor', rating: 5.0, isVerified: true, joinDate: '2020' }, condition: 'New', viewCount: 167, saveCount: 4, inquiryCount: 2 },
   { id: 'fa5', title: 'Gold Adinkra Cufflinks', price: 1500, isNegotiable: true, category: 'Fashion', location: 'Osu', postedAt: 'Just Now', postedTimestamp: 1710986400000, imageUrl: 'https://images.pexels.com/photos/3859935/pexels-photo-3859935.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', imageHint: 'cufflinks', vendorId: 'v5', description: '24k gold-plated cufflinks featuring Adinkra symbols. Gye Nyame and Sankofa designs available. Gift-boxed.', status: 'Active', isEscrowProtected: true, seller: { id: 's5', name: 'Heritage', type: 'Business Vendor', rating: 5.0, isVerified: true, joinDate: '2020' }, condition: 'New', viewCount: 223, saveCount: 8, inquiryCount: 5 },
   // SERVICES
-  { id: 'se1', title: 'Corporate Legal Audit', price: 15000, isNegotiable: false, category: 'Services', location: 'Ridge', postedAt: 'Today', postedTimestamp: 1710979200000, imageUrl: 'https://images.pexels.com/photos/6077797/pexels-photo-6077797.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', imageHint: 'legal', vendorId: 'v6', description: 'Full legal compliance audit for businesses operating in Ghana. Covers contracts, tax obligations, and corporate governance.', status: 'Active', isEscrowProtected: true, seller: { id: 's6', name: 'LegalNode', type: 'Business Vendor', rating: 4.9, isVerified: true, joinDate: '2021' }, condition: 'Not Applicable' as any, viewCount: 189, saveCount: 5, inquiryCount: 4 },
+  { id: 'se1', title: 'Corporate Legal Audit', price: 15000, isNegotiable: false, category: 'Services', location: 'Ridge', postedAt: 'Today', postedTimestamp: 1710979200000, imageUrl: 'https://images.pexels.com/photos/6077797/pexels-photo-6077797.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', imageHint: 'legal', vendorId: 'v6', description: 'Full legal compliance audit for businesses operating in Ghana. Covers contracts, tax obligations, and corporate governance.', status: 'Active',
+      isEscrowProtected: true,
+      seller: {
+        id: 's6',
+        name: 'LegalNode',
+        type: 'Business Vendor',
+        rating: 4.9,
+        isVerified: true,
+        joinDate: '2021',
+      },
+      condition: 'New',
+      viewCount: 189,
+      saveCount: 5,
+      inquiryCount: 4,
+    },
   { id: 'se2', title: 'Solar Panel Installation', price: 45000, isNegotiable: true, category: 'Services', location: 'East Legon', postedAt: 'Yesterday', postedTimestamp: 1710892800000, imageUrl: 'https://images.pexels.com/photos/356049/pexels-photo-356049.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', imageHint: 'solar', vendorId: 'v6', description: 'Complete rooftop solar installation for homes and offices. 5kW system, 10-year warranty, ECG net metering setup included.', status: 'Active', isEscrowProtected: true, seller: { id: 's6', name: 'LegalNode', type: 'Business Vendor', rating: 4.9, isVerified: true, joinDate: '2021' }, viewCount: 312, saveCount: 9, inquiryCount: 7 },
   { id: 'se3', title: 'Cyber Security Penetration Test', price: 8500, isNegotiable: false, category: 'Services', location: 'Accra', postedAt: 'Today', postedTimestamp: 1710979200000, imageUrl: 'https://images.pexels.com/photos/5474025/pexels-photo-5474025.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', imageHint: 'cyber', vendorId: 'v6', description: 'Professional vulnerability assessment and penetration testing for websites, apps, and networks. Report delivered within 72 hours.', status: 'Active', isEscrowProtected: true, seller: { id: 's6', name: 'LegalNode', type: 'Business Vendor', rating: 4.9, isVerified: true, joinDate: '2021' }, viewCount: 445, saveCount: 12, inquiryCount: 8 },
   { id: 'se4', title: 'Real Estate Valuation', price: 3500, isNegotiable: true, category: 'Services', location: 'Airport', postedAt: 'Yesterday', postedTimestamp: 1710892800000, imageUrl: 'https://images.pexels.com/photos/5483051/pexels-photo-5483051.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', imageHint: 'valuation', vendorId: 'v6', description: 'RICS-standard property valuation by certified surveyors. Accepted by all Ghanaian banks for mortgage applications.', status: 'Active', isEscrowProtected: true, seller: { id: 's6', name: 'LegalNode', type: 'Business Vendor', rating: 4.9, isVerified: true, joinDate: '2021' }, viewCount: 234, saveCount: 6, inquiryCount: 3 },
@@ -329,6 +351,8 @@ export const VENDORS = [
   { id: 'v3', name: 'AutoTrust Motors', category: 'Vehicles', description: 'Accra\'s most trusted vehicle dealership. New and pre-owned cars with full history.', logoUrl: 'https://images.pexels.com/photos/36550302/pexels-photo-36550302.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', bgUrl: 'https://images.pexels.com/photos/28965346/pexels-photo-28965346.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', rating: 4.9, itemsCount: 45, fidelityScore: 99, joinedYear: '2021', commissionRate: 1.5, monthlyRevenue: 890000, totalOrders: 28, disputeRate: 1.2 },
   { id: 'v4', name: 'AgroPrime Ghana', category: 'Agriculture', description: 'Farming equipment, seeds, and technology for Ghanaian farmers.', logoUrl: 'https://images.pexels.com/photos/36404084/pexels-photo-36404084.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', bgUrl: 'https://images.pexels.com/photos/36584953/pexels-photo-36584953.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', rating: 4.8, itemsCount: 312, fidelityScore: 100, joinedYear: '2019', commissionRate: 3.0, monthlyRevenue: 67000, totalOrders: 89, disputeRate: 0.5 },
   { id: 'v5', name: 'Heritage Fashion', category: 'Fashion', description: 'Authentic Ghanaian fashion: Kente, Smock, Adinkra, and contemporary African designs.', logoUrl: 'https://images.pexels.com/photos/4430943/pexels-photo-4430943.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', bgUrl: 'https://images.pexels.com/photos/36315462/pexels-photo-36315462.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', rating: 5.0, itemsCount: 890, fidelityScore: 100, joinedYear: '2020', commissionRate: 3.0, monthlyRevenue: 42000, totalOrders: 234, disputeRate: 0.0 },
+  { id: 'v6', name: 'LegalNode Services', category: 'Services', description: 'Professional legal and corporate services for Ghanaian businesses.', logoUrl: 'https://images.pexels.com/photos/6077797/pexels-photo-6077797.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', bgUrl: 'https://images.pexels.com/photos/6077797/pexels-photo-6077797.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', rating: 4.9, itemsCount: 45, fidelityScore: 98, joinedYear: '2021', commissionRate: 5.0, monthlyRevenue: 125000, totalOrders: 56, disputeRate: 0.0 },
+  { id: 'v7', name: 'SportHub Ghana', category: 'Sports', description: 'Premium sports equipment and gym installations.', logoUrl: 'https://images.pexels.com/photos/4944435/pexels-photo-4944435.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', bgUrl: 'https://images.pexels.com/photos/4944435/pexels-photo-4944435.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', rating: 4.7, itemsCount: 112, fidelityScore: 95, joinedYear: '2022', commissionRate: 4.0, monthlyRevenue: 85000, totalOrders: 42, disputeRate: 0.5 },
 ];
 
 // ─── BUSINESS LOGIC HELPERS ───────────────────────────────────────────────────

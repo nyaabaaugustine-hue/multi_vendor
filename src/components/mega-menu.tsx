@@ -36,7 +36,7 @@ import { Badge } from "@/components/ui/badge";
 const SECTORS = [
   {
     title: "Vehicles & Transport",
-    subtitle: "Verified Nodes",
+    subtitle: "Verified Sellers",
     icon: Car,
     bgImage: "https://images.unsplash.com/photo-1562141961-b5d1852d7316?q=80&w=600&auto=format&fit=crop",
     items: [
@@ -47,24 +47,24 @@ const SECTORS = [
   },
   {
     title: "Property & Services",
-    subtitle: "Verified Nodes",
+    subtitle: "Verified Sellers",
     icon: Home,
     bgImage: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=600&auto=format&fit=crop",
     items: [
       { name: "Houses & Land", href: "/listings?category=Property", icon: Key, desc: "Residential Assets" },
-      { name: "Commercial Space", href: "/listings?category=Property", icon: Building2, desc: "Ridge & Osu Nodes" },
-      { name: "Professional Services", href: "/listings?category=Services", icon: Briefcase, desc: "Legal & IT Audit" },
+      { name: "Commercial Space", href: "/listings?category=Property", icon: Building2, desc: "Office & Retail" },
+      { name: "Professional Services", href: "/listings?category=Services", icon: Briefcase, desc: "Legal & IT Services" },
     ]
   },
   {
     title: "Electronics & Home",
-    subtitle: "Verified Nodes",
+    subtitle: "Verified Sellers",
     icon: ShoppingBag,
     bgImage: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=600&auto=format&fit=crop",
     items: [
-      { name: "Laptops & Tech", href: "/listings?category=Electronics", icon: Monitor, desc: "Institutional Hardware" },
-      { name: "Furniture & Decor", href: "/listings?category=Home & Furniture", icon: Armchair, desc: "Luxury Suites" },
-      { name: "Kitchen & Appliances", href: "/listings?category=Electronics", icon: Refrigerator, desc: "Smart Home Nodes" },
+      { name: "Laptops & Tech", href: "/listings?category=Electronics", icon: Monitor, desc: "Computing & Gear" },
+      { name: "Furniture & Decor", href: "/listings?category=Home & Furniture", icon: Armchair, desc: "Living & Office" },
+      { name: "Kitchen & Appliances", href: "/listings?category=Electronics", icon: Refrigerator, desc: "Smart Home Items" },
     ]
   }
 ];
@@ -85,7 +85,7 @@ export function MegaMenu() {
             {SECTORS.map((sector, idx) => (
               <div key={idx} className="flex flex-col">
                 <div className="relative h-24 w-full overflow-hidden border-b border-border bg-muted/20">
-                  <Image src={sector.bgImage} alt={sector.title} fill sizes="400px" className="object-cover opacity-20 contrast-125" />
+                  <Image src={sector.bgImage} alt={sector.title} fill sizes="400px" className="object-cover opacity-60 contrast-125" />
                   <div className="absolute inset-0 p-6 flex items-center gap-4">
                     <div className="h-10 w-10 bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
                       <sector.icon className="h-5 w-5" />
@@ -109,14 +109,14 @@ export function MegaMenu() {
                           className="group flex items-start gap-4 text-muted-foreground hover:text-primary transition-all"
                         >
                           <div className="mt-0.5 p-2 bg-muted rounded-none group-hover:bg-primary/10 transition-colors shrink-0">
-                            <item.icon className="h-3.5 w-3.5 opacity-70 group-hover:opacity-100 group-hover:text-primary" />
+                            <item.icon className="h-3.5 w-3.5 group-hover:text-primary" />
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center justify-between">
                               <span className="text-[10px] font-black uppercase tracking-tight text-foreground group-hover:text-primary transition-colors">{item.name}</span>
                               <ChevronRight className="h-2.5 w-2.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-primary" />
                             </div>
-                            <p className="text-[8px] font-bold text-muted-foreground/60 uppercase tracking-widest mt-0.5">{item.desc}</p>
+                            <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest mt-0.5">{item.desc}</p>
                           </div>
                         </Link>
                       </li>
@@ -162,7 +162,7 @@ export function MegaMenu() {
                       <p className="text-[10px] font-black uppercase tracking-widest group-hover:text-primary transition-colors text-foreground">Melcom Hub</p>
                       <div className="flex items-center gap-1">
                         <Star className="h-2 w-2 fill-gold text-gold" />
-                        <p className="text-[8px] text-muted-foreground uppercase tracking-tighter">Verified Node • 4.9</p>
+                        <p className="text-[8px] text-muted-foreground uppercase tracking-tighter">Verified Seller • 4.9</p>
                       </div>
                     </div>
                   </Link>
@@ -186,11 +186,11 @@ export function MegaMenu() {
             </div>
             <div className="flex items-center gap-3">
               <ShieldAlert className="h-4 w-4 text-primary" />
-              <span className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em]">Multisig Escrow Active</span>
+              <span className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em]">Secure Escrow Active</span>
             </div>
           </div>
           <Badge variant="outline" className="rounded-none border-primary text-[8px] font-black px-3 py-1 uppercase tracking-widest text-primary bg-primary/5">
-            Sovereign Certified
+            Verified Partner
           </Badge>
         </div>
       </PopoverContent>

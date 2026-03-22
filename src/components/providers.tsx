@@ -220,11 +220,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const removeItem = (id: string) => setItems(prev => prev.filter(i => i.id !== id));
   const clearCart = () => setItems([]);
-  const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const subtotal = items.reduce((acc, item) => {
+    const price = typeof item.price === 'string' ? parseFloat(item.price) : item.price;
+    return acc + price * item.quantity;
+  }, 0);
 
   return (
     <CartContext.Provider value={{
-      items, addItem, removeItem, clearCart, total,
+      items, addItem, removeItem, clearCart, total: subtotal,
       isCheckingOut, checkoutStep: 0, showSuccess,
       startCheckoutSim, closeSuccess,
     }}>

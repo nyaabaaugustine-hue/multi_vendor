@@ -33,12 +33,14 @@ import {
 import { cn } from '@/lib/utils';
 import { useAuth, useCurrency } from '@/components/providers';
 import { useToast } from '@/hooks/use-toast';
+import { getListingsAction } from '@/lib/actions';
 import {
   MOCK_ORDERS, MOCK_TRANSACTIONS, MOCK_NOTIFICATIONS, MOCK_OFFERS,
   MOCK_DISPUTES, VENDOR_MONTHLY_DATA, PLATFORM_MONTHLY_DATA,
   LISTINGS, VENDORS, getFidelityTier, computeFidelityScore,
   formatGHS, type Order, type Transaction, type Notification, type Offer,
 } from '@/lib/mock-data';
+import { useEffect } from 'react';
 
 // ─── SHARED ATOMS ─────────────────────────────────────────────────────────────
 
@@ -202,7 +204,7 @@ function TransactionReceipt({ transaction, isOpen, onClose }: { transaction: Tra
           </div>
 
           <p className="text-center text-[9px] text-muted-foreground/40 uppercase font-bold tracking-[0.2em]">
-            Secured by VaultCommerce Escrow Protocol
+            Secured by Secure Escrow system
           </p>
         </div>
       </DialogContent>
@@ -561,9 +563,9 @@ function AdminDashboard() {
                   <p className="text-[9px] text-muted-foreground mt-1">Raised by: {dispute.raisedBy} · {dispute.createdAt.split('T')[0]}</p>
                 </div>
               </div>
-              {/* AI Decision Assistant */}
+              {/* Mediation Suggestion */}
               <div className="bg-primary/5 border border-primary/20 p-3 space-y-1">
-                <p className="text-[9px] font-black uppercase tracking-widest text-primary flex items-center gap-1.5"><Zap className="h-3 w-3" /> AI Mediation Suggestion</p>
+                <p className="text-[9px] font-black uppercase tracking-widest text-primary flex items-center gap-1.5">Mediation Suggestion</p>
                 <p className="text-[10px] text-foreground">Based on the evidence: <strong>Item was not as described</strong>. Recommend issuing a full refund to the buyer. Seller fidelity score will be adjusted.</p>
               </div>
               <div className="flex gap-2 flex-wrap">
@@ -767,8 +769,26 @@ function VendorDashboard() {
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedTx, setSelectedTx] = useState<Transaction | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [realListings, setRealListings] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const myListings = LISTINGS.filter(l => l.vendorId === 'v1').slice(0, 5);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getListingsAction();
+        if (result.success && result.data) {
+          setRealListings(result.data);
+        }
+      } catch (error) {
+        console.error('Fetch error:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const myListings = [...realListings, ...MOCK_LISTINGS.filter(l => l.vendorId === 'v1')].slice(0, 10);
   const totalRevenue = VENDOR_MONTHLY_DATA.reduce((s, d) => s + d.revenue, 0);
   const lockedFunds = MOCK_ORDERS.filter(o => ['Escrow Funded', 'In Transit'].includes(o.status) && o.vendorId === 'v1').reduce((s, o) => s + o.netPayout, 0);
   const pendingDispatch = MOCK_ORDERS.filter(o => o.status === 'Escrow Funded' && o.vendorId === 'v1');

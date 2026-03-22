@@ -87,7 +87,7 @@ export function HighFidelityListingCard(props: Listing) {
 
         {/* Specs */}
         {specs && (
-          <div className="flex flex-wrap gap-x-2 gap-y-1 text-[9px] font-medium text-muted-foreground/80 mt-1">
+          <div className="flex flex-wrap gap-x-2 gap-y-1 text-[9px] font-medium text-muted-foreground mt-1">
             {specs.map((spec, i) => (
               <span key={i} className="flex items-center">
                 {spec}{i < specs.length - 1 && <span className="ml-2 h-1 w-1 rounded-full bg-border" />}

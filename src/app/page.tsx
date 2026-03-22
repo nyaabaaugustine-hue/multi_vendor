@@ -130,8 +130,9 @@ export function HomePage() {
           <div className="max-w-7xl mx-auto px-4">
             <SectionHeader
               title="Most popular laptops"
-              subtitle="Premium Hardware Registry • ACCRA"
+              subtitle="Premium Hardware • ACCRA"
               href="/listings?category=Electronics"
+              linkLabel="View All"
             />
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
               {eliteComputing.map((item) => <HighFidelityListingCard key={item.id} {...item} />)}
@@ -145,9 +146,9 @@ export function HomePage() {
         <section className="max-w-7xl mx-auto w-full px-4 section-standard">
           <SectionHeader
             title="Most searched for mobiles"
-            subtitle="Verified Smartphone Registry Hub"
+            subtitle="Verified Smartphone Marketplace"
             href="/listings?category=Electronics"
-            linkLabel="Full Directory"
+            linkLabel="View All"
           />
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {smartCommunication.map((item) => <ListingCard key={item.id} {...item} />)}
@@ -156,20 +157,20 @@ export function HomePage() {
       )}
 
       {/* ─── INSTITUTIONAL PARTNER MARQUEE ─── */}
-      <section className="bg-secondary section-hero text-white relative overflow-hidden">
+      <section className="bg-slate-950 section-hero text-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 relative z-10">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8">
             <div className="space-y-4">
-              <Badge className="bg-primary text-secondary font-black rounded-none uppercase text-[10px] tracking-[0.4em] px-6">Institutional Directory</Badge>
+              <Badge className="bg-primary text-slate-950 font-black rounded-none uppercase text-[10px] tracking-[0.4em] px-6">Partner Directory</Badge>
               {/* [FIX 7.2] heading-gradient applied to the key phrase */}
-              <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-none">
+              <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-none text-white">
                 Verified <br />
                 <span className="heading-gradient italic">Partner Sellers</span>
               </h2>
             </div>
             <Link href="/vendors">
-              <Button variant="outline" className="border-2 border-primary text-primary hover:bg-primary hover:text-secondary font-black rounded-none h-16 px-12 uppercase text-[11px] tracking-[0.3em] gap-3 transition-all">
-                Enter Vendor Registry <ArrowUpRight className="h-4 w-4" />
+              <Button variant="outline" className="border-2 border-primary text-primary hover:bg-primary hover:text-slate-950 font-black rounded-none h-16 px-12 uppercase text-[11px] tracking-[0.3em] gap-3 transition-all">
+                Enter Marketplace <ArrowUpRight className="h-4 w-4" />
               </Button>
             </Link>
           </div>
@@ -181,29 +182,29 @@ export function HomePage() {
                 <div key={`${vendor.id}-${idx}`} className="bg-white/5 border border-white/10 hover:border-primary transition-all duration-500 min-w-[380px] md:min-w-[450px] rounded-[7%] overflow-hidden flex flex-col shadow-2xl">
                   <div className="relative h-56 w-full overflow-hidden">
                     <Image src={vendor.bgUrl} alt={vendor.name} fill className="object-cover opacity-50 contrast-[1.1]" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/40 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
                     <div className="absolute bottom-6 left-8 flex items-end gap-6">
                       <div className="relative h-20 w-20 bg-white border-2 border-primary shadow-2xl p-2 rounded-[7%]">
                         <Image src={vendor.logoUrl} alt={vendor.name} fill className="object-contain p-1" unoptimized />
                       </div>
                       <div className="pb-1 text-left whitespace-normal">
-                        <Badge className="bg-amber-500 text-secondary rounded-none font-black text-[8px] uppercase tracking-widest mb-2">PARTNER</Badge>
+                        <Badge className="bg-amber-500 text-slate-950 rounded-none font-black text-[8px] uppercase tracking-widest mb-2">PARTNER</Badge>
                         <h3 className="font-black text-amber-500 text-2xl tracking-tighter uppercase leading-none">{vendor.name}</h3>
                       </div>
                     </div>
                     <div className="absolute top-6 right-8">
                        <div className="bg-primary/90 backdrop-blur-md px-4 py-2 shadow-2xl flex flex-col items-center">
-                          <span className="text-[9px] font-black text-secondary leading-none mb-1 uppercase">FIDELITY</span>
-                          <span className="text-2xl font-black text-secondary leading-none">{vendor.fidelityScore}%</span>
+                          <span className="text-[9px] font-black text-slate-950 leading-none mb-1 uppercase">FIDELITY</span>
+                          <span className="text-2xl font-black text-slate-950 leading-none">{vendor.fidelityScore}%</span>
                        </div>
                     </div>
                   </div>
-                  <div className="p-10 space-y-10 flex-1 bg-secondary/30 border-t border-white/5">
+                  <div className="p-10 space-y-10 flex-1 bg-white/5 border-t border-white/5">
                     <p className="text-[11px] font-medium text-white/60 uppercase tracking-widest h-12 line-clamp-2 whitespace-normal">{vendor.description}</p>
                     <div className="flex items-center justify-between pt-8 border-t border-white/10">
                       <div className="flex items-center gap-3">
                         <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
-                        <span className="text-sm font-black text-white tracking-tight">{vendor.rating} Registry Rating</span>
+                        <span className="text-sm font-black text-white tracking-tight">{vendor.rating} Rating</span>
                       </div>
                       <Badge variant="outline" className="border-white/20 text-white/40 rounded-none font-black text-[9px] uppercase tracking-widest">Since {vendor.joinedYear}</Badge>
                     </div>
@@ -228,9 +229,9 @@ export function HomePage() {
         <section className="max-w-7xl mx-auto w-full px-4 section-standard">
           <SectionHeader
             title="Most searched for vehicles"
-            subtitle="Verified High-Value Vehicle Registry"
+            subtitle="Verified Vehicle Marketplace"
             href="/listings?category=Vehicles"
-            linkLabel="Full Registry"
+            linkLabel="View All"
           />
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8">
             {premiumAutos.map((item) => <ListingCard key={item.id} {...item} />)}
@@ -243,9 +244,9 @@ export function HomePage() {
         <section className="max-w-7xl mx-auto w-full px-4 section-standard border-t border-dashed">
           <SectionHeader
             title="Most searched for agriculture"
-            subtitle="Heavy Machinery & Farming Assets"
+            subtitle="Heavy Machinery & Farming Items"
             href="/listings?category=Agriculture"
-            linkLabel="View All Assets"
+            linkLabel="View All"
           />
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8">
             {industrialAgro.map((item) => <ListingCard key={item.id} {...item} />)}
@@ -258,9 +259,9 @@ export function HomePage() {
         <section className="max-w-7xl mx-auto w-full px-4 section-standard bg-muted/5 border-y border-dashed">
           <SectionHeader
             title="Most popular fashion"
-            subtitle="Royal Kente & Heritage Design Nodes"
+            subtitle="Heritage & Contemporary Designs"
             href="/listings?category=Fashion"
-            linkLabel="Full Registry"
+            linkLabel="View All"
           />
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {heritageFashion.map((item) => <ListingCard key={item.id} {...item} />)}
@@ -273,9 +274,9 @@ export function HomePage() {
         <section className="max-w-7xl mx-auto w-full px-4 section-standard">
           <SectionHeader
             title="Most popular services"
-            subtitle="Corporate Services & Technical Audits"
+            subtitle="Professional & Technical Services"
             href="/listings?category=Services"
-            linkLabel="Full Directory"
+            linkLabel="View All"
           />
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {corporateServices.map((item) => <ListingCard key={item.id} {...item} />)}
@@ -288,9 +289,9 @@ export function HomePage() {
         <section className="max-w-7xl mx-auto w-full px-4 section-standard bg-secondary/5 border-y">
           <SectionHeader
             title="Most searched for sports"
-            subtitle="Performance Hardware Nodes"
+            subtitle="Verified Sports Equipment"
             href="/listings?category=Sports"
-            linkLabel="Full Registry"
+            linkLabel="View All"
           />
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {eliteSports.map((item) => <ListingCard key={item.id} {...item} />)}
@@ -303,9 +304,9 @@ export function HomePage() {
         <section className="max-w-7xl mx-auto w-full px-4 section-standard mb-12">
           <SectionHeader
             title="Most searched for property"
-            subtitle="Elite Residential & Commercial Assets"
+            subtitle="Residential & Commercial Marketplace"
             href="/listings?category=Property"
-            linkLabel="Full Registry"
+            linkLabel="View All"
           />
           <div className="overflow-hidden relative group/marquee cursor-pointer -mx-4 px-4 md:mx-0 md:px-0">
             <div className="flex animate-marquee-slow gap-6 py-4 hover:[animation-play-state:paused]">

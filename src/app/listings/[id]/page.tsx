@@ -24,10 +24,11 @@ import {
   Share2,
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { LISTINGS } from '@/lib/mock-data';
+import { LISTINGS as MOCK_LISTINGS } from '@/lib/mock-data';
+import { getListingByIdAction } from '@/lib/actions';
 import { useAuth, useCurrency, useCart } from '@/components/providers';
 import { AuthDialog } from '@/components/auth-dialog';
-import { cn } from '@/lib/utils';
+import { cn, normalizeListing } from '@/lib/utils';
 
 export default function ListingDetails() {
   const { id } = useParams();
@@ -41,16 +42,39 @@ export default function ListingDetails() {
   const [showContactInfo, setShowContactInfo] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [realListing, setRealListing] = useState<any | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    const fetchListing = async () => {
+      const mockListing = MOCK_LISTINGS.find(l => l.id === id);
+      if (mockListing) {
+        setRealListing(mockListing);
+        setIsLoading(false);
+        return;
+      }
+      
+      try {
+        const result = await getListingByIdAction(id as string);
+        if (result.success && result.data) {
+          setRealListing(result.data);
+        }
+      } catch (error) {
+        console.error('Fetch error:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchListing();
+  }, [id]);
 
-  const listing = LISTINGS.find(l => l.id === id) || LISTINGS[0];
-
-  if (!mounted) {
-    return <div className="min-h-screen bg-background" />;
+  if (!mounted || isLoading) {
+    return <div className="min-h-screen bg-background flex items-center justify-center font-black uppercase tracking-widest text-primary animate-pulse">Synchronizing Asset Node...</div>;
   }
+
+  const listing = normalizeListing(realListing || MOCK_LISTINGS[0]);
+  const seller = listing.seller;
 
   // ── The real escrow trigger ──────────────────────────────────────────────────
   // Adds the item to cart then fires startCheckoutSim which the
@@ -124,7 +148,13 @@ export default function ListingDetails() {
                 <Heart className={cn('h-5 w-5', isSaved && 'fill-white')} />
               </button>
               <button
-                onClick={() => navigator.clipboard.writeText(window.location.href).then(() => toast({ title: 'Link copied!' }))}
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    navigator.clipboard.writeText(window.location.href)
+                      .then(() => toast({ title: 'Link copied!' }))
+                      .catch(() => toast({ title: 'Failed to copy', description: 'Please copy the URL manually', variant: 'destructive' }));
+                  }
+                }}
                 aria-label="Share listing"
                 className="h-10 w-10 rounded-full flex items-center justify-center shadow-xl backdrop-blur-md border bg-white/90 border-border text-muted-foreground hover:text-primary transition-all"
               >
@@ -164,10 +194,12 @@ export default function ListingDetails() {
               </div>
               <div className="text-right">
                 <div className="text-4xl md:text-5xl font-black text-primary tracking-tighter">
-                  {formatPrice(listing.price)}
+                  {formatPrice(typeof listing.price === 'string' ? parseFloat(listing.price) : listing.price)}
                 </div>
                 {listing.oldPrice && (
-                  <p className="text-[12px] text-muted-foreground line-through font-bold mt-1">{formatPrice(listing.oldPrice)}</p>
+                  <p className="text-[12px] text-muted-foreground line-through font-bold mt-1">
+                    {formatPrice(typeof listing.oldPrice === 'string' ? parseFloat(listing.oldPrice) : listing.oldPrice)}
+                  </p>
                 )}
                 {listing.isNegotiable && (
                   <p className="text-[10px] text-muted-foreground uppercase tracking-[0.4em] mt-1 font-black">Negotiable</p>
@@ -236,14 +268,14 @@ export default function ListingDetails() {
               <div className="space-y-6">
                 <div className="flex items-center gap-5">
                   <div className="h-16 w-16 bg-primary flex items-center justify-center text-2xl font-black text-primary-foreground shadow-xl rounded-none">
-                    {listing.seller.name.charAt(0)}
+                    {seller.name.charAt(0)}
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <h4 className="font-black text-foreground uppercase tracking-tight text-base leading-none">{listing.seller.name}</h4>
-                      {listing.seller.isVerified && <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />}
+                      <h4 className="font-black text-foreground uppercase tracking-tight text-base leading-none">{seller.name}</h4>
+                      {seller.isVerified && <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />}
                     </div>
-                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{listing.seller.type}</p>
+                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{seller.type}</p>
                   </div>
                 </div>
 
@@ -252,12 +284,12 @@ export default function ListingDetails() {
                     <p className="text-[8px] font-black text-muted-foreground uppercase tracking-widest">Rating</p>
                     <div className="flex items-center justify-center gap-1">
                       <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                      <span className="text-sm font-black text-foreground">{listing.seller.rating}</span>
+                      <span className="text-sm font-black text-foreground">{seller.rating}</span>
                     </div>
                   </div>
                   <div className="text-center space-y-1 border-l border-border">
                     <p className="text-[8px] font-black text-muted-foreground uppercase tracking-widest">Since</p>
-                    <p className="text-sm font-black text-foreground">{listing.seller.joinDate}</p>
+                    <p className="text-sm font-black text-foreground">{seller.joinDate}</p>
                   </div>
                 </div>
               </div>
@@ -273,15 +305,15 @@ export default function ListingDetails() {
 
                 {showContactInfo ? (
                   <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2 duration-500">
-                    {listing.seller.phone && (
-                      <a href={`tel:${listing.seller.phone}`} className="block">
+                    {seller.phone && (
+                      <a href={`tel:${seller.phone}`} className="block">
                         <Button variant="outline" className="w-full h-12 font-black uppercase text-[10px] tracking-widest rounded-none gap-3 border-2">
                           <Phone className="h-4 w-4" /> Call Seller
                         </Button>
                       </a>
                     )}
-                    {listing.seller.whatsapp && (
-                      <a href={`https://wa.me/${listing.seller.whatsapp}`} target="_blank" rel="noopener noreferrer" className="block">
+                    {seller.whatsapp && (
+                      <a href={`https://wa.me/${seller.whatsapp}`} target="_blank" rel="noopener noreferrer" className="block">
                         <Button className="w-full h-12 bg-[#25D366] text-white font-black uppercase text-[10px] tracking-widest rounded-none gap-3">
                           <MessageSquare className="h-4 w-4" /> WhatsApp Seller
                         </Button>

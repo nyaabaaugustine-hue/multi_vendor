@@ -13,6 +13,8 @@ import {
   ShieldCheck,
   Plus,
   Menu,
+  Package,
+  Timer,
   Home as HomeIcon,
   Phone,
   X,
@@ -73,13 +75,13 @@ export function Navbar() {
   ];
 
   return (
-    <header className="w-full bg-background border-b-2 border-primary/20 shadow-md sticky top-0 z-50 transition-all duration-300">
+    <header className="w-full bg-background/95 backdrop-blur-md border-b-[3px] border-primary/30 shadow-[0_8px_30px_rgba(0,0,0,0.12)] sticky top-0 z-50 transition-all duration-300">
       <AuthDialog open={showAuth} onOpenChange={setShowAuth} />
       
       <div className="max-w-7xl mx-auto px-4 h-16 md:h-20 flex items-center justify-between gap-8">
         {/* LOGO AREA */}
         <Link href="/" className="flex items-center gap-3 shrink-0 group">
-          <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-primary/10 p-1.5 bg-background shadow-sm group-hover:border-primary/50 group-hover:shadow-lg group-hover:shadow-primary/20 transition-all duration-500 group-hover:scale-105">
+          <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-amber-600/20 p-1.5 bg-background shadow-sm group-hover:border-amber-600/50 group-hover:shadow-lg group-hover:shadow-amber-600/20 transition-all duration-500 group-hover:scale-105">
             <Image 
               src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1774057903/ai-removebg-preview_ikywpe.png"
               alt="Logo" 
@@ -90,10 +92,10 @@ export function Navbar() {
             />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold text-xl text-foreground tracking-tighter uppercase leading-none">
+            <span className="font-bold text-xl text-amber-600 tracking-tighter uppercase leading-none">
               {content.settings.siteName}
             </span>
-            <span className="text-[8px] font-bold text-primary uppercase tracking-[0.2em] mt-1 opacity-70">Sovereign Marketplace</span>
+            <span className="text-[8px] font-bold text-amber-700/70 uppercase tracking-[0.2em] mt-1">Secure Marketplace</span>
           </div>
         </Link>
 
@@ -103,30 +105,36 @@ export function Navbar() {
         </div>
 
         {/* SEARCH AREA — Simplified "Uber Style" */}
-        <div className="hidden md:flex flex-1 max-w-xl items-center h-12 bg-muted/30 rounded-2xl border border-border/40 focus-within:border-primary/30 focus-within:bg-background focus-within:shadow-lg transition-all duration-500 group">
+        <div className="hidden md:flex flex-1 max-w-xl items-center h-12 bg-secondary border border-border focus-within:border-amber-600 focus-within:bg-background focus-within:shadow-lg transition-all duration-500 group rounded-xl overflow-hidden">
           <div className="flex-1 flex items-center px-5 gap-4 h-full">
-            <Search className="h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+            <Search className="h-4 w-4 text-amber-600" />
             <input 
               placeholder='Search verified listings, vendors...' 
-              className="w-full bg-transparent outline-none text-foreground text-sm font-medium placeholder:text-muted-foreground/40"
+              className="w-full bg-transparent outline-none text-amber-900 text-sm font-bold placeholder:text-amber-700/40"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') {
+                  setSearchQuery('');
+                }
+              }}
             />
+            <span className="text-[10px] font-black text-amber-700/40 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">ESC</span>
           </div>
-          <div className="h-6 w-px bg-border/50" />
+          <div className="h-6 w-px bg-border" />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div className="flex px-5 items-center gap-2 shrink-0 cursor-pointer hover:bg-muted/50 h-full transition-colors">
-                <MapPin className="h-3.5 w-3.5 text-primary/60" />
-                <span className="text-xs font-bold text-foreground">{location}</span>
-                <ChevronDown className="h-3 w-3 text-muted-foreground" />
+              <div className="flex px-5 items-center gap-2 shrink-0 cursor-pointer hover:bg-amber-50 h-full transition-colors">
+                <MapPin className="h-3.5 w-3.5 text-amber-600" />
+                <span className="text-xs font-black text-amber-900">{location}</span>
+                <ChevronDown className="h-3 w-3 text-amber-700/40" />
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48 bg-background/95 backdrop-blur-xl border-border/50">
-              <DropdownMenuLabel className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground">Select Location</DropdownMenuLabel>
+            <DropdownMenuContent align="end" className="w-48 bg-background border-2 border-amber-600/20 shadow-2xl">
+              <DropdownMenuLabel className="text-[10px] uppercase font-black tracking-widest text-amber-700/60 px-4 py-2">Select Location</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {['Accra', 'Kumasi', 'Tamale', 'Takoradi', 'Cape Coast'].map((loc) => (
-                <DropdownMenuItem key={loc} onClick={() => setLocation(loc)} className="cursor-pointer text-xs font-bold">
+                <DropdownMenuItem key={loc} onClick={() => setLocation(loc)} className="cursor-pointer text-xs font-black px-4 py-2 hover:bg-amber-50 text-amber-900 transition-colors">
                   {loc}
                 </DropdownMenuItem>
               ))}
@@ -139,39 +147,51 @@ export function Navbar() {
           <div className="hidden lg:flex items-center gap-1 mr-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-slate-50 hover:bg-primary/10 text-slate-600 hover:text-primary transition-all border border-transparent hover:border-primary/20">
+                <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-secondary hover:bg-primary/10 text-foreground hover:text-primary transition-all border border-border hover:border-primary/20">
                   <div className="relative">
                     <Bell className="h-5 w-5" />
-                    <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full ring-2 ring-white" />
+                    <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full ring-2 ring-background" />
                   </div>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-80 rounded-2xl border border-border/50 shadow-2xl p-0 bg-background/95 backdrop-blur-xl" align="end">
-                <div className="flex items-center justify-between px-4 py-3 border-b border-border/50">
-                  <span className="text-xs font-black uppercase tracking-widest">Notifications</span>
-                  <span className="text-[9px] font-bold text-primary cursor-pointer hover:underline">Mark all read</span>
+              <DropdownMenuContent className="w-80 rounded-2xl border-2 border-primary/20 shadow-2xl p-0 bg-background overflow-hidden" align="end">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-secondary/80">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground">Notifications</span>
+                  <button className="text-[9px] font-black uppercase text-primary hover:underline">Mark all read</button>
                 </div>
-                <div className="max-h-[300px] overflow-y-auto p-2 space-y-1">
-                  {MOCK_NOTIFICATIONS.slice(0, 3).map((note) => (
-                    <div key={note.id} className="flex gap-3 p-3 hover:bg-muted/50 rounded-xl cursor-pointer transition-colors">
-                      <div className="h-2 w-2 mt-1.5 rounded-full bg-blue-50 shrink-0" />
-                      <div>
-                        <p className="text-[11px] font-bold text-foreground leading-tight">{note.title}</p>
-                        <p className="text-[10px] text-muted-foreground mt-1 line-clamp-2">{note.message}</p>
-                        <p className="text-[9px] text-muted-foreground/60 mt-1 font-mono">{new Date(note.createdAt).toLocaleDateString()}</p>
+                <div className="max-h-[400px] overflow-y-auto">
+                  {MOCK_NOTIFICATIONS.map((n) => (
+                    <DropdownMenuItem key={n.id} className="p-4 border-b border-border/50 cursor-pointer hover:bg-primary/5 transition-colors focus:bg-primary/5 outline-none block">
+                      <div className="flex items-start gap-3">
+                        <div className={cn(
+                          "h-10 w-10 rounded-xl flex items-center justify-center shrink-0 shadow-sm",
+                          n.type === 'order' ? 'bg-blue-100 text-blue-600' : 
+                          n.type === 'payment' ? 'bg-green-100 text-green-600' : 'bg-amber-100 text-amber-600'
+                        )}>
+                          {n.type === 'order' ? <Package className="h-5 w-5" /> : 
+                           n.type === 'payment' ? <ShieldCheck className="h-5 w-5" /> : <Timer className="h-5 w-5" />}
+                        </div>
+                        <div className="flex-1 space-y-1">
+                          <p className="text-[11px] font-black uppercase text-foreground leading-tight tracking-tight">{n.title}</p>
+                          <p className="text-[10px] text-muted-foreground leading-relaxed font-medium">{n.message}</p>
+                          <div className="flex items-center justify-between mt-2">
+                            <p className="text-[9px] font-black text-muted-foreground/40 uppercase tracking-widest">3/19/2026</p>
+                            <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    </DropdownMenuItem>
                   ))}
                 </div>
-                <div className="p-2 border-t border-border/50">
-                  <Button variant="ghost" className="w-full h-8 text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-foreground">View All Activity</Button>
+                <div className="p-3 bg-secondary/30 text-center">
+                  <button className="text-[9px] font-black uppercase text-primary hover:underline tracking-widest">View All Activity</button>
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-slate-50 hover:bg-primary/10 text-slate-600 hover:text-primary transition-all border border-transparent hover:border-primary/20">
+                <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-secondary hover:bg-primary/10 text-foreground hover:text-primary transition-all border border-border hover:border-primary/20">
                   <Palette className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
@@ -198,20 +218,18 @@ export function Navbar() {
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-3 pl-2 pr-4 h-12 rounded-2xl bg-slate-50 hover:bg-primary/5 group transition-all border border-slate-100 hover:border-primary/20">
-                  <Avatar className="h-8 w-8 rounded-xl border border-primary/10">
-                    <AvatarImage src={user.avatar} className="object-cover" />
-                    <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">{user.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <div className="flex flex-col items-start leading-none hidden sm:flex">
-                    <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">{user.name.split(' ')[0]}</span>
-                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-0.5">{user.role.split('_')[0]}</span>
+                <div className="flex items-center gap-3 pl-2 cursor-pointer group">
+                  <div className="flex flex-col items-end hidden sm:flex">
+                    <span className="text-[11px] font-black text-amber-900 uppercase tracking-tighter leading-none group-hover:text-amber-600 transition-colors">{user.name}</span>
+                    <span className="text-[9px] font-bold text-amber-700/50 uppercase tracking-widest mt-1">{user.role}</span>
                   </div>
-                  <ChevronDown className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-all" />
-                </Button>
+                  <div className="h-10 w-10 rounded-xl bg-amber-600 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-amber-600/20 group-hover:scale-105 transition-transform border-2 border-white">
+                    {user.name.charAt(0)}
+                  </div>
+                </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56 rounded-2xl border border-border/50 shadow-2xl p-2 mt-2 bg-background/95 backdrop-blur-xl" align="end">
-                  <DropdownMenuLabel className="text-[9px] uppercase font-black text-muted-foreground tracking-widest">Account Node</DropdownMenuLabel>
+                  <DropdownMenuLabel className="text-[9px] uppercase font-black text-muted-foreground tracking-widest">Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <Link href="/dashboard">
                     <DropdownMenuItem className="text-[10px] font-black uppercase tracking-widest cursor-pointer">Dashboard</DropdownMenuItem>
@@ -224,7 +242,7 @@ export function Navbar() {
               <Button 
                 onClick={() => setShowAuth(true)}
                 variant="outline" 
-                className="text-foreground font-black text-[8px] md:text-[9px] uppercase tracking-widest px-3 md:px-4 h-8 hover:bg-muted border-2 transition-all"
+                className="text-foreground font-black text-[8px] md:text-[9px] uppercase tracking-widest px-3 md:px-6 h-10 hover:bg-secondary border-2 border-border/50 hover:border-primary/30 transition-all rounded-xl"
               >
                 Login
               </Button>
@@ -232,13 +250,10 @@ export function Navbar() {
 
             <ListingCreateDialog>
               <Button 
-                className="hidden xs:flex bg-primary text-primary-foreground hover:opacity-95 font-black text-[8px] md:text-[9px] uppercase tracking-widest h-8 px-3 md:px-5 shadow-md items-center gap-2"
+                className="hidden xs:flex bg-primary text-white hover:opacity-95 font-black text-[8px] md:text-[9px] uppercase tracking-[0.2em] h-10 px-3 md:px-6 shadow-lg shadow-primary/20 items-center gap-2 rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
-                <div>
-                  <Plus className="h-3 w-3 inline mr-2" />
-                  <span className="hidden sm:inline">Post Ad</span>
-                  <span className="sm:hidden">Post</span>
-                </div>
+                <Plus className="h-4 w-4" />
+                <span className="hidden sm:inline">Post Ad</span>
               </Button>
             </ListingCreateDialog>
             
@@ -259,13 +274,13 @@ export function Navbar() {
       {/* [FIX 2.4] Includes theme switcher for mobile users */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
         <SheetContent side="right" className="w-[300px] sm:w-[360px] rounded-none border-l-2 border-primary p-0 flex flex-col">
-          <SheetHeader className="px-6 py-5 border-b border-border/50 bg-secondary text-white">
+          <SheetHeader className="px-6 py-5 border-b border-border/50 bg-secondary text-foreground">
             <div className="flex items-center justify-between">
-              <SheetTitle className="text-[11px] font-black uppercase tracking-[0.3em] text-white">
-                Navigation Registry
+              <SheetTitle className="text-[11px] font-black uppercase tracking-[0.3em] text-foreground">
+                Menu
               </SheetTitle>
               <SheetClose asChild>
-                <button aria-label="Close menu" className="text-white/60 hover:text-white transition-colors">
+                <button aria-label="Close menu" className="text-muted-foreground hover:text-foreground transition-colors">
                   <X className="h-4 w-4" />
                 </button>
               </SheetClose>
@@ -275,7 +290,7 @@ export function Navbar() {
           <div className="flex-1 overflow-y-auto">
             {/* Nav Links */}
             <div className="px-6 py-4 border-b border-border/30">
-              <p className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.3em] mb-3">Pages</p>
+              <p className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.3em] mb-3">Navigation</p>
               <nav className="flex flex-col gap-1">
                 {NAV_LINKS.map((link) => (
                   <Link

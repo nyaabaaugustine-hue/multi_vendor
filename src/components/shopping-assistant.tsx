@@ -2,21 +2,28 @@
 "use client";
 
 import { useState } from 'react';
-import { Sparkles, MessageSquare, Send, X, Loader2, ShoppingBag } from 'lucide-react';
+import { Sparkles, MessageSquare, Send, X, Loader2, ShoppingBag, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { findProducts, type FindProductsOutput } from '@/ai/flows/shopping-assistant-flow';
+import { checkAiStatusAction } from '@/ai/actions';
 import { cn } from '@/lib/utils';
 import { useCurrency } from '@/components/providers';
 import Link from 'next/link';
+import { useEffect } from 'react';
 
 export function ShoppingAssistant() {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [result, setResult] = useState<FindProductsOutput | null>(null);
+  const [aiEnabled, setAiEnabled] = useState(true);
   const { formatPrice } = useCurrency();
+
+  useEffect(() => {
+    checkAiStatusAction().then(res => setAiEnabled(res.enabled));
+  }, []);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,6 +39,8 @@ export function ShoppingAssistant() {
       setIsSearching(false);
     }
   };
+
+  if (!aiEnabled) return null;
 
   return (
     <>
@@ -81,7 +90,7 @@ export function ShoppingAssistant() {
             ) : isSearching ? (
               <div className="text-center py-20 space-y-6">
                  <Loader2 className="h-10 w-10 md:h-12 md:w-12 animate-spin text-primary mx-auto" />
-                 <p className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-secondary animate-pulse">Syncing Marketplace Registry...</p>
+                 <p className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-primary animate-pulse">Syncing Marketplace Registry...</p>
               </div>
             ) : (
               <div className="space-y-8 md:space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -90,7 +99,7 @@ export function ShoppingAssistant() {
                       <Sparkles className="h-3 w-3" /> AI Recommendations
                    </h4>
                    <div className="grid gap-4">
-                      {result.recommendations.map((item) => (
+                      {result?.recommendations.map((item) => (
                         <div key={item.id} className="p-4 md:p-5 bg-muted/20 border-l-4 border-primary space-y-3">
                            <div className="flex justify-between items-start">
                               <h5 className="font-black text-secondary uppercase text-xs md:text-sm tracking-tight">{item.title}</h5>
@@ -111,7 +120,7 @@ export function ShoppingAssistant() {
                    <h4 className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-secondary flex items-center gap-2">
                       <ShieldCheck className="h-3.5 w-3.5 text-primary" /> Shopping Advice
                    </h4>
-                   <p className="text-[10px] md:text-[11px] font-medium text-muted-foreground uppercase leading-relaxed">{result.advice}</p>
+                   <p className="text-[10px] md:text-[11px] font-medium text-muted-foreground uppercase leading-relaxed">{result?.advice}</p>
                 </div>
 
                 <Button variant="outline" onClick={() => setResult(null)} className="w-full h-10 md:h-12 rounded-none font-black uppercase text-[9px] md:text-[10px] tracking-widest border-primary/20">

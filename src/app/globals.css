@@ -4,26 +4,26 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%; /* Option C Background: #FAFAFA */
-    --foreground: 0 0% 7%;  /* Option C Text: #111111 */
-    --card: 0 0% 100%;      /* Option C Card: #FFFFFF */
-    --card-foreground: 0 0% 7%;
+    --background: 0 0% 100%;
+    --foreground: 221 39% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 221 39% 11%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 7%;
-    --primary: 221 83% 53%; /* Option C Accent: Blue #2563EB */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222 47% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222 47% 11.2%;
+    --popover-foreground: 221 39% 11%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 98%;
+    --secondary-foreground: 215 16% 34%;
+    --muted: 210 40% 98%;
+    --muted-foreground: 215 14% 65%;
+    --accent: 210 40% 98%;
+    --accent-foreground: 221 39% 11%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
     --ring: 221 83% 53%;
-    --radius: 1rem; /* Rounded corners: rounded-2xl */
+    --radius: 1rem;
     scroll-behavior: smooth;
   }
 

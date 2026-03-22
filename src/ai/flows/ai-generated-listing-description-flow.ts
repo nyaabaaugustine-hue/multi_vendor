@@ -1,6 +1,7 @@
 'use server';
 
 import { ai } from '@/ai/genkit';
+import { AI_ENABLED } from '@/ai/config';
 import { z } from 'genkit';
 
 export const generateListingDescription = ai.defineFlow(
@@ -18,6 +19,12 @@ export const generateListingDescription = ai.defineFlow(
     }),
   },
   async (input) => {
+    if (!AI_ENABLED) {
+      return {
+        description: `This is a mock description for "${input.title}". (AI is currently disabled). \n\nFeaturing: ${input.keyFeatures.join(', ')}. \n\nCategory: ${input.category}. \n\nThis asset is protected by VaultCommerce Escrow for your safety.`,
+      };
+    }
+
     const { text } = await ai.generate({
       prompt: `You are an expert copywriter for a premium marketplace. Write a compelling listing description for the following item:
 

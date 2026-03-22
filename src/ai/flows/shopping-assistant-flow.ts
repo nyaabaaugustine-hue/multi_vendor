@@ -7,8 +7,9 @@
  * - FindProductsOutput - The return type for the findProducts function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import { ai } from '@/ai/genkit';
+import { AI_ENABLED } from '@/ai/config';
+import { z } from 'genkit';
 
 const FindProductsInputSchema = z.object({
   query: z.string().describe('The user\'s request for finding products (e.g., "Find me a MacBook under GH₵10,000").'),
@@ -29,6 +30,19 @@ const FindProductsOutputSchema = z.object({
 export type FindProductsOutput = z.infer<typeof FindProductsOutputSchema>;
 
 export async function findProducts(input: FindProductsInput): Promise<FindProductsOutput> {
+  if (!AI_ENABLED) {
+    return {
+      recommendations: [
+        {
+          id: 'mock-1',
+          title: 'Premium Item (Mock)',
+          price: input.budget || 5000,
+          reason: `This is a mock recommendation for your query: "${input.query}".`,
+        }
+      ],
+      advice: "AI is currently disabled. Please use the search bar to find verified listings. Remember to always use our Escrow system for secure transactions.",
+    };
+  }
   return findProductsFlow(input);
 }
 

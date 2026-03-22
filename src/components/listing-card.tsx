@@ -35,16 +35,16 @@ export function ListingCard(props: Listing) {
   };
 
   return (
-    <Card className="group overflow-hidden bg-card border border-border/50 shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col h-full rounded-2xl">
+    <Card className="group overflow-hidden bg-card border-2 border-amber-600/5 shadow-sm hover:shadow-[0_20px_50px_rgba(217,119,6,0.15)] hover:border-amber-600/30 transition-all duration-500 flex flex-col h-full rounded-none">
 
       {/* Image — 4:5 ratio */}
-      <Link href={`/listings/${id}`} className="relative aspect-[4/5] w-full overflow-hidden block bg-muted">
+      <Link href={`/listings/${id}`} className="relative aspect-[4/5] w-full overflow-hidden block bg-amber-50">
         <Image
           src={imageUrl}
           alt={title}
           fill
           sizes="(max-width: 768px) 50vw, 300px"
-          className="object-cover transition-all duration-700 group-hover:scale-105"
+          className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
           data-ai-hint={imageHint}
         />
 
@@ -52,57 +52,57 @@ export function ListingCard(props: Listing) {
         <button
           onClick={handleFavorite}
           className={cn(
-            "absolute top-3 right-3 h-9 w-9 rounded-full flex items-center justify-center backdrop-blur-md border shadow-sm transition-all active:scale-90 z-10",
-            isFavorited ? "bg-primary border-primary text-white" : "bg-background/80 border-border text-muted-foreground hover:text-primary"
+            "absolute top-3 right-3 h-10 w-10 rounded-none flex items-center justify-center backdrop-blur-md border-2 shadow-xl transition-all active:scale-90 z-10",
+            isFavorited ? "bg-amber-600 border-amber-600 text-white shadow-amber-600/40" : "bg-white/80 border-amber-600/10 text-amber-700 hover:border-amber-600/40 hover:text-amber-600"
           )}
         >
-          <Heart className={cn("h-4 w-4", isFavorited && "fill-current")} />
+          <Heart className={cn("h-5 w-5", isFavorited && "fill-current")} />
         </button>
 
         {/* Escrow Badge */}
         {isEscrowProtected && (
           <div className="absolute top-3 left-3 z-10">
-            <Badge className="bg-primary text-primary-foreground border-none font-bold text-[8px] px-2 py-0.5 rounded-lg shadow-sm flex items-center gap-1 uppercase tracking-wider">
-              <ShieldCheck className="h-2.5 w-2.5" /> Escrow
+            <Badge className="bg-amber-600 text-white border-none font-black text-[9px] px-3 py-1 rounded-none shadow-xl flex items-center gap-2 uppercase tracking-[0.2em] italic">
+              <ShieldCheck className="h-3.5 w-3.5" /> Escrow
             </Badge>
           </div>
         )}
 
         {/* Price Overlay on Hover */}
-        <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/60 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-          <div className="flex items-baseline gap-2">
-            <span className="text-white font-bold text-lg">{formatPrice(price)}</span>
-            {oldPrice && <span className="text-white/60 text-xs line-through">{formatPrice(oldPrice)}</span>}
+        <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-amber-950/80 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+          <div className="flex items-baseline gap-3">
+            <span className="text-white font-black text-2xl tracking-tighter">GHS {parseFloat(price.toString()).toLocaleString()}</span>
+            {oldPrice && <span className="text-white/60 text-sm font-bold line-through tracking-tighter">GHS {parseFloat(oldPrice.toString()).toLocaleString()}</span>}
           </div>
         </div>
       </Link>
 
-      <CardContent className="p-4 flex flex-col flex-1 gap-2 bg-card">
+      <CardContent className="p-5 flex flex-col flex-1 gap-3 bg-card border-t-2 border-amber-600/5">
         {/* Category + location */}
         <div className="flex items-center justify-between">
-          <p className="text-[9px] font-bold text-primary uppercase tracking-[0.15em] truncate">
+          <p className="text-[10px] font-black text-amber-600 uppercase tracking-[0.25em] truncate">
             {category}
           </p>
-          <div className="flex items-center gap-1 text-[9px] text-muted-foreground font-bold uppercase tracking-widest shrink-0">
-            <MapPin className="h-2.5 w-2.5 text-primary/40" />
+          <div className="flex items-center gap-2 text-[10px] text-amber-900/40 font-black uppercase tracking-widest shrink-0">
+            <MapPin className="h-3 w-3 text-amber-600" />
             <span>{location.split(',')[0]}</span>
           </div>
         </div>
 
         {/* Title */}
         <Link href={`/listings/${id}`} className="block">
-          <h3 className="font-bold text-sm leading-snug text-foreground group-hover:text-primary transition-colors line-clamp-2 tracking-tight">
+          <h3 className="font-black text-sm leading-tight text-amber-950 group-hover:text-amber-600 transition-colors line-clamp-2 uppercase tracking-tighter italic">
             {title}
           </h3>
         </Link>
 
         {/* Buy button */}
-        <div className="mt-auto pt-4">
+        <div className="mt-auto pt-5">
           <Button 
             onClick={handleBuyNow}
-            className="w-full bg-primary/5 hover:bg-primary text-primary hover:text-primary-foreground border border-primary/20 hover:border-primary font-bold text-[10px] uppercase tracking-widest h-10 rounded-xl transition-all duration-300"
+            className="w-full bg-amber-600 hover:bg-amber-700 text-white font-black uppercase text-[10px] tracking-[0.3em] h-12 rounded-none shadow-lg shadow-amber-600/20 transition-all hover:-translate-y-1 active:scale-95"
           >
-            Buy Now — Secure
+            Secure Buy
           </Button>
         </div>
       </CardContent>

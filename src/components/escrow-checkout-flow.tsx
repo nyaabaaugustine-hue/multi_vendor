@@ -414,7 +414,13 @@ export function EscrowCheckoutFlow() {
                         <div className="flex items-center gap-2 mt-2 justify-end group">
                           <span className="text-[10px] text-white/20 font-mono truncate max-w-[100px]">{paystackRef}</span>
                           <button
-                            onClick={() => { navigator.clipboard.writeText(paystackRef).catch(() => {}); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+                            onClick={() => { 
+                              if (typeof window !== 'undefined' && navigator.clipboard) {
+                                navigator.clipboard.writeText(paystackRef)
+                                  .then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); })
+                                  .catch(() => {});
+                              }
+                            }}
                             className="p-1 rounded-md hover:bg-white/5 text-white/20 hover:text-primary transition-all"
                           >
                             <Copy className="h-3 w-3" />

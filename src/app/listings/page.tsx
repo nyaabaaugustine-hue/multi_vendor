@@ -4,7 +4,8 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { ListingCard } from '@/components/listing-card';
-import { LISTINGS } from '@/lib/mock-data';
+import { LISTINGS as MOCK_LISTINGS } from '@/lib/mock-data';
+import { getListingsAction } from '@/lib/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, SlidersHorizontal, ChevronRight, ShieldCheck, Filter } from 'lucide-react';
@@ -42,15 +43,15 @@ function FilterSidebar() {
       <div className="space-y-6">
         <div className="flex items-center gap-3 text-secondary">
           <Filter className="h-4 w-4 text-primary" />
-          <h3 className="font-black uppercase text-[10px] tracking-[0.3em]">Precision Filters</h3>
+          <h3 className="font-black uppercase text-[10px] tracking-[0.3em]">Marketplace Filters</h3>
         </div>
         <Separator className="bg-border/50" />
       </div>
 
       <div className="space-y-6">
-        <h4 className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Asset Condition</h4>
+        <h4 className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Item Condition</h4>
         <div className="space-y-3">
-          {['Factory Sealed', 'Verified Used', 'Institutional Grade'].map((label) => (
+          {['New', 'Like New', 'Excellent', 'Good', 'Fair'].map((label) => (
             <div key={label} className="flex items-center gap-3 group cursor-pointer">
               <Checkbox className="rounded-none border-2" id={label} />
               <label htmlFor={label} className="text-[10px] font-bold uppercase tracking-tight text-secondary group-hover:text-primary transition-colors cursor-pointer">{label}</label>
@@ -60,7 +61,7 @@ function FilterSidebar() {
       </div>
 
       <div className="space-y-6">
-        <h4 className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Fidelity Level</h4>
+        <h4 className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Seller Rating</h4>
         <div className="space-y-3">
           {['Tier 1 (99%+)', 'Tier 2 (95%+)', 'Tier 3 (90%+)'].map((label) => (
             <div key={label} className="flex items-center gap-3 group cursor-pointer">
@@ -72,9 +73,9 @@ function FilterSidebar() {
       </div>
 
       <div className="space-y-6">
-        <h4 className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Settlement Node</h4>
+        <h4 className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Escrow Type</h4>
         <div className="space-y-3">
-          {['Instant Settlement', 'Standard Escrow (2h)', 'Multisig (High Value)'].map((label) => (
+          {['Instant Settlement', 'Standard Escrow', 'Verified Business'].map((label) => (
             <div key={label} className="flex items-center gap-3 group cursor-pointer">
               <Checkbox className="rounded-none border-2" id={label} />
               <label htmlFor={label} className="text-[10px] font-bold uppercase tracking-tight text-secondary group-hover:text-primary transition-colors cursor-pointer">{label}</label>
@@ -86,25 +87,41 @@ function FilterSidebar() {
       <div className="bg-primary/5 p-6 border border-dashed border-primary/20 space-y-4">
         <ShieldCheck className="h-6 w-6 text-primary" />
         <p className="text-[9px] font-black uppercase tracking-widest leading-relaxed text-secondary">
-          All listings in this registry are cryptographically bound to the Sovereign Escrow Protocol.
+          All listings in this marketplace are protected by our Secure Escrow system.
         </p>
       </div>
     </aside>
   );
 }
 
+import { useSearch } from '@/components/providers';
+
 function ListingsContent() {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get('category');
-  const [searchQuery, setSearchQuery] = useState('');
+  const { searchQuery, setSearchQuery } = useSearch();
   const [isLoading, setIsLoading] = useState(true);
+  const [realListings, setRealListings] = useState<any[]>([]);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1500);
-    return () => clearTimeout(timer);
+    const fetchData = async () => {
+      try {
+        const result = await getListingsAction();
+        if (result.success && result.data) {
+          setRealListings(result.data);
+        }
+      } catch (error) {
+        console.error('Fetch error:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
   }, []);
 
-  const filteredListings = LISTINGS.filter(l => {
+  const combinedListings = [...realListings, ...MOCK_LISTINGS];
+
+  const filteredListings = combinedListings.filter(l => {
     const matchesSearch = l.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          l.category.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = categoryParam ? l.category === categoryParam : true;
@@ -116,18 +133,18 @@ function ListingsContent() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
         <div className="space-y-1">
           <div className="flex items-center gap-3">
-            <Badge className="bg-primary text-secondary rounded-none font-black text-[8px] tracking-widest uppercase">REGISTRY NODE</Badge>
+            <Badge className="bg-primary text-secondary rounded-none font-black text-[8px] tracking-widest uppercase">MARKETPLACE</Badge>
             <span className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.3em]">ACCRA HUB ONLINE</span>
           </div>
           <h1 className="text-4xl font-headline font-black text-secondary tracking-tighter uppercase italic">
-            {categoryParam ? `(${categoryParam} Registry)` : '(All Marketplace Assets)'}
+            {categoryParam ? `(${categoryParam} Listings)` : '(All Items)'}
           </h1>
         </div>
         <div className="flex items-center gap-3 w-full md:w-auto">
           <div className="relative flex-1 md:w-96 border border-border group focus-within:border-primary transition-colors">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input 
-              placeholder="Search verified registry..." 
+              placeholder="Search verified listings..." 
               className="pl-12 rounded-none h-12 border-none focus-visible:ring-0 font-bold uppercase text-[11px] tracking-tight"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -160,13 +177,13 @@ function ListingsContent() {
           
           {!isLoading && filteredListings.length === 0 && (
             <div className="py-24 text-center border-2 border-dashed border-muted">
-              <p className="text-xl text-muted-foreground font-black uppercase tracking-[0.2em]">Zero Nodes Found.</p>
+              <p className="text-xl text-muted-foreground font-black uppercase tracking-[0.2em]">Zero Items Found.</p>
               <Button 
                 variant="link" 
                 onClick={() => window.history.pushState({}, '', '/listings')} 
                 className="mt-4 text-primary font-black uppercase tracking-widest text-[10px]"
               >
-                Clear Registry Filter
+                Clear Filters
               </Button>
             </div>
           )}
@@ -174,7 +191,7 @@ function ListingsContent() {
           {!isLoading && filteredListings.length > 0 && (
             <div className="mt-20 text-center">
               <Button variant="outline" size="lg" className="rounded-none px-16 border-2 hover:bg-secondary hover:text-white h-14 font-black text-secondary text-[10px] uppercase tracking-[0.3em] transition-all">
-                Load More Assets
+                Load More Items
               </Button>
             </div>
           )}
@@ -186,7 +203,7 @@ function ListingsContent() {
 
 export default function ListingsPage() {
   return (
-    <Suspense fallback={<div className="container mx-auto px-4 py-24 text-center font-black uppercase tracking-[0.4em] animate-pulse text-secondary">Authorizing Marketplace Registry...</div>}>
+    <Suspense fallback={<div className="container mx-auto px-4 py-24 text-center font-black uppercase tracking-[0.4em] animate-pulse text-secondary">Loading Marketplace...</div>}>
       <ListingsContent />
     </Suspense>
   );

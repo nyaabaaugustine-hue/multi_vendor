@@ -9,7 +9,9 @@
  * Safe to re-run — uses onConflictDoNothing() so existing rows are skipped.
  */
 
-import 'dotenv/config';
+import * as dotenv from 'dotenv';
+dotenv.config({ path: '.env.local' });
+
 import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
 import * as schema from './schema';
@@ -210,7 +212,7 @@ async function seed() {
   ).onConflictDoNothing();
   console.log(`  ✓ ${MOCK_DISPUTES.length} disputes`);
 
-  console.log('\n✅ Seed complete. All mock data is now in Neon.\n');
+  console.log('\n✅ Seed complete. All mock data is now in the database.\n');
   process.exit(0);
 }
 
