@@ -73,19 +73,19 @@ export function Navbar() {
   ];
 
   return (
-    <header className="w-full bg-background/80 backdrop-blur-md border-b sticky top-0 z-50 transition-all duration-300">
+    <header className="w-full bg-white border-b-2 border-primary/20 shadow-md sticky top-0 z-50 transition-all duration-300">
       <AuthDialog open={showAuth} onOpenChange={setShowAuth} />
       
       <div className="max-w-7xl mx-auto px-4 h-16 md:h-20 flex items-center justify-between gap-8">
         {/* LOGO AREA */}
         <Link href="/" className="flex items-center gap-3 shrink-0 group">
-          <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-primary/10 p-1.5 bg-white shadow-sm group-hover:border-primary/30 transition-all duration-500">
+          <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-primary/10 p-1.5 bg-white shadow-sm group-hover:border-primary/50 group-hover:shadow-lg group-hover:shadow-primary/20 transition-all duration-500 group-hover:scale-105">
             <Image 
-              src={content.settings.logoUrl} 
+              src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1774057903/ai-removebg-preview_ikywpe.png"
               alt="Logo" 
               fill 
               sizes="40px" 
-              className="object-contain" 
+              className="object-contain transition-transform duration-700 ease-in-out group-hover:rotate-[360deg] group-hover:scale-110" 
               priority 
             />
           </div>
@@ -99,7 +99,7 @@ export function Navbar() {
 
         {/* SEARCH AREA — Simplified "Uber Style" */}
         <div className="hidden md:flex flex-1 max-w-xl items-center h-12 bg-muted/30 rounded-2xl border border-border/40 focus-within:border-primary/30 focus-within:bg-background focus-within:shadow-lg transition-all duration-500 group">
-          <div className="flex-1 flex items-center px-5 gap-4">
+          <div className="flex-1 flex items-center px-5 gap-4 h-full">
             <Search className="h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
             <input 
               placeholder='Search verified listings, vendors...' 
@@ -119,12 +119,12 @@ export function Navbar() {
         {/* ACTIONS AREA */}
         <div className="flex items-center gap-3">
           <div className="hidden lg:flex items-center gap-1 mr-2">
-            <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/5 hover:text-primary transition-all">
+            <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-slate-50 hover:bg-primary/10 text-slate-600 hover:text-primary transition-all border border-transparent hover:border-primary/20">
               <Bell className="h-5 w-5" />
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/5 hover:text-primary transition-all">
+                <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-slate-50 hover:bg-primary/10 text-slate-600 hover:text-primary transition-all border border-transparent hover:border-primary/20">
                   <Palette className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
@@ -151,7 +151,7 @@ export function Navbar() {
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-3 pl-2 pr-4 h-12 rounded-2xl hover:bg-primary/5 group transition-all">
+                <Button variant="ghost" className="flex items-center gap-3 pl-2 pr-4 h-12 rounded-2xl bg-slate-50 hover:bg-primary/5 group transition-all border border-slate-100 hover:border-primary/20">
                   <Avatar className="h-8 w-8 rounded-xl border border-primary/10">
                     <AvatarImage src={user.avatar} className="object-cover" />
                     <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">{user.name.charAt(0)}</AvatarFallback>
@@ -163,7 +163,7 @@ export function Navbar() {
                   <ChevronDown className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-all" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 rounded-2xl border border-border/50 shadow-2xl p-2 mt-2" align="end">
+              <DropdownMenuContent className="w-56 rounded-2xl border border-border/50 shadow-2xl p-2 mt-2 bg-white/95 backdrop-blur-xl" align="end">
                   <DropdownMenuLabel className="text-[9px] uppercase font-black text-muted-foreground tracking-widest">Account Node</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <Link href="/dashboard">
@@ -183,15 +183,16 @@ export function Navbar() {
               </Button>
             )}
 
-            <Link href="/listings/create" className="hidden xs:block">
-              <Button 
-                className="bg-primary text-primary-foreground hover:opacity-95 font-black text-[8px] md:text-[9px] uppercase tracking-widest h-8 px-3 md:px-5 shadow-md flex items-center gap-2"
-              >
+            <Button 
+              asChild
+              className="hidden xs:flex bg-primary text-primary-foreground hover:opacity-95 font-black text-[8px] md:text-[9px] uppercase tracking-widest h-8 px-3 md:px-5 shadow-md items-center gap-2"
+            >
+              <Link href="/listings/create">
                 <Plus className="h-3 w-3" />
                 <span className="hidden sm:inline">Post Ad</span>
                 <span className="sm:hidden">Post</span>
-              </Button>
-            </Link>
+              </Link>
+            </Button>
             
             {/* [FIX 5.1] Mobile hamburger — now wired to Sheet drawer, was completely non-functional */}
             <Button
@@ -203,7 +204,6 @@ export function Navbar() {
             >
               <Menu className="h-4 w-4" />
             </Button>
-          </div>
         </div>
       </div>
 

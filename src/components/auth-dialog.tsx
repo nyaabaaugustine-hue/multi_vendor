@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { MOCK_USERS } from '@/lib/mock-data';
 import { useAuth } from '@/components/providers';
 import { ShieldCheck, User as UserIcon, Store, Shield, Key } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface AuthDialogProps {
   open: boolean;

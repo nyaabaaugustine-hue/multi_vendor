@@ -1,6 +1,8 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { 
   Command,
   CommandInput,
@@ -41,18 +43,56 @@ const SUGGESTIONS = [
   { label: "Graphic Designer", icon: Briefcase },
 ];
 
+const HERO_IMAGES = [
+  "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2000&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=2000&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=2000&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=2000&auto=format&fit=crop",
+];
+
 export function HeroCarousel() {
   const [isFocused, setIsFocused] = React.useState(false);
+  const [currentSlide, setCurrentSlide] = React.useState(0);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <section className="w-full pt-8 pb-16 md:pt-12 md:pb-24 bg-background relative overflow-hidden">
-      {/* Premium Background Elements */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full -z-10 opacity-[0.03] pointer-events-none">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-primary rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-600 rounded-full blur-[120px]" />
+      {/* Background Image Slider */}
+      <div className="absolute inset-0">
+        {HERO_IMAGES.map((src, index) => (
+          <div
+            key={src}
+            className={cn(
+              "absolute inset-0 transition-opacity duration-1000 ease-in-out",
+              index === currentSlide ? "opacity-100" : "opacity-0"
+            )}
+          >
+            <Image
+              src={src}
+              alt="Hero Background"
+              fill
+              sizes="100vw"
+              className="object-cover opacity-20"
+              priority={index === 0}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/30" />
+          </div>
+        ))}
       </div>
 
-      <div className="container px-4 mx-auto">
+      {/* Premium Background Elements */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full -z-10 opacity-[0.03] pointer-events-none">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-primary rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-600 rounded-full blur-3xl" />
+      </div>
+
+      <div className="container px-4 mx-auto relative z-10">
         <div className="max-w-4xl mx-auto text-center space-y-10">
           {/* Trust Badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/5 border border-primary/10 animate-in fade-in slide-in-from-top-4 duration-700">
@@ -79,7 +119,7 @@ export function HeroCarousel() {
               "rounded-2xl border bg-card shadow-2xl overflow-hidden transition-all duration-300",
               isFocused ? "ring-4 ring-primary/5 border-primary/30" : "border-border/50"
             )}>
-              <Command className="rounded-none border-none">
+              <Command className="rounded-none border-none" label="Search listings">
                 <div className="flex items-center px-4 border-b">
                   <Search className="h-5 w-5 text-muted-foreground shrink-0" />
                   <CommandInput 

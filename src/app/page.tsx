@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 
 const HeroCarousel = dynamic(() => import('@/components/hero-carousel').then(mod => mod.HeroCarousel), {
-  ssr: true,
+  ssr: false,
   loading: () => <div className="max-w-7xl mx-auto w-full px-4 mb-8 md:mb-12 mt-4 md:mt-8 h-[260px] md:h-[320px] bg-muted animate-pulse rounded-xl" />
 });
 const SpotlightCategories = dynamic(() => import('@/components/spotlight-categories').then(mod => mod.SpotlightCategories), { ssr: true });
