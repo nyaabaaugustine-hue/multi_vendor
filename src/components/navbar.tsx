@@ -39,6 +39,7 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ListingCreateDialog } from '@/components/listing-create-dialog';
 
 export function Navbar() {
   const { user } = useAuth();
@@ -229,16 +230,17 @@ export function Navbar() {
               </Button>
             )}
 
-            <Button 
-              asChild
-              className="hidden xs:flex bg-primary text-primary-foreground hover:opacity-95 font-black text-[8px] md:text-[9px] uppercase tracking-widest h-8 px-3 md:px-5 shadow-md items-center gap-2"
-            >
-              <Link href="/listings/create">
-                <Plus className="h-3 w-3" />
-                <span className="hidden sm:inline">Post Ad</span>
-                <span className="sm:hidden">Post</span>
-              </Link>
-            </Button>
+            <ListingCreateDialog>
+              <Button 
+                className="hidden xs:flex bg-primary text-primary-foreground hover:opacity-95 font-black text-[8px] md:text-[9px] uppercase tracking-widest h-8 px-3 md:px-5 shadow-md items-center gap-2"
+              >
+                <div>
+                  <Plus className="h-3 w-3 inline mr-2" />
+                  <span className="hidden sm:inline">Post Ad</span>
+                  <span className="sm:hidden">Post</span>
+                </div>
+              </Button>
+            </ListingCreateDialog>
             
             {/* [FIX 5.1] Mobile hamburger — now wired to Sheet drawer, was completely non-functional */}
             <Button

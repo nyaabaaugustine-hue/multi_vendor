@@ -27,6 +27,7 @@ import {
   Home as HomeIcon,
   Briefcase
 } from "lucide-react";
+import { useSearch } from "@/components/providers";
 import { cn } from "@/lib/utils";
 
 const QUICK_INTENTS = [
@@ -44,15 +45,16 @@ const SUGGESTIONS = [
 ];
 
 const HERO_IMAGES = [
-  "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2000&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=2000&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=2000&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=2000&auto=format&fit=crop",
+  "https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "https://images.pexels.com/photos/3769747/pexels-photo-3769747.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "https://images.pexels.com/photos/1643389/pexels-photo-1643389.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "https://images.pexels.com/photos/164634/pexels-photo-164634.jpeg?auto=compress&cs=tinysrgb&w=1600",
 ];
 
 export function HeroCarousel() {
   const [isFocused, setIsFocused] = React.useState(false);
   const [currentSlide, setCurrentSlide] = React.useState(0);
+  const { setSearchQuery } = useSearch();
 
   React.useEffect(() => {
     const timer = setInterval(() => {
@@ -127,6 +129,7 @@ export function HeroCarousel() {
                     className="h-14 border-none focus:ring-0 text-base"
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
+                    onValueChange={(value) => setSearchQuery(value)}
                   />
                   <div className="hidden md:flex items-center gap-2 ml-auto">
                     <Badge variant="secondary" className="font-mono text-[10px] py-0 px-1.5 opacity-50">ESC</Badge>
