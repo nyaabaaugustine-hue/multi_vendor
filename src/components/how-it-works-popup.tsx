@@ -32,39 +32,41 @@ export const HowItWorksPopup = ({ onNext }: { onNext?: () => void }) => {
 
   return (
     // This component assumes it's placed inside a modal or dialog container.
-    <div className="w-full max-w-4xl rounded-lg bg-card p-8 shadow-lg border border-border">
+    <div className="w-full max-w-4xl rounded-none bg-card p-8 shadow-lg border-4 border-amber-600">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-foreground">
-            How It Works
+          <h2 className="text-2xl font-black text-foreground uppercase tracking-tighter">
+            Checkout Flow
           </h2>
-          <p className="text-sm text-muted-foreground">Step 1 of 7</p>
+          <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Step 1 of 7</p>
         </div>
         <div className="text-right">
-          <span className="text-sm font-semibold text-primary">
+          <span className="text-[10px] font-black text-amber-600 uppercase tracking-widest">
             {progress}% Complete
           </span>
         </div>
       </div>
 
-      <div className="w-full bg-secondary rounded-full h-2 mb-8">
+      <div className="w-full bg-secondary rounded-none h-1.5 mb-8">
         <div
-          className="bg-primary h-2 rounded-full transition-all duration-500"
+          className="bg-amber-600 h-1.5 rounded-none transition-all duration-500"
           style={{ width: `${progress}%` }}
         ></div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         {/* Left Side: Explanation */}
-        <div className="space-y-6">
-          <h3 className="text-xl font-semibold text-foreground">
-            How Escrow Works
-          </h3>
-          <p className="text-muted-foreground">
-            We hold your funds securely until you're happy with your purchase.
-            This protects both buyer and seller.
-          </p>
-          <div className="space-y-5">
+        <div className="space-y-8">
+          <div className="space-y-2">
+            <h3 className="text-xl font-black text-foreground uppercase tracking-tight">
+              Secure Escrow Protocol
+            </h3>
+            <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide leading-relaxed">
+              We hold your funds securely until you're happy with your purchase.
+              This protects both buyer and seller via our Secure Buy system.
+            </p>
+          </div>
+          <div className="space-y-6">
             <HowItWorksStep
               icon={CreditCard}
               title="Secure Payment"
@@ -94,31 +96,31 @@ export const HowItWorksPopup = ({ onNext }: { onNext?: () => void }) => {
         </div>
 
         {/* Right Side: Order Summary */}
-        <div className="rounded-lg bg-secondary p-6 flex flex-col border border-border">
-          <h3 className="text-lg font-semibold text-foreground mb-4">Order Summary</h3>
-          <div className="flex items-center gap-3 bg-green-100/50 text-green-800 text-sm font-medium px-3 py-2 rounded-md mb-4 border border-green-200/80">
-            <CheckCircle className="h-5 w-5" />
-            <span>Escrow Protected</span>
+        <div className="rounded-none bg-slate-950 p-8 flex flex-col border-2 border-amber-600/20 shadow-2xl">
+          <h3 className="text-lg font-black text-white mb-6 uppercase tracking-widest border-b border-white/10 pb-4">Order Summary</h3>
+          <div className="flex items-center gap-3 bg-amber-600 text-white text-[10px] font-black px-4 py-3 rounded-none mb-8 uppercase tracking-[0.2em]">
+            <CheckCircle className="h-4 w-4" />
+            <span>Secure Buy Protected</span>
           </div>
-          <div className="space-y-3 flex-grow">
+          <div className="space-y-4 flex-grow">
             <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">Custom Northern Smock</span>
-              <span className="font-semibold text-foreground">GH₵1,200</span>
+              <span className="text-[11px] font-black text-white/60 uppercase tracking-widest">Custom Northern Smock</span>
+              <span className="text-sm font-black text-[#800020] uppercase tracking-tighter">GH₵1,200</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">Service Fee (2.5%)</span>
-              <span className="font-semibold text-foreground">GH₵60</span>
+              <span className="text-[11px] font-black text-white/60 uppercase tracking-widest">Service Fee (2.5%)</span>
+              <span className="text-sm font-black text-[#800020] uppercase tracking-tighter">GH₵60</span>
             </div>
           </div>
-          <div className="border-t border-border pt-4 mt-4">
-            <div className="flex justify-between items-center font-bold text-lg">
-              <span className="text-foreground">Total to Pay</span>
-              <span className="text-primary">GH₵1,260</span>
+          <div className="border-t-2 border-white/10 pt-6 mt-8">
+            <div className="flex justify-between items-center font-black text-xl">
+              <span className="text-white uppercase tracking-tighter">Total to Pay</span>
+              <span className="text-amber-600 tracking-tighter">GH₵1,260</span>
             </div>
           </div>
           <button 
             onClick={onNext}
-            className="mt-6 w-full bg-primary text-white font-bold py-3 rounded-lg hover:opacity-90 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+            className="mt-8 w-full bg-amber-600 text-white font-black py-5 rounded-none hover:bg-amber-700 transition-all uppercase text-[12px] tracking-[0.3em] shadow-[0_10px_30px_rgba(217,119,6,0.3)] hover:-translate-y-1 active:scale-95"
           >
             Proceed to Secure Payment
           </button>

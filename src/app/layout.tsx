@@ -21,8 +21,34 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Ecommerce — Ghana's Secure Marketplace",
-  description: 'Buy and sell safely across Ghana with escrow-protected transactions.',
+  title: "VaultCommerce — Ghana's Premier Secure Buy Marketplace",
+  description: 'The definitive multi-vendor platform for high-value assets in Ghana. Buy and sell safely with professional escrow-protected transactions and Secure Buy protocols.',
+  keywords: ['marketplace', 'Ghana', 'escrow', 'secure buy', 'ecommerce', 'Accra', 'high-value assets', 'verified vendors'],
+  authors: [{ name: 'VaultCommerce Engineering' }],
+  viewport: 'width=device-width, initial-scale=1',
+  robots: 'index, follow',
+  openGraph: {
+    title: 'VaultCommerce — Secure Marketplace',
+    description: "Ghana's most trusted escrow-protected platform.",
+    url: 'https://vaultcommerce.com',
+    siteName: 'VaultCommerce',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1774057903/ai-removebg-preview_ikywpe.png',
+        width: 1200,
+        height: 630,
+        alt: 'VaultCommerce Secure Buy',
+      },
+    ],
+    locale: 'en_GH',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'VaultCommerce — Secure Marketplace',
+    description: "Ghana's most trusted escrow-protected platform.",
+    images: ['https://res.cloudinary.com/dwsl2ktt2/image/upload/v1774057903/ai-removebg-preview_ikywpe.png'],
+  },
   icons: {
     icon: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1774057903/ai-removebg-preview_ikywpe.png',
   },
@@ -30,62 +56,62 @@ export const metadata: Metadata = {
 
 function Footer() {
   return (
-    <footer className="bg-black text-white pt-24 pb-32 border-t border-white/10">
+    <footer className="bg-black text-white pt-24 pb-32 border-t-4 border-amber-600">
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
           <div className="space-y-6">
             <div className="flex flex-col">
-              <span className="font-bold text-xl text-white tracking-tighter uppercase leading-none">
-                ECOMMERCE
+              <span className="font-black text-2xl text-white tracking-tighter uppercase leading-none italic">
+                VAULT<span className="text-amber-600">COMMERCE</span>
               </span>
-              <span className="text-[8px] font-bold text-primary uppercase tracking-[0.2em] mt-1 opacity-70">Secure Marketplace</span>
+              <span className="text-[9px] font-black text-amber-600/60 uppercase tracking-[0.3em] mt-2">Secure Buy Marketplace</span>
             </div>
-            <p className="text-sm text-white/60 leading-relaxed max-w-xs">
-              Ghana's most secure multi-vendor marketplace. Buy and sell with confidence through our integrated escrow system.
+            <p className="text-[11px] font-medium text-white/40 uppercase tracking-widest leading-relaxed max-w-xs">
+              Ghana's premier multi-vendor node. Every transaction is protected by our professional Secure Buy protocol.
             </p>
           </div>
           
           <div className="space-y-6">
-            <h4 className="text-xs font-bold uppercase tracking-widest text-white">Marketplace</h4>
+            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-600">Registry</h4>
             <ul className="space-y-3">
-              {['Laptops', 'Vehicles', 'Property', 'Fashion'].map((item) => (
+              {['Laptops', 'Vehicles', 'Real Estate', 'Assets'].map((item) => (
                 <li key={item}>
-                  <Link href="/listings" className="text-sm text-white/40 hover:text-primary transition-colors">{item}</Link>
+                  <Link href="/listings" className="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-amber-600 transition-colors">{item}</Link>
                 </li>
               ))}
             </ul>
           </div>
 
           <div className="space-y-6">
-            <h4 className="text-xs font-bold uppercase tracking-widest text-white">Support</h4>
+            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-600">Protocol</h4>
             <ul className="space-y-3">
-              {['Help Center', 'Safety Tips', 'Escrow Guide', 'Contact Us'].map((item) => (
+              {['Safety Node', 'Escrow Briefing', 'Terms of Use', 'Partner Application'].map((item) => (
                 <li key={item}>
-                  <Link href="/contact" className="text-sm text-white/40 hover:text-primary transition-colors">{item}</Link>
+                  <Link href="/terms" className="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-amber-600 transition-colors">{item}</Link>
                 </li>
               ))}
             </ul>
           </div>
 
           <div className="space-y-6">
-            <h4 className="text-xs font-bold uppercase tracking-widest text-white">Connect</h4>
+            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-600">Connect</h4>
             <div className="flex gap-4">
               {[Facebook, Instagram, Youtube, Linkedin].map((Icon, i) => (
-                <a key={i} href="#" className="h-10 w-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all shadow-sm">
-                  <Icon className="h-4 w-4" />
+                <a key={i} href="#" className="h-12 w-12 rounded-none bg-white/5 border border-white/10 flex items-center justify-center hover:bg-amber-600 hover:text-white transition-all shadow-xl group">
+                  <Icon className="h-4 w-4 text-white/40 group-hover:text-white" />
                 </a>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
-            © 2026 Ecommerce Inc. — Airport Residential Area, Accra
+        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.3em]">
+            © 2026 VaultCommerce — Registry Node: Airport Residential, Accra
           </p>
-          <div className="flex gap-8">
-            <Link href="/privacy" className="text-[10px] font-bold text-white/40 uppercase tracking-widest hover:text-primary transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="text-[10px] font-bold text-white/40 uppercase tracking-widest hover:text-primary transition-colors">Terms of Service</Link>
+          <div className="flex gap-10">
+            <Link href="/terms" className="text-[9px] font-black text-white/20 uppercase tracking-[0.4em] hover:text-amber-600 transition-colors">Privacy Node</Link>
+            <Link href="/terms" className="text-[9px] font-black text-white/20 uppercase tracking-[0.4em] hover:text-amber-600 transition-colors">Service Protocol</Link>
           </div>
         </div>
       </div>

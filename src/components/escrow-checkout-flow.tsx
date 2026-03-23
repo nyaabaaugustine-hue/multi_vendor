@@ -332,37 +332,37 @@ export function EscrowCheckoutFlow() {
           </DialogHeader>
 
           {/* ── HEADER ── */}
-          <div className="bg-background/50 backdrop-blur-sm border-b px-8 py-6">
+          <div className="bg-slate-950 border-b-2 border-amber-600/20 px-8 py-6">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Lock className="h-4 w-4 text-primary shrink-0" />
+                <div className="h-10 w-10 rounded-none bg-amber-600/10 flex items-center justify-center border border-amber-600/20">
+                  <Lock className="h-5 w-5 text-amber-600 shrink-0" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block leading-none mb-1">
-                    Checkout Flow
+                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-600/60 block leading-none mb-1.5">
+                    Secure Buy Protocol
                   </span>
-                  <span className="text-lg font-bold text-foreground leading-none">
+                  <span className="text-xl font-black text-white uppercase tracking-tighter leading-none">
                     {STEP_LABEL[step]}
                   </span>
                 </div>
               </div>
-              <button onClick={handleClose} aria-label="Close" className="h-8 w-8 rounded-full flex items-center justify-center hover:bg-muted transition-colors">
-                <X className="h-4 w-4 text-muted-foreground" />
+              <button onClick={handleClose} aria-label="Close" className="h-8 w-8 rounded-none flex items-center justify-center hover:bg-white/5 transition-colors">
+                <X className="h-5 w-5 text-white/40" />
               </button>
             </div>
 
             {/* Step progress */}
             <div className="space-y-3">
-              <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+              <div className="flex justify-between text-[9px] font-black uppercase tracking-[0.2em] text-white/40">
                 <span>
                   Step {Math.max(1, stepIdx + 1)} of {STEP_ORDER.length}
                 </span>
-                <span className="text-primary">{progress}% Complete</span>
+                <span className="text-amber-600">{progress}% Complete</span>
               </div>
-              <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+              <div className="h-1.5 w-full bg-white/5 rounded-none overflow-hidden">
                 <div 
-                  className="h-full bg-primary transition-all duration-700 ease-in-out" 
+                  className="h-full bg-amber-600 transition-all duration-700 ease-in-out" 
                   style={{ width: `${progress}%` }} 
                 />
               </div>
@@ -381,16 +381,16 @@ export function EscrowCheckoutFlow() {
             {step === 'payment_pending' && (
               <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="text-center max-w-sm mx-auto">
-                  <div className="h-20 w-20 bg-primary/5 rounded-full flex items-center justify-center mx-auto mb-4 border border-primary/10">
-                    <CreditCard className="h-10 w-10 text-primary" />
+                  <div className="h-20 w-20 bg-amber-600/10 rounded-none flex items-center justify-center mx-auto mb-4 border border-amber-600/20 shadow-[0_0_20px_rgba(217,119,6,0.1)]">
+                    <CreditCard className="h-10 w-10 text-amber-600" />
                   </div>
-                  <h2 className="text-2xl font-bold text-foreground tracking-tight">Complete Payment</h2>
-                  <p className="text-sm text-muted-foreground mt-2">Secure transaction powered by Paystack.</p>
+                  <h2 className="text-2xl font-black text-foreground tracking-tighter uppercase">Complete Payment</h2>
+                  <p className="text-[10px] font-black text-muted-foreground mt-2 uppercase tracking-widest">Secure transaction powered by Paystack.</p>
                 </div>
 
                 {/* Paystack-style card - World Class Redesign */}
-                <div className="relative overflow-hidden rounded-3xl bg-[#09090b] p-8 text-white shadow-2xl border border-white/5">
-                  <div className="absolute top-0 right-0 p-6 opacity-20">
+                <div className="relative overflow-hidden rounded-none bg-slate-950 p-8 text-white shadow-2xl border-2 border-amber-600/20">
+                  <div className="absolute top-0 right-0 p-6 opacity-20 text-amber-600">
                     <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2"/>
                       <path d="M12 16V12M12 8H12.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
@@ -400,19 +400,19 @@ export function EscrowCheckoutFlow() {
                   <div className="space-y-8">
                     <div className="flex items-center gap-3">
                       <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
-                      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">Paystack Secure Portal</span>
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#800020]">Secure Payment Portal</span>
                     </div>
 
                     <div className="grid grid-cols-2 gap-8">
                       <div>
-                        <p className="text-[10px] text-white/30 uppercase font-bold tracking-widest mb-2">Amount Due</p>
-                        <span className="text-3xl font-bold text-primary tracking-tighter">{formatPrice(grandTotal)}</span>
+                        <p className="text-[10px] text-[#800020] uppercase font-black tracking-widest mb-2">Amount Due</p>
+                        <span className="text-3xl font-black text-amber-600 tracking-tighter uppercase italic">{formatPrice(grandTotal)}</span>
                       </div>
                       <div className="text-right">
-                        <p className="text-[10px] text-white/30 uppercase font-bold tracking-widest mb-2">Order Reference</p>
-                        <p className="text-sm font-mono font-bold text-white/90">{orderId}</p>
+                        <p className="text-[10px] text-[#800020] uppercase font-black tracking-widest mb-2">Order Reference</p>
+                        <p className="text-sm font-mono font-black text-white/90">{orderId}</p>
                         <div className="flex items-center gap-2 mt-2 justify-end group">
-                          <span className="text-[10px] text-white/20 font-mono truncate max-w-[100px]">{paystackRef}</span>
+                          <span className="text-[10px] text-[#800020] font-mono truncate max-w-[100px]">{paystackRef}</span>
                           <button
                             onClick={() => { 
                               if (typeof window !== 'undefined' && navigator.clipboard) {
@@ -421,39 +421,39 @@ export function EscrowCheckoutFlow() {
                                   .catch(() => {});
                               }
                             }}
-                            className="p-1 rounded-md hover:bg-white/5 text-white/20 hover:text-primary transition-all"
+                            className="p-1 rounded-none hover:bg-white/5 text-white/20 hover:text-amber-600 transition-all"
                           >
                             <Copy className="h-3 w-3" />
                           </button>
                         </div>
-                        {copied && <p className="text-[10px] text-green-400 font-bold mt-1">Copied to clipboard</p>}
+                        {copied && <p className="text-[10px] text-green-400 font-black mt-1 uppercase tracking-widest">Copied to clipboard</p>}
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-primary/5 rounded-2xl p-5 border border-primary/10 flex gap-4">
-                  <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                    <ShieldCheck className="h-5 w-5 text-primary" />
+                <div className="bg-slate-950 rounded-none p-5 border-l-4 border-amber-600 flex gap-4 shadow-xl">
+                  <div className="h-10 w-10 rounded-none bg-amber-600/10 flex items-center justify-center shrink-0 border border-amber-600/20">
+                    <ShieldCheck className="h-5 w-5 text-amber-600" />
                   </div>
-                  <p className="text-xs text-foreground/80 leading-relaxed font-medium">
-                    Your payment is held in a <span className="text-primary font-bold">secure escrow vault</span>. The seller is only paid after you verify the item.
+                  <p className="text-[11px] text-white/80 leading-relaxed font-black uppercase tracking-wide">
+                    Your payment is held in a <span className="text-amber-600 font-black">secure escrow vault</span>. The seller is only paid after you verify the item.
                   </p>
                 </div>
 
                 <div className="space-y-4">
                   <Button
                     onClick={handlePay}
-                    className="w-full h-14 bg-primary text-primary-foreground font-bold text-sm tracking-wide rounded-xl gap-3 shadow-lg hover:shadow-primary/20 transition-all hover:scale-[1.01] active:scale-[0.99]"
+                    className="w-full h-16 bg-amber-600 text-white font-black text-[12px] uppercase tracking-[0.3em] rounded-none gap-3 shadow-[0_15px_40px_rgba(217,119,6,0.3)] hover:bg-amber-700 hover:-translate-y-1 active:scale-95 transition-all"
                   >
                     <Lock className="h-5 w-5" /> Pay {formatPrice(grandTotal)} via Paystack
                   </Button>
-                  <div className="flex items-center justify-center gap-4 opacity-40">
-                    <span className="text-[9px] font-bold uppercase tracking-widest">MTN MoMo</span>
+                  <div className="flex items-center justify-center gap-4 opacity-30">
+                    <span className="text-[8px] font-black uppercase tracking-widest text-foreground">MTN MoMo</span>
                     <div className="h-1 w-1 rounded-full bg-muted-foreground" />
-                    <span className="text-[9px] font-bold uppercase tracking-widest">Visa/Mastercard</span>
+                    <span className="text-[8px] font-black uppercase tracking-widest text-foreground">Visa/Mastercard</span>
                     <div className="h-1 w-1 rounded-full bg-muted-foreground" />
-                    <span className="text-[9px] font-bold uppercase tracking-widest">Bank</span>
+                    <span className="text-[8px] font-black uppercase tracking-widest text-foreground">Bank Transfer</span>
                   </div>
                 </div>
               </div>
@@ -463,21 +463,21 @@ export function EscrowCheckoutFlow() {
             {step === 'payment_processing' && (
               <div className="text-center py-12 space-y-8 animate-in fade-in zoom-in-95 duration-500">
                 <div className="relative mx-auto h-24 w-24">
-                  <div className="absolute inset-0 rounded-full border-4 border-primary/10" />
-                  <div className="absolute inset-0 rounded-full border-4 border-primary border-t-transparent animate-spin" />
+                  <div className="absolute inset-0 rounded-none border-4 border-amber-600/10" />
+                  <div className="absolute inset-0 rounded-none border-4 border-amber-600 border-t-transparent animate-spin" />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <Lock className="h-8 w-8 text-primary animate-pulse" />
+                    <Lock className="h-8 w-8 text-amber-600 animate-pulse" />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-bold text-foreground tracking-tight">Verifying Payment</h3>
-                  <p className="text-sm text-muted-foreground max-w-[240px] mx-auto leading-relaxed">
+                  <h3 className="text-2xl font-black text-foreground tracking-tighter uppercase">Verifying Payment</h3>
+                  <p className="text-[10px] text-muted-foreground max-w-[240px] mx-auto leading-relaxed uppercase tracking-widest">
                     Paystack is confirming your transaction. Please do not refresh.
                   </p>
                 </div>
-                <div className="max-w-xs mx-auto space-y-3">
-                  <Progress value={65} className="h-2 rounded-full bg-muted" />
-                  <p className="text-[10px] font-bold text-primary uppercase tracking-[0.2em] animate-pulse">
+                <div className="max-w-xs mx-auto space-y-4">
+                  <Progress value={65} className="h-1.5 rounded-none bg-muted" />
+                  <p className="text-[10px] font-black text-amber-600 uppercase tracking-[0.3em] animate-pulse">
                     Securing funds in escrow...
                   </p>
                 </div>
@@ -488,60 +488,60 @@ export function EscrowCheckoutFlow() {
             {step === 'escrow_funded' && (
               <div className="space-y-5 animate-in fade-in slide-in-from-bottom-3 duration-300">
                 <div className="text-center">
-                  <div className="h-14 w-14 bg-green-100 flex items-center justify-center mx-auto mb-3">
-                    <CheckCircle2 className="h-7 w-7 text-green-600" />
+                  <div className="h-14 w-14 bg-amber-600/10 rounded-none border border-amber-600/20 flex items-center justify-center mx-auto mb-3">
+                    <CheckCircle2 className="h-7 w-7 text-amber-600" />
                   </div>
                   <h2 className="text-xl font-black text-foreground uppercase tracking-tighter">Payment Confirmed!</h2>
-                  <p className="text-[10px] text-muted-foreground mt-1">Paystack confirmed. Funds locked in escrow.</p>
+                  <p className="text-[10px] text-muted-foreground mt-1 uppercase tracking-widest">Paystack confirmed. Funds locked in escrow.</p>
                 </div>
 
-                <div className="bg-green-50 border border-green-200 p-4 space-y-2.5">
+                <div className="bg-slate-950 border-l-4 border-amber-600 p-6 space-y-4 shadow-xl">
                   <div className="flex items-center gap-2">
                     <span className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
-                    <span className="text-[10px] font-black uppercase tracking-widest text-green-700">Escrow Active</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-white/60">Escrow Active</span>
                   </div>
-                  <div className="grid grid-cols-2 gap-3 pt-1">
+                  <div className="grid grid-cols-2 gap-6 pt-1">
                     <div>
-                      <p className="text-[8px] font-black text-green-600 uppercase mb-0.5">Amount Locked</p>
-                      <p className="text-[13px] font-black text-green-900">{formatPrice(grandTotal)}</p>
+                      <p className="text-[8px] font-black text-amber-600 uppercase mb-1">Amount Locked</p>
+                      <p className="text-lg font-black text-white italic tracking-tighter">{formatPrice(grandTotal)}</p>
                     </div>
                     <div>
-                      <p className="text-[8px] font-black text-green-600 uppercase mb-0.5">Order</p>
-                      <p className="text-[13px] font-black text-green-900">{orderId}</p>
+                      <p className="text-[8px] font-black text-amber-600 uppercase mb-1">Order ID</p>
+                      <p className="text-lg font-black text-white tracking-tighter">{orderId}</p>
                     </div>
                     <div>
-                      <p className="text-[8px] font-black text-green-600 uppercase mb-0.5">Reference</p>
-                      <p className="text-[9px] font-mono text-green-700 truncate">{paystackRef}</p>
+                      <p className="text-[8px] font-black text-amber-600 uppercase mb-1">Reference</p>
+                      <p className="text-[10px] font-mono text-white/40 truncate">{paystackRef}</p>
                     </div>
                     <div>
-                      <p className="text-[8px] font-black text-green-600 uppercase mb-0.5">Status</p>
-                      <Badge className="bg-green-100 text-green-700 rounded-none border-none text-[8px] font-black uppercase px-2">SECURED</Badge>
+                      <p className="text-[8px] font-black text-amber-600 uppercase mb-1">Status</p>
+                      <Badge className="bg-amber-600 text-white rounded-none border-none text-[8px] font-black uppercase px-3 py-1 tracking-widest">SECURED</Badge>
                     </div>
                   </div>
-                  <p className="text-[9px] text-green-700 leading-relaxed border-t border-green-200 pt-2">
-                    Seller notified. They must dispatch within <strong>48 hours</strong>. Failure = automatic full refund to you.
+                  <p className="text-[10px] text-white/40 leading-relaxed border-t border-white/10 pt-4 uppercase tracking-wide">
+                    Seller notified. They must dispatch within <strong className="text-white">48 hours</strong>. Failure = automatic full refund to you.
                   </p>
                 </div>
 
-                <div className="bg-muted/40 border border-dashed p-4 space-y-2">
-                  <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-                    <Timer className="h-3.5 w-3.5 text-primary" /> Seller Dispatch Window
+                <div className="bg-slate-950 border border-white/10 p-6 space-y-2 text-center">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-amber-600/60 flex items-center justify-center gap-2">
+                    <Timer className="h-3.5 w-3.5" /> Seller Dispatch Window
                   </p>
-                  <div className="text-3xl font-black text-foreground tracking-tighter font-mono">47:59:58</div>
-                  <p className="text-[9px] text-muted-foreground">Counting down for the seller. You will be notified on dispatch.</p>
+                  <div className="text-4xl font-black text-white tracking-tighter font-mono italic">47:59:58</div>
+                  <p className="text-[9px] text-white/20 uppercase tracking-widest">Counting down for the seller. You will be notified on dispatch.</p>
                 </div>
 
                 {/* Demo shortcut for investors */}
-                <div className="bg-amber-50 border border-amber-200 p-3 flex gap-3">
+                <div className="bg-amber-600/5 border border-amber-600/20 p-4 flex gap-4">
                   <Zap className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
-                  <p className="text-[9px] text-amber-800 font-bold leading-relaxed">
-                    <strong>Demo mode:</strong> Click below to simulate the seller dispatching immediately, so you can see the full buyer journey.
+                  <p className="text-[9px] text-amber-900/80 font-black uppercase tracking-widest leading-relaxed">
+                    <strong>Demo mode:</strong> Simulate immediate dispatch to see the full buyer journey.
                   </p>
                 </div>
 
                 <Button
                   onClick={handleSimulateDispatch}
-                  className="w-full h-12 bg-primary text-primary-foreground font-black uppercase text-[10px] tracking-widest rounded-none gap-2 hover:opacity-90"
+                  className="w-full h-14 bg-amber-600 text-white font-black uppercase text-[10px] tracking-[0.3em] rounded-none gap-2 hover:bg-amber-700 shadow-lg"
                 >
                   <Truck className="h-4 w-4" /> Demo: Seller Dispatches Now →
                 </Button>
@@ -549,7 +549,7 @@ export function EscrowCheckoutFlow() {
                 <Button
                   variant="outline"
                   onClick={() => { handleClose(); router.push('/dashboard'); }}
-                  className="w-full h-10 font-black uppercase text-[9px] tracking-widest rounded-none border-2"
+                  className="w-full h-12 font-black uppercase text-[9px] tracking-[0.2em] rounded-none border-2 border-amber-600/20 hover:bg-amber-600/5"
                 >
                   Go to Dashboard
                 </Button>
@@ -560,43 +560,43 @@ export function EscrowCheckoutFlow() {
             {step === 'in_transit' && (
               <div className="space-y-5 animate-in fade-in duration-300">
                 <div className="text-center">
-                  <div className="h-14 w-14 bg-amber-100 flex items-center justify-center mx-auto mb-3">
+                  <div className="h-14 w-14 bg-amber-600/10 border border-amber-600/20 rounded-none flex items-center justify-center mx-auto mb-3">
                     <Truck className="h-7 w-7 text-amber-600" />
                   </div>
-                  <h2 className="text-xl font-black uppercase tracking-tighter">Item Dispatched</h2>
-                  <p className="text-[10px] text-muted-foreground mt-1">Your item is on its way to you</p>
+                  <h2 className="text-xl font-black uppercase tracking-tighter text-[#800020]">Item Dispatched</h2>
+                  <p className="text-[10px] text-[#800020] mt-1 uppercase tracking-widest">Your item is on its way to you</p>
                 </div>
 
-                <div className="bg-amber-50 border border-amber-200 p-4 space-y-3">
+                <div className="bg-slate-950 border-l-4 border-amber-600 p-6 space-y-4 shadow-xl">
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <p className="text-[8px] font-black text-amber-600 uppercase mb-0.5">Tracking</p>
-                      <p className="text-[11px] font-black text-amber-900">ACC-2026-{orderId.replace('ORD-', '')}</p>
+                      <p className="text-[8px] font-black text-amber-600 uppercase mb-1">Tracking ID</p>
+                      <p className="text-sm font-black text-white uppercase tracking-tighter">ACC-2026-{orderId.replace('ORD-', '')}</p>
                     </div>
                     <div>
-                      <p className="text-[8px] font-black text-amber-600 uppercase mb-0.5">ETA</p>
-                      <p className="text-[11px] font-black text-amber-900">1–3 days · Accra</p>
+                      <p className="text-[8px] font-black text-amber-600 uppercase mb-1">ETA</p>
+                      <p className="text-sm font-black text-white uppercase tracking-tighter italic">1–3 Days</p>
                     </div>
                   </div>
-                  <p className="text-[9px] text-amber-700 border-t border-amber-200 pt-2 leading-relaxed">
+                  <p className="text-[10px] text-white/40 border-t border-white/10 pt-4 uppercase tracking-wide">
                     Funds remain in escrow. You are fully protected until you confirm receipt and inspect the item.
                   </p>
                 </div>
 
                 {/* Progress steps */}
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {[
                     { label: 'Order placed & payment secured', done: true },
                     { label: 'Seller packed & dispatched',      done: true },
                     { label: 'In transit to delivery address',  done: true },
-                    { label: 'Delivered — awaiting your confirmation', done: false },
+                    { label: 'Delivered — awaiting confirmation', done: false },
                   ].map((s, i) => (
-                    <div key={i} className={cn('flex items-center gap-3 p-2.5 border', s.done ? 'border-green-200 bg-green-50' : 'border-border bg-muted/20')}>
+                    <div key={i} className={cn('flex items-center gap-4 p-4 border rounded-none transition-all', s.done ? 'border-amber-600/20 bg-amber-600/5' : 'border-white/5 bg-slate-950/50')}>
                       {s.done
-                        ? <CheckCircle2 className="h-4 w-4 text-green-600 shrink-0" />
-                        : <div className="h-4 w-4 border-2 border-border rounded-full shrink-0" />
+                        ? <CheckCircle2 className="h-4 w-4 text-amber-600 shrink-0" />
+                        : <div className="h-4 w-4 border-2 border-white/10 rounded-none shrink-0" />
                       }
-                      <span className={cn('text-[10px] font-black uppercase tracking-tight', s.done ? 'text-green-800' : 'text-muted-foreground')}>
+                      <span className={cn('text-[10px] font-black uppercase tracking-widest', s.done ? 'text-white' : 'text-white/20')}>
                         {s.label}
                       </span>
                     </div>
@@ -605,9 +605,9 @@ export function EscrowCheckoutFlow() {
 
                 <Button
                   onClick={() => setStep('inspection')}
-                  className="w-full h-12 bg-primary text-primary-foreground font-black uppercase text-[10px] tracking-widest rounded-none gap-2 hover:opacity-90"
+                  className="w-full h-16 bg-amber-600 text-white font-black uppercase text-[11px] tracking-[0.3em] rounded-none gap-3 hover:bg-amber-700 shadow-lg"
                 >
-                  <Package className="h-4 w-4" /> I've Received My Item
+                  <Package className="h-5 w-5" /> I've Received My Item
                 </Button>
               </div>
             )}
@@ -616,11 +616,11 @@ export function EscrowCheckoutFlow() {
             {step === 'inspection' && (
               <div className="space-y-5 animate-in fade-in duration-300">
                 <div className="text-center">
-                  <div className="h-14 w-14 bg-blue-100 flex items-center justify-center mx-auto mb-3">
-                    <Eye className="h-7 w-7 text-blue-600" />
+                  <div className="h-14 w-14 bg-amber-600/10 border border-amber-600/20 flex items-center justify-center mx-auto mb-3">
+                    <Eye className="h-7 w-7 text-amber-600" />
                   </div>
-                  <h2 className="text-xl font-black uppercase tracking-tighter">Inspect Your Item</h2>
-                  <p className="text-[10px] text-muted-foreground mt-1">Verify everything before releasing payment to the seller</p>
+                  <h2 className="text-xl font-black uppercase tracking-tighter text-[#800020]">Inspect Your Item</h2>
+                  <p className="text-[10px] text-[#800020] mt-1 uppercase tracking-widest">Verify everything before releasing payment to the seller</p>
                 </div>
 
                 <div className="space-y-2">
@@ -630,38 +630,38 @@ export function EscrowCheckoutFlow() {
                     'All accessories and parts are included',
                     'Item powers on and works as expected',
                   ].map((check, i) => (
-                    <label key={i} className="flex items-center gap-3 p-3 border border-border/50 cursor-pointer hover:border-primary/40 transition-colors">
-                      <input type="checkbox" className="h-4 w-4 accent-primary" />
+                    <label key={i} className="flex items-center gap-4 p-4 border-2 border-border/50 cursor-pointer hover:border-amber-600/40 transition-all bg-background">
+                      <input type="checkbox" className="h-5 w-5 accent-amber-600 rounded-none border-2" />
                       <span className="text-[10px] font-black uppercase tracking-tight text-foreground leading-snug">{check}</span>
                     </label>
                   ))}
                 </div>
 
-                <div className="bg-muted/40 border border-dashed p-4 space-y-1">
-                  <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Payment breakdown on release</p>
-                  <div className="flex justify-between text-[11px] font-black text-foreground">
-                    <span>Seller receives</span>
-                    <span className="text-green-600">{formatPrice((total || 0) - fee)}</span>
+                <div className="bg-slate-950 border-2 border-amber-600/20 p-6 space-y-3 shadow-xl">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-amber-600/60 mb-2">Payment breakdown on release</p>
+                  <div className="flex justify-between text-[13px] font-black text-white italic">
+                    <span className="uppercase tracking-tighter">Seller receives</span>
+                    <span className="text-green-500 tracking-tighter">{formatPrice((total || 0) - fee)}</span>
                   </div>
-                  <div className="flex justify-between text-[9px] font-black text-muted-foreground">
+                  <div className="flex justify-between text-[10px] font-black text-[#800020] uppercase tracking-widest pt-2 border-t border-white/5">
                     <span>Platform commission (2.5%)</span>
                     <span>{formatPrice(fee)}</span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-4">
                   <Button
                     variant="outline"
                     onClick={handleDispute}
-                    className="h-12 rounded-none border-destructive/40 text-destructive hover:bg-destructive hover:text-white font-black uppercase text-[9px] tracking-widest gap-1.5"
+                    className="h-14 rounded-none border-destructive/40 text-destructive hover:bg-destructive hover:text-white font-black uppercase text-[9px] tracking-[0.2em] gap-2"
                   >
-                    <AlertCircle className="h-3.5 w-3.5" /> Problem? Dispute
+                    <AlertCircle className="h-4 w-4" /> Problem? Dispute
                   </Button>
                   <Button
                     onClick={handleRelease}
-                    className="h-12 bg-green-600 text-white hover:bg-green-700 font-black uppercase text-[9px] tracking-widest rounded-none gap-1.5"
+                    className="h-14 bg-green-600 text-white hover:bg-green-700 font-black uppercase text-[9px] tracking-[0.2em] rounded-none gap-2 shadow-lg"
                   >
-                    <CheckCircle2 className="h-3.5 w-3.5" /> Release Payment
+                    <CheckCircle2 className="h-4 w-4" /> Release Payment
                   </Button>
                 </div>
               </div>
@@ -669,29 +669,29 @@ export function EscrowCheckoutFlow() {
 
             {/* ── 7. RELEASED / COMPLETE ── */}
             {step === 'released' && (
-              <div className="text-center py-8 space-y-5 animate-in fade-in zoom-in-95 duration-400">
-                <div className="h-20 w-20 bg-green-100 flex items-center justify-center mx-auto">
-                  <CheckCircle2 className="h-10 w-10 text-green-600" />
+              <div className="text-center py-8 space-y-8 animate-in fade-in zoom-in-95 duration-400">
+                <div className="h-24 w-24 bg-amber-600/10 rounded-none border-2 border-amber-600 flex items-center justify-center mx-auto shadow-[0_0_30px_rgba(217,119,6,0.2)]">
+                  <CheckCircle2 className="h-12 w-12 text-amber-600" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-black text-foreground uppercase tracking-tighter">Transaction Complete!</h2>
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-widest mt-2">
+                  <h2 className="text-3xl font-black uppercase tracking-tighter italic text-[#800020]">Transaction Complete!</h2>
+                  <p className="text-[10px] text-[#800020] uppercase tracking-[0.3em] mt-3">
                     {formatPrice((total || 0) - fee)} released to seller
                   </p>
                 </div>
-                <div className="bg-green-50 border border-green-200 p-4 space-y-2 text-left">
-                  <div className="flex justify-between text-[11px] font-black text-green-900">
-                    <span>Order</span><span>{orderId}</span>
+                <div className="bg-slate-950 border-2 border-amber-600/20 p-8 space-y-4 text-left shadow-2xl text-[#800020]">
+                  <div className="flex justify-between text-[11px] font-black uppercase tracking-widest">
+                    <span>Order ID</span><span className="">{orderId}</span>
                   </div>
-                  <div className="flex justify-between text-[11px] font-black text-green-900">
-                    <span>Reference</span><span className="font-mono text-[9px] truncate ml-4">{paystackRef}</span>
+                  <div className="flex justify-between text-[11px] font-black uppercase tracking-widest">
+                    <span>Reference</span><span className="font-mono text-[10px] truncate ml-4">{paystackRef}</span>
                   </div>
-                  <div className="flex justify-between text-[11px] font-black text-green-900">
+                  <div className="flex justify-between text-[11px] font-black uppercase tracking-widest pt-4 border-t border-white/5">
                     <span>Status</span>
-                    <Badge className="bg-green-100 text-green-700 rounded-none border-none text-[8px] font-black uppercase px-2">COMPLETED</Badge>
+                    <Badge className="bg-amber-600 text-white rounded-none border-none text-[9px] font-black uppercase px-3 py-1 tracking-widest">COMPLETED</Badge>
                   </div>
                 </div>
-                <p className="text-[9px] text-muted-foreground uppercase tracking-widest animate-pulse">Redirecting to dashboard...</p>
+                <p className="text-[9px] text-amber-600 font-black uppercase tracking-[0.4em] animate-pulse pt-4">Redirecting to Registry Dashboard...</p>
               </div>
             )}
 
