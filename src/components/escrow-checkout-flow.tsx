@@ -98,8 +98,8 @@ function PaystackNotifBanner({ notifs, dismiss }: { notifs: PSKNotif[]; dismiss:
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-[9px] font-bold uppercase tracking-[0.15em] text-muted-foreground/60">{n.event}</span>
-              <div className="h-1 w-1 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-[9px] font-bold uppercase tracking-[0.15em]" style={{ color: n.color }}>{n.event}</span>
+              <div className="h-1 w-1 rounded-full animate-pulse" style={{ backgroundColor: n.color }} />
             </div>
             <p className="text-[13px] font-bold text-foreground leading-tight tracking-tight">{n.title}</p>
             <p className="text-[11px] text-muted-foreground mt-1.5 leading-relaxed font-medium">{n.body}</p>
@@ -210,7 +210,7 @@ export function EscrowCheckoutFlow() {
         `Payment of ${formatPrice(calcFee(total).total)} received`,
         `Ref: ${paystackRef} · MTN Mobile Money · Confirmed`,
         <Smartphone className="h-4 w-4" />,
-        '#00c853',
+        '#800020',
       );
 
       // Notification 2: escrow.funded (300ms later)

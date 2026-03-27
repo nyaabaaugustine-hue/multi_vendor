@@ -24,13 +24,14 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
-import { Loader2, Plus, ShieldCheck, Camera } from 'lucide-react';
+import { Loader2, Plus, ShieldCheck, Camera, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
 import { createListingAction } from '@/lib/actions';
+import { generateListingDescription } from '@/ai/flows/ai-generated-listing-description-flow';
 import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
@@ -44,6 +45,7 @@ const formSchema = z.object({
 
 export function ListingCreateForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGeneratingDesc, setIsGeneratingDesc] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [step, setStep] = useState(1);
   const { toast } = useToast();
@@ -70,6 +72,31 @@ export function ListingCreateForm() {
     const netEarnings = price - treasuryFee;
     return { treasuryFee, netEarnings };
   }, [watchPrice]);
+
+  const handleGenerateDescription = async () => {
+    const title = form.getValues('title');
+    const category = form.getValues('category');
+    if (!title || !category) {
+      toast({ title: 'Fill in Title & Category first', description: 'AI needs the title and category to generate a description.', variant: 'destructive' });
+      return;
+    }
+    setIsGeneratingDesc(true);
+    try {
+      const result = await generateListingDescription({
+        title,
+        category,
+        keyFeatures: [form.getValues('condition') ?? 'Good condition', form.getValues('location') ?? 'Accra'],
+        length: 'medium',
+        tone: 'professional',
+      });
+      form.setValue('description', result.description, { shouldValidate: true });
+      toast({ title: 'Description Generated', description: 'AI has filled in a description. Feel free to edit it.' });
+    } catch {
+      toast({ title: 'AI Unavailable', description: 'Could not generate description. Please write one manually.', variant: 'destructive' });
+    } finally {
+      setIsGeneratingDesc(false);
+    }
+  };
 
   const handlePexelsImport = () => {
     // Simulation of Pexels API connection
@@ -258,6 +285,17 @@ export function ListingCreateForm() {
                   <FormItem>
                     <div className="flex items-center justify-between mb-3">
                       <FormLabel className="text-amber-900/80 font-black uppercase text-[10px] tracking-widest">Description</FormLabel>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={handleGenerateDescription}
+                        disabled={isGeneratingDesc}
+                        className="h-8 rounded-none font-black uppercase text-[8px] tracking-widest gap-1.5 border-amber-600/30 text-amber-700 hover:bg-amber-50"
+                      >
+                        {isGeneratingDesc ? <Loader2 className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
+                        {isGeneratingDesc ? 'Generating…' : 'AI Generate'}
+                      </Button>
                     </div>
                     <FormControl>
                       <Textarea 

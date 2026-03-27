@@ -168,7 +168,7 @@ function ListingsContent() {
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 animate-in fade-in duration-1000">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 animate-in fade-in duration-700">
               {filteredListings.map((listing) => (
                 <ListingCard key={listing.id} {...listing} />
               ))}

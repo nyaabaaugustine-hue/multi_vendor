@@ -35,10 +35,10 @@ export function ListingCard(props: Listing) {
   };
 
   return (
-    <Card className="group overflow-hidden bg-card border-2 border-amber-600/5 shadow-sm hover:shadow-[0_20px_50px_rgba(217,119,6,0.15)] hover:border-amber-600/30 transition-all duration-500 flex flex-col h-full rounded-none">
+    <Card className="group overflow-hidden bg-card text-card-foreground border border-border shadow-sm hover:shadow-xl hover:border-primary/30 transition-all duration-500 flex flex-col h-full rounded-2xl">
 
       {/* Image — 4:5 ratio */}
-      <Link href={`/listings/${id}`} className="relative aspect-[4/5] w-full overflow-hidden block bg-amber-50">
+      <Link href={`/listings/${id}`} className="relative aspect-[4/5] w-full overflow-hidden block bg-muted">
         <Image
           src={imageUrl}
           alt={title}
@@ -52,55 +52,57 @@ export function ListingCard(props: Listing) {
         <button
           onClick={handleFavorite}
           className={cn(
-            "absolute top-3 right-3 h-10 w-10 rounded-none flex items-center justify-center backdrop-blur-md border-2 shadow-xl transition-all active:scale-90 z-10",
-            isFavorited ? "bg-amber-600 border-amber-600 text-white shadow-amber-600/40" : "bg-white/80 border-amber-600/10 text-amber-700 hover:border-amber-600/40 hover:text-amber-600"
+            "absolute top-3 right-3 h-9 w-9 rounded-xl flex items-center justify-center backdrop-blur-md border shadow-xl transition-all active:scale-90 z-10",
+            isFavorited
+              ? "bg-primary border-primary text-primary-foreground shadow-primary/40"
+              : "bg-background/80 border-border text-foreground hover:border-primary/40 hover:text-primary"
           )}
         >
-          <Heart className={cn("h-5 w-5", isFavorited && "fill-current")} />
+          <Heart className={cn("h-4 w-4", isFavorited && "fill-current")} />
         </button>
 
         {/* Escrow Badge */}
         {isEscrowProtected && (
           <div className="absolute top-3 left-3 z-10">
-            <Badge className="bg-amber-600 text-white border-none font-black text-[9px] px-3 py-1 rounded-none shadow-xl flex items-center gap-2 uppercase tracking-[0.2em] italic">
-              <ShieldCheck className="h-3.5 w-3.5" /> Escrow
+            <Badge className="bg-primary text-primary-foreground border-none font-black text-[9px] px-2.5 py-1 rounded-lg shadow-xl flex items-center gap-1.5 uppercase tracking-[0.15em]">
+              <ShieldCheck className="h-3 w-3" /> Escrow
             </Badge>
           </div>
         )}
 
         {/* Price Overlay on Hover */}
-        <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-amber-950/80 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-          <div className="flex items-baseline gap-3">
-            <span className="text-white font-black text-2xl tracking-tighter">GHS {parseFloat(price.toString()).toLocaleString()}</span>
-            {oldPrice && <span className="text-white/60 text-sm font-bold line-through tracking-tighter">GHS {parseFloat(oldPrice.toString()).toLocaleString()}</span>}
+        <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/80 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+          <div className="flex items-baseline gap-2">
+            <span className="text-white font-black text-xl tracking-tighter">{formatPrice(price)}</span>
+            {oldPrice && <span className="text-white/50 text-sm font-bold line-through">{formatPrice(oldPrice)}</span>}
           </div>
         </div>
       </Link>
 
-      <CardContent className="p-5 flex flex-col flex-1 gap-3 bg-card border-t-2 border-amber-600/5">
+      <CardContent className="p-4 flex flex-col flex-1 gap-3 bg-card">
         {/* Category + location */}
         <div className="flex items-center justify-between">
-          <p className="text-[10px] font-black text-amber-600 uppercase tracking-[0.25em] truncate">
+          <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em] truncate">
             {category}
           </p>
-          <div className="flex items-center gap-2 text-[10px] text-amber-900/40 font-black uppercase tracking-widest shrink-0">
-            <MapPin className="h-3 w-3 text-amber-600" />
+          <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground font-black uppercase tracking-widest shrink-0">
+            <MapPin className="h-3 w-3 text-primary" />
             <span>{location.split(',')[0]}</span>
           </div>
         </div>
 
         {/* Title */}
         <Link href={`/listings/${id}`} className="block">
-          <h3 className="font-black text-sm leading-tight text-amber-950 group-hover:text-amber-600 transition-colors line-clamp-2 uppercase tracking-tighter italic">
+          <h3 className="font-black text-sm leading-tight text-card-foreground group-hover:text-primary transition-colors line-clamp-2 uppercase tracking-tight">
             {title}
           </h3>
         </Link>
 
         {/* Buy button */}
-        <div className="mt-auto pt-5">
-          <Button 
+        <div className="mt-auto pt-3">
+          <Button
             onClick={handleBuyNow}
-            className="w-full bg-amber-600 hover:bg-amber-700 text-white font-black uppercase text-[10px] tracking-[0.3em] h-12 rounded-none shadow-lg shadow-amber-600/20 transition-all hover:-translate-y-1 active:scale-95"
+            className="w-full bg-primary hover:opacity-90 text-primary-foreground font-black uppercase text-[10px] tracking-[0.25em] h-11 rounded-xl shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 active:scale-95"
           >
             Secure Buy
           </Button>

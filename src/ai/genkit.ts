@@ -1,10 +1,12 @@
-import {genkit} from 'genkit';
-import {googleAI} from '@genkit-ai/google-genai';
-import { AI_ENABLED } from './config';
+/**
+ * ⚠️ Genkit/Gemini has been completely removed from this project.
+ *
+ * All AI is now powered by the Tavily Search API.
+ * See: src/ai/tavily.ts       — Tavily REST client
+ *      src/ai/flows/           — All AI flows (shopping, descriptions)
+ *      src/ai/config.ts        — AI_ENABLED flag (checks TAVILY_API_KEY)
+ *
+ * To use: add TAVILY_API_KEY=tvly-... to your .env.local
+ */
 
-export { AI_ENABLED };
-
-export const ai = genkit({
-  plugins: AI_ENABLED ? [googleAI()] : [],
-  model: 'googleai/gemini-2.5-flash',
-});
+export {};

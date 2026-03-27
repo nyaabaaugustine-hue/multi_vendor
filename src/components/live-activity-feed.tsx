@@ -129,8 +129,8 @@ export function LiveActivityFeed() {
           </CardContent>
           <div className="h-1.5 w-full bg-white/5">
             <div 
-              className="h-full bg-primary transition-all duration-[10000ms] ease-linear"
-              style={{ width: isVisible ? '100%' : '0%' }}
+              className="h-full bg-primary transition-all ease-linear"
+              style={{ width: isVisible ? '100%' : '0%', transitionDuration: '10000ms' }}
             />
           </div>
         </Card>

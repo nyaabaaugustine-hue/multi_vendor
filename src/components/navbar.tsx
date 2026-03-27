@@ -105,12 +105,12 @@ export function Navbar() {
         </div>
 
         {/* SEARCH AREA — Simplified "Uber Style" */}
-        <div className="hidden md:flex flex-1 max-w-xl items-center h-12 bg-secondary border border-border focus-within:border-amber-600 focus-within:bg-background focus-within:shadow-lg transition-all duration-500 group rounded-xl overflow-hidden">
+        <div className="hidden md:flex flex-1 max-w-xl items-center h-12 bg-secondary border border-border focus-within:border-primary focus-within:bg-background focus-within:shadow-lg transition-all duration-500 group rounded-xl overflow-hidden">
           <div className="flex-1 flex items-center px-5 gap-4 h-full">
             <Search className="h-4 w-4 text-amber-600" />
             <input 
               placeholder='Search verified listings, vendors...' 
-              className="w-full bg-transparent outline-none text-amber-900 text-sm font-bold placeholder:text-amber-700/40"
+              className="w-full bg-transparent outline-none text-foreground text-sm font-bold placeholder:text-muted-foreground/50"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => {
@@ -119,14 +119,14 @@ export function Navbar() {
                 }
               }}
             />
-            <span className="text-[10px] font-black text-amber-700/40 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">ESC</span>
+            <span className="text-[10px] font-black text-muted-foreground bg-muted px-1.5 py-0.5 rounded border border-border">ESC</span>
           </div>
           <div className="h-6 w-px bg-border" />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div className="flex px-5 items-center gap-2 shrink-0 cursor-pointer hover:bg-amber-50 h-full transition-colors">
+              <div className="flex px-5 items-center gap-2 shrink-0 cursor-pointer hover:bg-muted h-full transition-colors">
                 <MapPin className="h-3.5 w-3.5 text-amber-600" />
-                <span className="text-xs font-black text-amber-900">{location}</span>
+                <span className="text-xs font-black text-foreground">{location}</span>
                 <ChevronDown className="h-3 w-3 text-amber-700/40" />
               </div>
             </DropdownMenuTrigger>
@@ -134,7 +134,7 @@ export function Navbar() {
               <DropdownMenuLabel className="text-[10px] uppercase font-black tracking-widest text-amber-700/60 px-4 py-2">Select Location</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {['Accra', 'Kumasi', 'Tamale', 'Takoradi', 'Cape Coast'].map((loc) => (
-                <DropdownMenuItem key={loc} onClick={() => setLocation(loc)} className="cursor-pointer text-xs font-black px-4 py-2 hover:bg-amber-50 text-amber-900 transition-colors">
+                <DropdownMenuItem key={loc} onClick={() => setLocation(loc)} className="cursor-pointer text-xs font-black px-4 py-2 hover:bg-muted text-foreground transition-colors">
                   {loc}
                 </DropdownMenuItem>
               ))}
@@ -220,8 +220,8 @@ export function Navbar() {
               <DropdownMenuTrigger asChild>
                 <div className="flex items-center gap-3 pl-2 cursor-pointer group">
                   <div className="flex flex-col items-end hidden sm:flex">
-                    <span className="text-[11px] font-black text-amber-900 uppercase tracking-tighter leading-none group-hover:text-amber-600 transition-colors">{user.name}</span>
-                    <span className="text-[9px] font-bold text-amber-700/50 uppercase tracking-widest mt-1">{user.role}</span>
+                    <span className="text-[11px] font-black text-foreground uppercase tracking-tighter leading-none group-hover:text-primary transition-colors">{user.name}</span>
+                    <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1">{user.role}</span>
                   </div>
                   <div className="h-10 w-10 rounded-xl bg-amber-600 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-amber-600/20 group-hover:scale-105 transition-transform border-2 border-white">
                     {user.name.charAt(0)}
@@ -297,7 +297,7 @@ export function Navbar() {
                     key={link.name}
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-3 px-3 py-3 text-[11px] font-black uppercase tracking-widest text-foreground hover:text-primary hover:bg-primary/5 border-l-2 border-transparent hover:border-primary transition-all"
+                    className="flex items-center gap-3 px-3 py-3 text-[11px] font-black uppercase tracking-widest text-foreground hover:text-primary hover:bg-primary/10 border-l-2 border-transparent hover:border-primary transition-all rounded-r-lg"
                   >
                     <link.icon className="h-4 w-4 shrink-0 text-primary/60" />
                     {link.name}
