@@ -139,7 +139,7 @@ function StatCounter({ end, suffix = '', prefix = '' }: { end: number; suffix?: 
   );
 }
 
-export function HomePage() {
+function HomePage() {
   const { searchQuery, setSearchQuery } = useSearch();
   const [heroInput, setHeroInput] = useState('');
   const parallaxRef = useRef<HTMLDivElement>(null);
