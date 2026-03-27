@@ -39,13 +39,13 @@ export function AuthDialog({ open, onOpenChange, noRedirect = false }: AuthDialo
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-xl rounded-3xl p-0 overflow-hidden border-none shadow-2xl bg-background">
+      <DialogContent className="w-[95vw] max-w-3xl rounded-3xl p-0 overflow-hidden border-none shadow-2xl bg-background">
         <DialogHeader className="sr-only">
           <DialogTitle>Sign In</DialogTitle>
           <DialogDescription>Select an account to test the platform.</DialogDescription>
         </DialogHeader>
 
-        <div className="flex flex-col md:flex-row h-full">
+        <div className="flex flex-col md:flex-row min-h-0">
           {/* Left Side: Branding/Info */}
           <div className="w-full md:w-[40%] bg-slate-950 p-8 text-white flex flex-col justify-between relative overflow-hidden">
             <div className="absolute top-0 right-0 p-12 opacity-10 pointer-events-none">
@@ -77,7 +77,7 @@ export function AuthDialog({ open, onOpenChange, noRedirect = false }: AuthDialo
           </div>
 
           {/* Right Side: Account Selection */}
-          <div className="w-full md:w-[60%] p-10 bg-background">
+          <div className="w-full md:w-[60%] p-6 md:p-8 bg-background overflow-y-auto">
             <div className="mb-10">
               <h3 className="text-2xl font-black text-amber-950 uppercase tracking-tighter italic">Select Account</h3>
               <p className="text-[10px] text-amber-700/60 font-black uppercase tracking-widest mt-1">Authorized Testing Environment</p>
