@@ -3,21 +3,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { 
-  Search, 
-  MapPin, 
-  Bell, 
-  Palette,
-  ChevronDown,
-  Info,
-  ShieldCheck,
-  Plus,
-  Menu,
-  Package,
-  Timer,
-  Home as HomeIcon,
-  Phone,
-  X,
+import {
+  Search, MapPin, Bell, Palette, ChevronDown,
+  Info, ShieldCheck, Plus, Menu, Package, Timer,
+  Home as HomeIcon, Phone, X, LogOut, User as UserIcon,
+  Settings, LayoutDashboard,
 } from 'lucide-react';
 import { useAuth, useContent, useTheme, useSearch, type PrimaryTheme } from '@/components/providers';
 import { useState, useEffect } from 'react';
@@ -25,116 +15,140 @@ import { AuthDialog } from '@/components/auth-dialog';
 import { MegaMenu } from '@/components/mega-menu';
 import { MOCK_NOTIFICATIONS } from '@/lib/mock-data';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetClose,
+  Sheet, SheetContent, SheetHeader, SheetTitle, SheetClose,
 } from "@/components/ui/sheet";
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ListingCreateDialog } from '@/components/listing-create-dialog';
+import { Badge } from '@/components/ui/badge';
+import { useRouter } from 'next/navigation';
 
 export function Navbar() {
-  const { user } = useAuth();
-  const { content } = useContent();
+  const { user, logout } = useAuth();
+  const { content }      = useContent();
   const { theme, setTheme } = useTheme();
   const { searchQuery, setSearchQuery } = useSearch();
-  const [showAuth, setShowAuth] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  // [FIX 5.1] Mobile menu state — was completely broken, now wired up
+  const router = useRouter();
+
+  const [showAuth, setShowAuth]           = useState(false);
+  const [mounted, setMounted]             = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [location, setLocation] = useState('Accra');
+  const [location, setLocation]           = useState('Accra');
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  useEffect(() => { setMounted(true); }, []);
 
-  const themes: { id: PrimaryTheme; name: string; color: string; desc: string }[] = [
-    { id: 'cold-white', name: 'Clinical Light', color: 'bg-white border', desc: 'Standard Default' },
-    { id: 'sovereign', name: 'Elite Sovereign', color: 'bg-slate-900', desc: 'Space Blue Blend' },
-    { id: 'midnight', name: 'Midnight OLED', color: 'bg-black', desc: 'Slate Blue Blend' },
-    { id: 'cobalt', name: 'Enterprise Blue', color: 'bg-blue-900', desc: 'Corporate Cobalt' },
-    { id: 'royal', name: 'Royal Majesty', color: 'bg-purple-900', desc: 'Indigo Blend' },
-    { id: 'crimson', name: 'Power Crimson', color: 'bg-red-900', desc: 'Heat Blend' },
+  const handleLogout = () => {
+    logout();
+    setMobileMenuOpen(false);
+    router.push('/');
+  };
+
+  const themes: { id: PrimaryTheme; name: string; dot: string; desc: string }[] = [
+    { id: 'cold-white', name: 'Light',       dot: 'bg-white border-2 border-gray-300',   desc: 'Default' },
+    { id: 'sovereign',  name: 'Sovereign',   dot: 'bg-slate-800',   desc: 'Space Blue' },
+    { id: 'midnight',   name: 'Midnight',    dot: 'bg-black',       desc: 'OLED Black' },
+    { id: 'cobalt',     name: 'Cobalt',      dot: 'bg-blue-800',    desc: 'Corporate' },
+    { id: 'royal',      name: 'Royal',       dot: 'bg-purple-800',  desc: 'Majesty' },
+    { id: 'crimson',    name: 'Crimson',     dot: 'bg-red-800',     desc: 'Power' },
   ];
 
   const NAV_LINKS = [
-    { name: 'Home', href: '/', icon: HomeIcon },
-    { name: 'About Us', href: '/about', icon: Info },
-    { name: 'Vendors', href: '/vendors', icon: ShieldCheck },
-    { name: 'Contact', href: '/contact', icon: Phone },
+    { name: 'Home',     href: '/',        icon: HomeIcon },
+    { name: 'About',    href: '/about',   icon: Info },
+    { name: 'Vendors',  href: '/vendors', icon: ShieldCheck },
+    { name: 'Contact',  href: '/contact', icon: Phone },
   ];
 
+  const unreadCount = MOCK_NOTIFICATIONS.length;
+
   return (
-    <header className="w-full bg-background/95 backdrop-blur-md border-b-[3px] border-primary/30 shadow-[0_8px_30px_rgba(0,0,0,0.12)] sticky top-0 z-50 transition-all duration-300">
+    <header className="w-full sticky top-0 z-50 transition-all duration-300"
+      style={{ backgroundColor: 'hsl(var(--background))', borderBottom: '2px solid hsl(var(--primary) / 0.25)' }}
+    >
       <AuthDialog open={showAuth} onOpenChange={setShowAuth} />
-      
-      <div className="max-w-7xl mx-auto px-4 h-16 md:h-20 flex items-center justify-between gap-8">
-        {/* LOGO AREA */}
-        <Link href="/" className="flex items-center gap-3 shrink-0 group">
-          <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-amber-600/20 p-1.5 bg-background shadow-sm group-hover:border-amber-600/50 group-hover:shadow-lg group-hover:shadow-amber-600/20 transition-all duration-500 group-hover:scale-105">
-            <Image 
+
+      <div className="max-w-7xl mx-auto px-4 h-16 md:h-[72px] flex items-center justify-between gap-4 md:gap-6">
+
+        {/* ── LOGO ── */}
+        <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
+          <div className="relative h-9 w-9 overflow-hidden rounded-xl border-2 p-1.5 transition-all duration-300 group-hover:scale-105"
+            style={{ borderColor: 'hsl(var(--primary) / 0.3)', backgroundColor: 'hsl(var(--background))' }}
+          >
+            <Image
               src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1774057903/ai-removebg-preview_ikywpe.png"
-              alt="Logo" 
-              fill 
-              sizes="40px" 
-              className="object-contain transition-transform duration-700 ease-in-out group-hover:rotate-[360deg] group-hover:scale-110" 
-              priority 
+              alt="Logo" fill sizes="36px"
+              className="object-contain transition-transform duration-700 group-hover:rotate-[360deg]"
+              priority
             />
           </div>
-          <div className="flex flex-col">
-            <span className="font-bold text-xl text-amber-600 tracking-tighter uppercase leading-none">
+          <div className="hidden sm:flex flex-col">
+            <span className="font-black text-lg leading-none tracking-tighter" style={{ color: 'hsl(var(--primary))' }}>
               {content.settings.siteName}
             </span>
-            <span className="text-[8px] font-bold text-amber-700/70 uppercase tracking-[0.2em] mt-1">Secure Marketplace</span>
+            <span className="text-[8px] font-bold uppercase tracking-[0.18em] leading-none mt-0.5"
+              style={{ color: 'hsl(var(--muted-foreground))' }}
+            >
+              Secure Marketplace
+            </span>
           </div>
         </Link>
 
-        {/* MEGA MENU — Desktop */}
-        <div className="hidden md:block">
+        {/* ── MEGA MENU (Desktop) ── */}
+        <div className="hidden lg:block">
           <MegaMenu />
         </div>
 
-        {/* SEARCH AREA — Simplified "Uber Style" */}
-        <div className="hidden md:flex flex-1 max-w-xl items-center h-12 bg-secondary border border-border focus-within:border-primary focus-within:bg-background focus-within:shadow-lg transition-all duration-500 group rounded-xl overflow-hidden">
-          <div className="flex-1 flex items-center px-5 gap-4 h-full">
-            <Search className="h-4 w-4 text-amber-600" />
-            <input 
-              placeholder='Search verified listings, vendors...' 
-              className="w-full bg-transparent outline-none text-foreground text-sm font-bold placeholder:text-muted-foreground/50"
+        {/* ── SEARCH BAR (Desktop) ── */}
+        <div className="hidden md:flex flex-1 max-w-md items-center h-11 rounded-xl overflow-hidden border-2 transition-all duration-300 focus-within:shadow-lg"
+          style={{
+            backgroundColor: 'hsl(var(--secondary))',
+            borderColor: 'hsl(var(--border))',
+          }}
+        >
+          <div className="flex-1 flex items-center px-4 gap-3 h-full">
+            <Search className="h-4 w-4 shrink-0" style={{ color: 'hsl(var(--primary))' }} />
+            <input
+              placeholder="Search verified listings..."
+              className="w-full bg-transparent outline-none text-sm font-semibold placeholder:text-[hsl(var(--muted-foreground))]"
+              style={{ color: 'hsl(var(--foreground))' }}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Escape') {
-                  setSearchQuery('');
-                }
-              }}
+              onKeyDown={(e) => e.key === 'Escape' && setSearchQuery('')}
             />
-            <span className="text-[10px] font-black text-muted-foreground bg-muted px-1.5 py-0.5 rounded border border-border">ESC</span>
+            {searchQuery && (
+              <button onClick={() => setSearchQuery('')} className="shrink-0">
+                <X className="h-3.5 w-3.5" style={{ color: 'hsl(var(--muted-foreground))' }} />
+              </button>
+            )}
           </div>
-          <div className="h-6 w-px bg-border" />
+          <div className="h-5 w-px" style={{ backgroundColor: 'hsl(var(--border))' }} />
+          {/* Location dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div className="flex px-5 items-center gap-2 shrink-0 cursor-pointer hover:bg-muted h-full transition-colors">
-                <MapPin className="h-3.5 w-3.5 text-amber-600" />
-                <span className="text-xs font-black text-foreground">{location}</span>
-                <ChevronDown className="h-3 w-3 text-amber-700/40" />
-              </div>
+              <button className="flex items-center gap-1.5 px-3 h-full hover:bg-[hsl(var(--muted)/0.5)] transition-colors">
+                <MapPin className="h-3.5 w-3.5" style={{ color: 'hsl(var(--primary))' }} />
+                <span className="text-[11px] font-black" style={{ color: 'hsl(var(--foreground))' }}>{location}</span>
+                <ChevronDown className="h-3 w-3" style={{ color: 'hsl(var(--muted-foreground))' }} />
+              </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48 bg-background border-2 border-amber-600/20 shadow-2xl">
-              <DropdownMenuLabel className="text-[10px] uppercase font-black tracking-widest text-amber-700/60 px-4 py-2">Select Location</DropdownMenuLabel>
-              <DropdownMenuSeparator />
+            <DropdownMenuContent align="end" className="w-44 rounded-xl border-2 shadow-xl"
+              style={{ backgroundColor: 'hsl(var(--background))', borderColor: 'hsl(var(--border))' }}
+            >
+              <DropdownMenuLabel className="text-[9px] font-black uppercase tracking-widest px-3 py-2"
+                style={{ color: 'hsl(var(--muted-foreground))' }}
+              >
+                Select Location
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator style={{ backgroundColor: 'hsl(var(--border))' }} />
               {['Accra', 'Kumasi', 'Tamale', 'Takoradi', 'Cape Coast'].map((loc) => (
-                <DropdownMenuItem key={loc} onClick={() => setLocation(loc)} className="cursor-pointer text-xs font-black px-4 py-2 hover:bg-muted text-foreground transition-colors">
+                <DropdownMenuItem key={loc} onClick={() => setLocation(loc)}
+                  className="text-[11px] font-bold px-3 py-2 cursor-pointer"
+                  style={{ color: 'hsl(var(--foreground))' }}
+                >
                   {loc}
                 </DropdownMenuItem>
               ))}
@@ -142,245 +156,429 @@ export function Navbar() {
           </DropdownMenu>
         </div>
 
-        {/* ACTIONS AREA */}
-        <div className="flex items-center gap-3">
-          <div className="hidden lg:flex items-center gap-1 mr-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-secondary hover:bg-primary/10 text-foreground hover:text-primary transition-all border border-border hover:border-primary/20">
-                  <div className="relative">
-                    <Bell className="h-5 w-5" />
-                    <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full ring-2 ring-background" />
-                  </div>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-80 rounded-2xl border-2 border-primary/20 shadow-2xl p-0 bg-background overflow-hidden" align="end">
-                <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-secondary/80">
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground">Notifications</span>
-                  <button className="text-[9px] font-black uppercase text-primary hover:underline">Mark all read</button>
-                </div>
-                <div className="max-h-[400px] overflow-y-auto">
-                  {MOCK_NOTIFICATIONS.map((n) => (
-                    <DropdownMenuItem key={n.id} className="p-4 border-b border-border/50 cursor-pointer hover:bg-primary/5 transition-colors focus:bg-primary/5 outline-none block">
-                      <div className="flex items-start gap-3">
-                        <div className={cn(
-                          "h-10 w-10 rounded-xl flex items-center justify-center shrink-0 shadow-sm",
-                          n.type === 'order' ? 'bg-blue-100 text-blue-600' : 
-                          n.type === 'payment' ? 'bg-green-100 text-green-600' : 'bg-amber-100 text-amber-600'
-                        )}>
-                          {n.type === 'order' ? <Package className="h-5 w-5" /> : 
-                           n.type === 'payment' ? <ShieldCheck className="h-5 w-5" /> : <Timer className="h-5 w-5" />}
-                        </div>
-                        <div className="flex-1 space-y-1">
-                          <p className="text-[11px] font-black uppercase text-foreground leading-tight tracking-tight">{n.title}</p>
-                          <p className="text-[10px] text-muted-foreground leading-relaxed font-medium">{n.message}</p>
-                          <div className="flex items-center justify-between mt-2">
-                            <p className="text-[9px] font-black text-muted-foreground/40 uppercase tracking-widest">3/19/2026</p>
-                            <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-                          </div>
-                        </div>
-                      </div>
-                    </DropdownMenuItem>
-                  ))}
-                </div>
-                <div className="p-3 bg-secondary/30 text-center">
-                  <button className="text-[9px] font-black uppercase text-primary hover:underline tracking-widest">View All Activity</button>
-                </div>
-              </DropdownMenuContent>
-            </DropdownMenu>
+        {/* ── ACTIONS ── */}
+        <div className="flex items-center gap-2">
 
+          {/* Notifications */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="relative h-10 w-10 rounded-xl flex items-center justify-center border-2 transition-all hover:scale-105"
+                style={{ backgroundColor: 'hsl(var(--secondary))', borderColor: 'hsl(var(--border))' }}
+              >
+                <Bell className="h-4.5 w-4.5" style={{ color: 'hsl(var(--foreground))' }} />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-red-500 text-white text-[9px] font-black flex items-center justify-center ring-2 ring-background">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-80 rounded-2xl p-0 shadow-2xl overflow-hidden border-2"
+              style={{ backgroundColor: 'hsl(var(--background))', borderColor: 'hsl(var(--border))' }}
+              align="end"
+            >
+              <div className="flex items-center justify-between px-4 py-3 border-b"
+                style={{ backgroundColor: 'hsl(var(--secondary))', borderColor: 'hsl(var(--border))' }}
+              >
+                <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: 'hsl(var(--foreground))' }}>
+                  Notifications
+                </span>
+                <button className="text-[9px] font-black uppercase" style={{ color: 'hsl(var(--primary))' }}>
+                  Mark all read
+                </button>
+              </div>
+              <div className="max-h-[340px] overflow-y-auto no-scrollbar">
+                {MOCK_NOTIFICATIONS.map((n) => (
+                  <DropdownMenuItem key={n.id}
+                    className="p-4 border-b cursor-pointer focus:outline-none block"
+                    style={{ borderColor: 'hsl(var(--border) / 0.5)' }}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className={cn(
+                        "h-9 w-9 rounded-xl flex items-center justify-center shrink-0",
+                        n.type === 'order'   && 'bg-blue-100 text-blue-600',
+                        n.type === 'payment' && 'bg-green-100 text-green-600',
+                        n.type !== 'order' && n.type !== 'payment' && 'bg-amber-100 text-amber-600',
+                      )}>
+                        {n.type === 'order'   && <Package className="h-4 w-4" />}
+                        {n.type === 'payment' && <ShieldCheck className="h-4 w-4" />}
+                        {n.type !== 'order' && n.type !== 'payment' && <Timer className="h-4 w-4" />}
+                      </div>
+                      <div className="flex-1 space-y-0.5">
+                        <p className="text-[11px] font-black uppercase leading-tight" style={{ color: 'hsl(var(--foreground))' }}>
+                          {n.title}
+                        </p>
+                        <p className="text-[10px] leading-relaxed" style={{ color: 'hsl(var(--muted-foreground))' }}>
+                          {n.message}
+                        </p>
+                      </div>
+                      <div className="h-2 w-2 rounded-full bg-primary animate-pulse shrink-0 mt-1" />
+                    </div>
+                  </DropdownMenuItem>
+                ))}
+              </div>
+              <div className="p-3 text-center border-t" style={{ borderColor: 'hsl(var(--border))' }}>
+                <button className="text-[9px] font-black uppercase tracking-widest" style={{ color: 'hsl(var(--primary))' }}>
+                  View All
+                </button>
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* Theme switcher */}
+          <div className="hidden lg:block">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-secondary hover:bg-primary/10 text-foreground hover:text-primary transition-all border border-border hover:border-primary/20">
-                  <Palette className="h-5 w-5" />
-                </Button>
+                <button className="h-10 w-10 rounded-xl flex items-center justify-center border-2 transition-all hover:scale-105"
+                  style={{ backgroundColor: 'hsl(var(--secondary))', borderColor: 'hsl(var(--border))' }}
+                >
+                  <Palette className="h-4.5 w-4.5" style={{ color: 'hsl(var(--foreground))' }} />
+                </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 rounded-2xl border border-border/50 shadow-2xl p-2" align="end">
-                <DropdownMenuLabel className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground px-3 py-2">Select Theme</DropdownMenuLabel>
-                <DropdownMenuSeparator className="mx-2" />
+              <DropdownMenuContent className="w-52 rounded-2xl p-2 shadow-2xl border-2"
+                style={{ backgroundColor: 'hsl(var(--background))', borderColor: 'hsl(var(--border))' }}
+                align="end"
+              >
+                <DropdownMenuLabel className="text-[9px] font-black uppercase tracking-widest px-3 py-2"
+                  style={{ color: 'hsl(var(--muted-foreground))' }}
+                >
+                  Select Theme
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator style={{ backgroundColor: 'hsl(var(--border))' }} />
                 {themes.map((t) => (
-                  <DropdownMenuItem 
-                    key={t.id} 
-                    onClick={() => setTheme(t.id)}
+                  <DropdownMenuItem key={t.id} onClick={() => setTheme(t.id)}
                     className={cn(
                       "flex items-center justify-between cursor-pointer py-2.5 px-3 rounded-xl transition-all",
-                      mounted && theme === t.id && "bg-primary/10 text-primary"
+                      mounted && theme === t.id && "bg-primary/10"
                     )}
                   >
-                    <span className="text-xs font-bold uppercase tracking-tight">{t.name}</span>
-                    <div className={cn("h-3 w-3 rounded-full border border-white/20", t.color)} />
+                    <span className={cn("text-[11px] font-bold", mounted && theme === t.id ? "text-primary" : "")}
+                      style={{ color: mounted && theme === t.id ? 'hsl(var(--primary))' : 'hsl(var(--foreground))' }}
+                    >
+                      {t.name}
+                    </span>
+                    <div className={cn("h-3.5 w-3.5 rounded-full border border-white/20 shadow-sm", t.dot)} />
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
 
+          {/* Post Ad button */}
+          <ListingCreateDialog>
+            <Button className="hidden sm:flex h-10 px-4 font-black text-[10px] uppercase tracking-widest rounded-xl gap-2 shadow-md active:scale-95 transition-all"
+              style={{ backgroundColor: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))' }}
+            >
+              <Plus className="h-4 w-4" />
+              <span className="hidden md:inline">Post Ad</span>
+            </Button>
+          </ListingCreateDialog>
+
+          {/* User menu / Login */}
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <div className="flex items-center gap-3 pl-2 cursor-pointer group">
-                  <div className="flex flex-col items-end hidden sm:flex">
-                    <span className="text-[11px] font-black text-foreground uppercase tracking-tighter leading-none group-hover:text-primary transition-colors">{user.name}</span>
-                    <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1">{user.role}</span>
+                <button className="flex items-center gap-2.5 pl-1 group cursor-pointer">
+                  <div className="hidden sm:flex flex-col items-end">
+                    <span className="text-[11px] font-black uppercase tracking-tight leading-none group-hover:text-primary transition-colors"
+                      style={{ color: 'hsl(var(--foreground))' }}
+                    >
+                      {user.name.split(' ')[0]}
+                    </span>
+                    <span className="text-[9px] font-bold uppercase tracking-widest mt-0.5"
+                      style={{ color: 'hsl(var(--muted-foreground))' }}
+                    >
+                      {user.role.replace('_', ' ')}
+                    </span>
                   </div>
-                  <div className="h-10 w-10 rounded-xl bg-amber-600 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-amber-600/20 group-hover:scale-105 transition-transform border-2 border-white">
+                  <div className="h-9 w-9 rounded-xl flex items-center justify-center text-white font-black text-sm shadow-md border-2 border-white/20 transition-all group-hover:scale-105"
+                    style={{ backgroundColor: 'hsl(var(--primary))' }}
+                  >
                     {user.name.charAt(0)}
                   </div>
-                </div>
+                </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 rounded-2xl border border-border/50 shadow-2xl p-2 mt-2 bg-background/95 backdrop-blur-xl" align="end">
-                  <DropdownMenuLabel className="text-[9px] uppercase font-black text-muted-foreground tracking-widest">Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <Link href="/dashboard">
-                    <DropdownMenuItem className="text-[10px] font-black uppercase tracking-widest cursor-pointer">Dashboard</DropdownMenuItem>
-                  </Link>
-                  <DropdownMenuItem className="text-[10px] font-black uppercase tracking-widest cursor-pointer">My Listings</DropdownMenuItem>
-                  <DropdownMenuItem className="text-[10px] font-black uppercase tracking-widest cursor-pointer">Settings</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button 
-                onClick={() => setShowAuth(true)}
-                variant="outline" 
-                className="text-foreground font-black text-[8px] md:text-[9px] uppercase tracking-widest px-3 md:px-6 h-10 hover:bg-secondary border-2 border-border/50 hover:border-primary/30 transition-all rounded-xl"
+              <DropdownMenuContent className="w-52 rounded-2xl p-2 shadow-2xl border-2 mt-1"
+                style={{ backgroundColor: 'hsl(var(--background))', borderColor: 'hsl(var(--border))' }}
+                align="end"
               >
-                Login
-              </Button>
-            )}
-
-            <ListingCreateDialog>
-              <Button 
-                className="hidden xs:flex bg-primary text-white hover:opacity-95 font-black text-[8px] md:text-[9px] uppercase tracking-[0.2em] h-10 px-3 md:px-6 shadow-lg shadow-primary/20 items-center gap-2 rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
-              >
-                <Plus className="h-4 w-4" />
-                <span className="hidden sm:inline">Post Ad</span>
-              </Button>
-            </ListingCreateDialog>
-            
-            {/* [FIX 5.1] Mobile hamburger — now wired to Sheet drawer, was completely non-functional */}
+                {/* User info */}
+                <div className="px-3 py-3 mb-1 rounded-xl" style={{ backgroundColor: 'hsl(var(--secondary))' }}>
+                  <p className="text-[12px] font-black" style={{ color: 'hsl(var(--foreground))' }}>{user.name}</p>
+                  <p className="text-[10px] truncate mt-0.5" style={{ color: 'hsl(var(--muted-foreground))' }}>{user.email}</p>
+                </div>
+                <DropdownMenuSeparator style={{ backgroundColor: 'hsl(var(--border))' }} />
+                <Link href="/dashboard">
+                  <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer"
+                    style={{ color: 'hsl(var(--foreground))' }}
+                  >
+                    <LayoutDashboard className="h-4 w-4 shrink-0" style={{ color: 'hsl(var(--primary))' }} />
+                    <span className="text-[11px] font-black uppercase tracking-widest">Dashboard</span>
+                  </DropdownMenuItem>
+                </Link>
+                <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer"
+                  style={{ color: 'hsl(var(--foreground))' }}
+                >
+                  <Package className="h-4 w-4 shrink-0" style={{ color: 'hsl(var(--primary))' }} />
+                  <span className="text-[11px] font-black uppercase tracking-widest">My Listings</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer"
+                  style={{ color: 'hsl(var(--foreground))' }}
+                >
+                  <Settings className="h-4 w-4 shrink-0" style={{ color: 'hsl(var(--primary))' }} />
+                  <span className="text-[11px] font-black uppercase tracking-widest">Settings</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator style={{ backgroundColor: 'hsl(var(--border))' }} />
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer text-red-500 focus:text-red-500 focus:bg-red-50"
+                >
+                  <LogOut className="h-4 w-4 shrink-0" />
+                  <span className="text-[11px] font-black uppercase tracking-widest">Log Out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
             <Button
-              variant="ghost"
-              size="icon"
-              className="lg:hidden h-8 w-8"
-              onClick={() => setMobileMenuOpen(true)}
-              aria-label="Open navigation menu"
+              onClick={() => setShowAuth(true)}
+              variant="outline"
+              className="h-10 px-4 font-black text-[10px] uppercase tracking-widest rounded-xl border-2 transition-all hover:scale-105"
+              style={{
+                borderColor: 'hsl(var(--border))',
+                color: 'hsl(var(--foreground))',
+                backgroundColor: 'hsl(var(--background))',
+              }}
             >
-              <Menu className="h-4 w-4" />
+              Login
             </Button>
+          )}
+
+          {/* ── HAMBURGER (always visible, always coloured) ── */}
+          <button
+            className="lg:hidden h-10 w-10 rounded-xl flex items-center justify-center border-2 transition-all hover:scale-105 active:scale-95"
+            style={{
+              backgroundColor: 'hsl(var(--primary))',
+              borderColor:     'hsl(var(--primary))',
+              color:           'hsl(var(--primary-foreground))',
+            }}
+            onClick={() => setMobileMenuOpen(true)}
+            aria-label="Open menu"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
         </div>
       </div>
 
-      {/* [FIX 5.1] Mobile Menu Sheet — full navigation drawer for mobile users */}
-      {/* [FIX 2.4] Includes theme switcher for mobile users */}
+      {/* ════════ MOBILE SHEET ════════ */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetContent side="right" className="w-[300px] sm:w-[360px] rounded-none border-l-2 border-primary p-0 flex flex-col">
-          <SheetHeader className="px-6 py-5 border-b border-border/50 bg-secondary text-foreground">
-            <div className="flex items-center justify-between">
-              <SheetTitle className="text-[11px] font-black uppercase tracking-[0.3em] text-foreground">
+        <SheetContent
+          side="right"
+          className="w-[300px] sm:w-[340px] p-0 flex flex-col border-l-2"
+          style={{
+            backgroundColor: 'hsl(var(--background))',
+            borderColor: 'hsl(var(--primary) / 0.3)',
+          }}
+        >
+          {/* Mobile Header */}
+          <SheetHeader
+            className="px-5 py-4 border-b flex-row items-center justify-between shrink-0"
+            style={{
+              backgroundColor: 'hsl(var(--secondary))',
+              borderColor: 'hsl(var(--border))',
+            }}
+          >
+            <div className="flex items-center gap-2.5">
+              <div className="h-8 w-8 rounded-xl flex items-center justify-center"
+                style={{ backgroundColor: 'hsl(var(--primary))' }}
+              >
+                <ShieldCheck className="h-4 w-4 text-white" />
+              </div>
+              <SheetTitle className="text-[13px] font-black uppercase tracking-widest leading-none"
+                style={{ color: 'hsl(var(--foreground))' }}
+              >
                 Menu
               </SheetTitle>
-              <SheetClose asChild>
-                <button aria-label="Close menu" className="text-muted-foreground hover:text-foreground transition-colors">
-                  <X className="h-4 w-4" />
-                </button>
-              </SheetClose>
             </div>
+            <SheetClose asChild>
+              <button className="h-8 w-8 rounded-xl flex items-center justify-center border-2 transition-all hover:scale-105"
+                style={{
+                  borderColor: 'hsl(var(--border))',
+                  color: 'hsl(var(--foreground))',
+                  backgroundColor: 'hsl(var(--background))',
+                }}
+                aria-label="Close"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </SheetClose>
           </SheetHeader>
 
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto no-scrollbar">
+
+            {/* User info */}
+            {user && (
+              <div className="mx-4 mt-4 rounded-2xl p-4 border-2"
+                style={{
+                  backgroundColor: 'hsl(var(--primary) / 0.06)',
+                  borderColor: 'hsl(var(--primary) / 0.2)',
+                }}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-xl flex items-center justify-center font-black text-white shadow-md"
+                    style={{ backgroundColor: 'hsl(var(--primary))' }}
+                  >
+                    {user.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="text-[12px] font-black" style={{ color: 'hsl(var(--foreground))' }}>
+                      {user.name}
+                    </p>
+                    <p className="text-[9px] font-bold uppercase tracking-widest" style={{ color: 'hsl(var(--primary))' }}>
+                      {user.role.replace('_', ' ')}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Search */}
+            <div className="px-4 pt-4 pb-2">
+              <p className="text-[8px] font-black uppercase tracking-[0.3em] mb-2"
+                style={{ color: 'hsl(var(--muted-foreground))' }}
+              >
+                Search
+              </p>
+              <div className="flex items-center h-11 border-2 rounded-xl overflow-hidden"
+                style={{ borderColor: 'hsl(var(--border))', backgroundColor: 'hsl(var(--secondary))' }}
+              >
+                <input
+                  placeholder="Search listings..."
+                  className="flex-1 px-3 bg-transparent outline-none text-[12px] font-semibold"
+                  style={{
+                    color: 'hsl(var(--foreground))',
+                  }}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="h-full px-3 flex items-center justify-center"
+                  style={{ backgroundColor: 'hsl(var(--primary))' }}
+                >
+                  <Search className="h-4 w-4 text-white" />
+                </button>
+              </div>
+            </div>
+
             {/* Nav Links */}
-            <div className="px-6 py-4 border-b border-border/30">
-              <p className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.3em] mb-3">Navigation</p>
+            <div className="px-4 pt-4">
+              <p className="text-[8px] font-black uppercase tracking-[0.3em] mb-2"
+                style={{ color: 'hsl(var(--muted-foreground))' }}
+              >
+                Navigation
+              </p>
               <nav className="flex flex-col gap-1">
                 {NAV_LINKS.map((link) => (
                   <Link
                     key={link.name}
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-3 px-3 py-3 text-[11px] font-black uppercase tracking-widest text-foreground hover:text-primary hover:bg-primary/10 border-l-2 border-transparent hover:border-primary transition-all rounded-r-lg"
+                    className="flex items-center gap-3 px-3 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all border-l-2 border-transparent hover:border-primary hover:bg-primary/5"
+                    style={{ color: 'hsl(var(--foreground))' }}
                   >
-                    <link.icon className="h-4 w-4 shrink-0 text-primary/60" />
+                    <link.icon className="h-4 w-4 shrink-0" style={{ color: 'hsl(var(--primary))' }} />
                     {link.name}
                   </Link>
                 ))}
               </nav>
             </div>
 
-            {/* Mobile Search */}
-            <div className="px-6 py-4 border-b border-border/30">
-              <p className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.3em] mb-3">Search</p>
-              <div className="flex items-center h-10 border border-border rounded-none overflow-hidden bg-muted/20 focus-within:border-primary/40 transition-all">
-                <input
-                  placeholder="Search listings..."
-                  className="flex-1 px-3 bg-transparent outline-none text-foreground text-[11px] font-bold placeholder:text-muted-foreground/40 uppercase tracking-tight"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  aria-label="Search listings"
-                />
-                <button
-                  aria-label="Submit search"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="h-full px-3 bg-primary text-primary-foreground"
-                >
-                  <Search className="h-3.5 w-3.5" />
-                </button>
-              </div>
-            </div>
-
-            {/* Theme Switcher */}
-            <div className="px-6 py-4 border-b border-border/30">
-              <p className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.3em] mb-3">Theme</p>
+            {/* Theme switcher */}
+            <div className="px-4 pt-4 border-t mt-4"
+              style={{ borderColor: 'hsl(var(--border))' }}
+            >
+              <p className="text-[8px] font-black uppercase tracking-[0.3em] mb-2"
+                style={{ color: 'hsl(var(--muted-foreground))' }}
+              >
+                Theme
+              </p>
               <div className="grid grid-cols-2 gap-2">
                 {themes.map((t) => (
                   <button
                     key={t.id}
                     onClick={() => setTheme(t.id)}
                     className={cn(
-                      "flex items-center gap-2 px-3 py-2.5 border transition-all text-left",
-                      mounted && theme === t.id
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-border hover:border-primary/40 hover:bg-muted/30 text-foreground"
+                      "flex items-center gap-2.5 px-3 py-2.5 border-2 rounded-xl transition-all text-left"
                     )}
+                    style={{
+                      borderColor: mounted && theme === t.id ? 'hsl(var(--primary))' : 'hsl(var(--border))',
+                      backgroundColor: mounted && theme === t.id ? 'hsl(var(--primary) / 0.08)' : 'hsl(var(--background))',
+                    }}
                   >
-                    <div className={cn("h-3 w-3 shrink-0 rounded-none border border-border/50", t.color)} />
-                    <span className="text-[9px] font-black uppercase tracking-tight leading-tight">{t.name}</span>
+                    <div className={cn("h-3.5 w-3.5 rounded-full shrink-0 shadow-sm", t.dot)} />
+                    <span className="text-[10px] font-black uppercase tracking-tight"
+                      style={{ color: mounted && theme === t.id ? 'hsl(var(--primary))' : 'hsl(var(--foreground))' }}
+                    >
+                      {t.name}
+                    </span>
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Auth Actions */}
-            <div className="px-6 py-4">
-              <p className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.3em] mb-3">Account</p>
+            {/* Account actions */}
+            <div className="px-4 pt-4 pb-6 border-t mt-4"
+              style={{ borderColor: 'hsl(var(--border))' }}
+            >
+              <p className="text-[8px] font-black uppercase tracking-[0.3em] mb-3"
+                style={{ color: 'hsl(var(--muted-foreground))' }}
+              >
+                Account
+              </p>
               {user ? (
-                <div className="flex items-center gap-3 p-3 border border-primary/20 bg-primary/5">
-                  <Avatar className="h-8 w-8 rounded-none border border-primary/20">
-                    <AvatarImage src={user.avatar} />
-                    <AvatarFallback className="bg-primary text-secondary text-[10px] font-black">{user.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="text-[10px] font-black uppercase tracking-tight text-foreground">{user.name}</p>
-                    <p className="text-[8px] font-bold uppercase text-primary tracking-widest">{user.role.replace('_', ' ')}</p>
-                  </div>
+                <div className="flex flex-col gap-2">
+                  <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+                    <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl border-2 font-black text-[11px] uppercase tracking-widest transition-all hover:bg-primary/5"
+                      style={{ borderColor: 'hsl(var(--border))', color: 'hsl(var(--foreground))' }}
+                    >
+                      <LayoutDashboard className="h-4 w-4" style={{ color: 'hsl(var(--primary))' }} />
+                      Dashboard
+                    </button>
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl border-2 border-red-200 dark:border-red-900 font-black text-[11px] uppercase tracking-widest text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Log Out
+                  </button>
                 </div>
               ) : (
                 <div className="flex flex-col gap-2">
                   <Button
                     onClick={() => { setShowAuth(true); setMobileMenuOpen(false); }}
                     variant="outline"
-                    className="w-full h-10 font-black text-[9px] uppercase tracking-widest border-2 rounded-none"
+                    className="w-full h-11 font-black text-[10px] uppercase tracking-widest rounded-xl border-2"
+                    style={{
+                      borderColor: 'hsl(var(--border))',
+                      color: 'hsl(var(--foreground))',
+                    }}
                   >
                     Login
                   </Button>
-                  <Button 
-                    asChild
-                    className="w-full h-10 bg-primary text-primary-foreground font-black text-[9px] uppercase tracking-widest rounded-none gap-2"
-                  >
-                    <Link href="/listings/create" onClick={() => setMobileMenuOpen(false)}>
-                      <Plus className="h-3.5 w-3.5" />
+                  <ListingCreateDialog>
+                    <Button
+                      className="w-full h-11 font-black text-[10px] uppercase tracking-widest rounded-xl gap-2"
+                      style={{
+                        backgroundColor: 'hsl(var(--primary))',
+                        color: 'hsl(var(--primary-foreground))',
+                      }}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <Plus className="h-4 w-4" />
                       Post Ad
-                    </Link>
-                  </Button>
+                    </Button>
+                  </ListingCreateDialog>
                 </div>
               )}
             </div>

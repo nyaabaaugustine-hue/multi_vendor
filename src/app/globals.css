@@ -260,6 +260,18 @@
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
+/* ── THEME-SAFE UTILITY OVERRIDES ─────────────────────────────────────────── */
+/* Ensure all interactive elements use CSS variable colours, not hardcoded */
+.btn-primary {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+.text-theme-primary { color: hsl(var(--primary)); }
+.text-theme-fg      { color: hsl(var(--foreground)); }
+.text-theme-muted   { color: hsl(var(--muted-foreground)); }
+.bg-theme-card      { background-color: hsl(var(--card)); }
+.border-theme       { border-color: hsl(var(--border)); }
+
 /* ── HEADING GRADIENT ───────────────────────────────────────────────────────── */
 .heading-gradient {
   background: linear-gradient(
