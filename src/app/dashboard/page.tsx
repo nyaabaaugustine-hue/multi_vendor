@@ -155,7 +155,7 @@ function TransactionReceipt({ transaction, isOpen, onClose }: { transaction: Tra
               <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest mb-1">Reference</p>
               <div className="flex items-center gap-2 group">
                 <code className="text-sm font-mono font-bold text-foreground">{transaction.reference ?? ""}</code>
-                <button onClick={() => navigator.clipboard.writeText(transaction.reference)} className="p-1 rounded-md hover:bg-muted text-muted-foreground transition-colors">
+                <button onClick={() => navigator.clipboard.writeText(transaction.reference ?? "")} className="p-1 rounded-md hover:bg-muted text-muted-foreground transition-colors">
                   <Copy className="h-3 w-3" />
                 </button>
               </div>
@@ -1590,3 +1590,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+
