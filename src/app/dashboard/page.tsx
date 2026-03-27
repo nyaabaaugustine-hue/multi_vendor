@@ -126,7 +126,7 @@ function TransactionReceipt({ transaction, isOpen, onClose }: { transaction: Tra
       <DialogContent className="sm:max-w-md rounded-3xl p-0 overflow-hidden border-none shadow-2xl bg-background">
         <DialogHeader className="sr-only">
           <DialogTitle>Transaction Receipt</DialogTitle>
-          <DialogDescription>Detailed information for transaction {transaction.reference}</DialogDescription>
+          <DialogDescription>Detailed information for transaction {transaction.reference ?? ""}</DialogDescription>
         </DialogHeader>
 
         <div className="bg-[#09090b] p-8 text-white relative overflow-hidden">
@@ -154,7 +154,7 @@ function TransactionReceipt({ transaction, isOpen, onClose }: { transaction: Tra
             <div>
               <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest mb-1">Reference</p>
               <div className="flex items-center gap-2 group">
-                <code className="text-sm font-mono font-bold text-foreground">{transaction.reference}</code>
+                <code className="text-sm font-mono font-bold text-foreground">{transaction.reference ?? ""}</code>
                 <button onClick={() => navigator.clipboard.writeText(transaction.reference)} className="p-1 rounded-md hover:bg-muted text-muted-foreground transition-colors">
                   <Copy className="h-3 w-3" />
                 </button>
@@ -788,7 +788,7 @@ function VendorDashboard() {
     fetchData();
   }, []);
 
-  const myListings = [...realListings, ...MOCK_LISTINGS.filter(l => l.vendorId === 'v1')].slice(0, 10);
+  const myListings = realListings.slice(0, 10);
   const totalRevenue = VENDOR_MONTHLY_DATA.reduce((s, d) => s + d.revenue, 0);
   const lockedFunds = MOCK_ORDERS.filter(o => ['Escrow Funded', 'In Transit'].includes(o.status) && o.vendorId === 'v1').reduce((s, o) => s + o.netPayout, 0);
   const pendingDispatch = MOCK_ORDERS.filter(o => o.status === 'Escrow Funded' && o.vendorId === 'v1');
